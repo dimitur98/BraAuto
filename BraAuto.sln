@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BraAuto", "BraAuto\BraAuto.csproj", "{DBD8CB3D-99F3-411C-842B-495A78B4DD69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BraAutoDb", "BraAutoDb\BraAutoDb.csproj", "{7DA66B7E-3040-4A4B-8B18-89F49E2A2E72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperMySqlMapper", "DapperMySqlMapper\DapperMySqlMapper.csproj", "{ADFEDED3-629D-47FE-A621-5C21F72F9F35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder", "SqlQueryBuilder\SqlQueryBuilder.csproj", "{8DE8318D-F815-4872-B0FF-E6A58C0950D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BraAuto.Helpers", "BraAuto.Helpers\BraAuto.Helpers.csproj", "{573DA02A-50EC-4E15-8CFD-0997EDB106DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBD8CB3D-99F3-411C-842B-495A78B4DD69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD8CB3D-99F3-411C-842B-495A78B4DD69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD8CB3D-99F3-411C-842B-495A78B4DD69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD8CB3D-99F3-411C-842B-495A78B4DD69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DA66B7E-3040-4A4B-8B18-89F49E2A2E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DA66B7E-3040-4A4B-8B18-89F49E2A2E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DA66B7E-3040-4A4B-8B18-89F49E2A2E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DA66B7E-3040-4A4B-8B18-89F49E2A2E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFEDED3-629D-47FE-A621-5C21F72F9F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFEDED3-629D-47FE-A621-5C21F72F9F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFEDED3-629D-47FE-A621-5C21F72F9F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFEDED3-629D-47FE-A621-5C21F72F9F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE8318D-F815-4872-B0FF-E6A58C0950D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE8318D-F815-4872-B0FF-E6A58C0950D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE8318D-F815-4872-B0FF-E6A58C0950D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE8318D-F815-4872-B0FF-E6A58C0950D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573DA02A-50EC-4E15-8CFD-0997EDB106DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573DA02A-50EC-4E15-8CFD-0997EDB106DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573DA02A-50EC-4E15-8CFD-0997EDB106DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573DA02A-50EC-4E15-8CFD-0997EDB106DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C6EF8D3-95A7-4602-961F-64E61F6EE3F4}
+	EndGlobalSection
+EndGlobal

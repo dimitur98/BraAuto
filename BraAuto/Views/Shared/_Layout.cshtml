@@ -1,0 +1,165 @@
+﻿@*@using BraAuto.Resources;*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    
+    <!-- App Name -->
+    <meta name="apple-mobile-web-app-title" content="BraAuto">
+    <meta name="application-name" content="BraAuto">
+
+    <meta name="description" content="Site for car selling and car services.">
+    <meta name="keywords" content="car, cars, service">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BraAuto</title>
+
+    <!-- Google Font -->
+    @*<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">*@
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/lib/bootstrap-5.1.3-dist/css/bootstrap.css" type="text/css">
+    <link href="~/fonts/fontawesome-6.2.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/template/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/template/style.css" type="text/css">
+
+    @await RenderSectionAsync("BeforeMainStyles", required: false)
+
+    <link rel="stylesheet" href="~/css/site.css" type="text/css">
+
+    @await RenderSectionAsync("Styles", required: false)
+
+    <script src="~/lib/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <div id="page">
+        @if (ViewBag.ShowHeader == null || ViewBag.ShowHeader == true)
+        {
+            <header id="header" class="mb-3">
+                <partial name="_MenuPartial" />
+            </header>
+        }
+
+        <div class="@(ViewBag.FullPageWidth == true ? "" : "container")">
+            @RenderBody()
+        </div>
+    </div>
+
+    @if (ViewBag.ShowFooter == null || ViewBag.ShowFooter == true)
+    {
+        <footer id="footer" class="footer set-bg" data-setbg="../img/footer-bg.jpg">
+              <div class="container">
+                <div class="footer__contact">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="footer__contact__title">
+                                <h2>Contact Us Now!</h2>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="footer__contact__option">
+                                <div class="option__item"><i class="fa fa-phone"></i> (+12) 345 678 910</div>
+                                <div class="option__item email"><i class="fa fa-envelope-o"></i> Colorlib@gmail.com</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="footer__about">
+                            <div class="footer__logo">
+                                <a href="#"><img src="~/img/footer-logo.png" alt=""></a>
+                            </div>
+                            <p>Any questions? Let us know in store at 625 Gloria Union, California, United Stated or call us
+                                on (+1) 96 123 8888</p>
+                            <div class="footer__social">
+                                <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                                <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                                <a href="#" class="google"><i class="fa fa-google"></i></a>
+                                <a href="#" class="skype"><i class="fa fa-skype"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 offset-lg-1 col-md-3">
+                        <div class="footer__widget">
+                            <h5>Infomation</h5>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Purchase</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Payemnt</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Shipping</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Return</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <div class="footer__widget">
+                            <h5>Infomation</h5>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Hatchback</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Sedan</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> SUV</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Crossover</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer__brand">
+                            <h5>Top Brand</h5>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Abarth</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Acura</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Alfa Romeo</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Audi</a></li>
+                            </ul>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> BMW</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Chevrolet</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Ferrari</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i> Honda</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                <div class="footer__copyright__text">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                </div>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </div>
+        </footer>
+    }
+
+    <script>
+        var braAuto = braAuto || {};
+
+        braAuto.rootUrl = "@Url.Content("~/")";
+    </script>
+
+    @*<script src="~/js/template/jquery-3.3.1.min.js"></script>*@
+    <script src="~/lib/popper-2.10.2/popper.min.js"></script>
+    <script src="~/lib/bootstrap-5.1.3-dist/js/bootstrap.js"></script>
+    @*<script src="~/js/template/jquery.nice-select.min.js"></script>*@
+    <script src="~/js/template/jquery-ui.min.js"></script>
+    <script src="~/js/template/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/template/mixitup.min.js"></script>
+    <script src="~/js/template/jquery.slicknav.js"></script>
+    <script src="~/js/template/owl.carousel.min.js"></script>
+    <script src="~/js/template/main.js"></script>
+
+    @if (ViewBag.RegisterLazyMultiselect == true)
+    {
+        <script src="~/js/lazy-multiselect/lazy-multiselect.js"></script>
+        <link rel="stylesheet" href="~/js/lazy-multiselect/lazy-multiselect.css" type="text/css" />
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

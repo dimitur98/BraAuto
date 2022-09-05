@@ -1,0 +1,43 @@
+﻿.lazy-multiselect .form-control.dropdown-toggle {
+    padding-right: 30px;
+}
+
+    .lazy-multiselect .form-control.dropdown-toggle::after {
+        position: absolute;
+        top: 18px;
+        right: 10px;
+    }
+
+.lazy-multiselect .form-control-sm.dropdown-toggle::after {
+    top: 14px;
+}
+
+.lazy-multiselect .form-select.dropdown-toggle::after,
+.lazy-multiselect .form-select-sm.dropdown-toggle::after {
+    content: unset;
+    display: none;
+}
+
+.lazy-multiselect .dropdown-clear-selection {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    right: 25px;
+    z-index: 10;
+    color: #212529;
+    font-size: 10px;
+}
+
+.lazy-multiselect.has-selection .form-select {
+    padding-right: 42px;
+}
+
+.lazy-multiselect.has-selection .dropdown-clear-selection {
+    display: inline-block;
+}
+
+
+.lazy-multiselect .form-select + .dropdown-clear-selection {
+    right: 30px;
+}

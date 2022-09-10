@@ -1,10 +1,14 @@
-﻿using DapperMySqlMapper;
+﻿using BraAutoDb.Dal;
+using DapperMySqlMapper;
 
 namespace BraAutoDb.Models
 {
     [Table(Name = "car")]
     public class Car : AuditInfo<uint>
     {
+        [Column(Name = "description")]
+        public string Description { get; set; }
+
         [Column(Name = "vehicle_type_id")]
         public uint VehicleTypeId { get; set; }
 
@@ -13,6 +17,7 @@ namespace BraAutoDb.Models
 
         [Column(Name = "model_id")]
         public uint ModelId { get; set; }
+        public Model Model { get; set; }
 
         [Column(Name = "variant")]
         public string Variant { get; set; }
@@ -40,6 +45,7 @@ namespace BraAutoDb.Models
 
         [Column(Name = "gearbox_type_id")]
         public uint GearboxTypeId { get; set; }
+        public GearboxType GearboxType { get; set; }
 
         [Column(Name = "price")]
         public uint Price { get; set; }
@@ -90,7 +96,7 @@ namespace BraAutoDb.Models
         public bool HasDvdTv { get; set; }
 
         [Column(Name = "has_multi_steering_wheel")]
-        public bool HasMultiStearingWheel { get; set; }
+        public bool HasMultiSteeringWheel { get; set; }
 
         [Column(Name = "has_all_wheel_drive")]
         public bool HasAllWheelDrive { get; set; }
@@ -120,7 +126,7 @@ namespace BraAutoDb.Models
         public bool HasAlarm { get; set; }
 
         [Column(Name = "has_immobilizer")]
-        public bool HasImobilizer { get; set; }
+        public bool HasImmobilizer { get; set; }
 
         [Column(Name = "has_central_lock")]
         public bool HasCentralLock { get; set; }
@@ -184,5 +190,15 @@ namespace BraAutoDb.Models
 
         [Column(Name = "is_advert")]
         public bool IsAdvert { get; set; }
+
+        public void LoadModel()
+        {
+            this.Model = Db.Models.GetById(this.ModelId);
+        }
+
+        public void LoadGearboxType()
+        {
+            this.GearboxType = Db.GearboxTypes.GetById(this.GearboxTypeId);
+        }
     }
 }

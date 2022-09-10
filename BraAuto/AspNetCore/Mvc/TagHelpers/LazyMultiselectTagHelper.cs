@@ -6,6 +6,9 @@ using System.Collections;
 
 namespace BraAuto.AspNetCore.Mvc.TagHelpers
 {
+    /// <summary>
+    /// <see cref="ITagHelper"/> implementation targeting &lt;lazymultiselect&gt; elements
+    /// </summary>   
     [HtmlTargetElement("lazymultiselect")]
     [HtmlTargetElement("lazymultiselect", Attributes = ConfigAttributeName)]
     [HtmlTargetElement("lazymultiselect", Attributes = RequestUrlAttributeName)]

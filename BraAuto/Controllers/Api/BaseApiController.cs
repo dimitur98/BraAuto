@@ -29,7 +29,7 @@ namespace BraAuto.Controllers.Api
 
                     if (!string.IsNullOrEmpty(username))
                     {
-                        _loggedUser = Users.GetByUsername(username);
+                        _loggedUser = Db.Users.GetByUsername(username);
 
                         if (_loggedUser != null && !_loggedUser.IsActive)
                         {

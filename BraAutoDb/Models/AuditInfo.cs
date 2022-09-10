@@ -16,6 +16,6 @@ namespace BraAutoDb.Models
         public User Editor { get; set; }
 
         [Column(Name = "edited_at")]
-        public DateTime? EditedAt { get; set; }
+        public DateTime EditedAt { get; set; }
     }
 }

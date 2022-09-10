@@ -5,7 +5,7 @@ using BraAuto.Helpers.Extensions;
 
 namespace BraAutoDb.Dal
 {
-    public static class Db
+    public class Db
     {
         public static MySqlMapper Mapper { get; set; }
 
@@ -13,6 +13,29 @@ namespace BraAutoDb.Dal
         {
             Db.Mapper = new MySqlMapper(connectionString, unableToConnectToHostErrorRetryInterval: unableToConnectToHostErrorRetryInterval, unableToConnectToHostErrorRetryTillConnect: unableToConnectToHostErrorRetryTillConnect);
         }
+
+        public static Articles Articles = new Articles();
+        public static BodyTypes BodyTypes = new BodyTypes();
+        public static CarInCarServices CarInCarServices = new CarInCarServices();
+        public static Cars Cars = new Cars();
+        public static CarServices CarServices = new CarServices();
+        public static Colors Colors = new Colors();
+        public static Conditions Conditions = new Conditions();
+        public static DoorNumbers DoorNumbers = new DoorNumbers();
+        public static EuroStandarts EuroStandarts = new EuroStandarts();
+        public static FuelTypes FuelTypes = new FuelTypes();
+        public static GearboxTypes GearboxTypes = new GearboxTypes();
+        public static Locations Locations = new Locations();
+        public static Makes Makes = new Makes();
+        public static Models Models = new Models();
+        public static Stages Stages = new Stages();
+        public static UserInRoles UserInRoles = new UserInRoles();
+        public static UserRoles UserRoles = new UserRoles();
+        public static Users Users = new Users();
+        public static UserTypes UserTypes = new UserTypes();
+        public static VehicleTypes VehicleTypes = new VehicleTypes();
+        public static Years Years = new Years();
+
 
         public static void LoadEntities<TEntity, TPKeyEntity>(IEnumerable<TEntity> entities,
            Func<TEntity, uint> pKeySelector,

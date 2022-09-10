@@ -1,114 +1,117 @@
 ﻿using BraAutoDb.Models;
-using System.Data;
 
 namespace BraAutoDb.Dal
 {
-    public static class Users
+    public class Users : BaseDal<User>
     {
-        public static List<User> GetAll()
-        {
-            var sql = "SELECT * FROM user";
+        public Users() : base("user", "id", "created_at") { }
 
-            return Db.Mapper.Query<User>(sql).ToList();
+
+        public User GetByUsername(string username) => this.GetByFieldValues<string>("username", new string[] { username }).FirstOrDefault();
+
+        public User GetByEmail(string email) => this.GetByFieldValues<string>("email", new string[] { email }).FirstOrDefault();
+
+        public User GetByUsernameAndPassword(string username, string password)
+        {
+            var sql = @"
+                SELECT *
+                FROM user
+                WHERE username = @username AND password = fn_password(@password)";
+
+            return Db.Mapper.Query<User>(sql, new { username, password }).FirstOrDefault();
         }
 
-        public static User GetById(uint id)
-        {
-            var sql = "SELECT * FROM user WHERE id = @id";
-
-            return Db.Mapper.Query<User>(sql, new { id }).FirstOrDefault();
-        }
-
-        public static User GetByUsername(string username)
-        {
-            string sql = "SELECT * FROM user WHERE username = @username";
-
-            return Db.Mapper.Query<User>(sql, new { username }).FirstOrDefault();
-        }
-
-        public static void Insert(User user)
+        public void Insert(User user)
         {
             var sql = @"INSERT INTO `user`
                         (
                             `username`,
                             `password`,
-                            `firstName`,
-                            `lastName`,
+                            `name`,
                             `email`,
                             `birthday`,
                             `mobile`,
+                            `description`,
+                            `location`,
                             `is_active`,
+                            `user_type_id`,
                             `created_at`,
-                            `editor_id`,
                             `edited_at`
                         )VALUES(
                             @username,
-                            @firstName,
-                            @lastName,
+                            fn_password(@password),
+                            @name,
                             @email,
                             @birthday,
                             @mobile,
+                            @description,
+                            @location,
                             @isActive,
+                            @userTypeId,
                             NOW(),
-                            @editorId,
                             NOW()
-
-                        )
+                        );
 
                         SELECT LAST_INSERT_ID() AS id;";
 
             var queryParams = new
             {
-                id = user.Id,
                 username = user.Username,
                 password = user.Password,
-                firstName = user.FirstName,
-                lastName = user.LastName,
+                name = user.Name,
                 email = user.Email,
                 birthday = user.Birthday,
                 mobile = user.Mobile,
+                description = user.Descripton,
+                location = user.Location,
                 isActive = user.IsActive,
-                editorId = user.EditorId
+                userTypeId = user.UserTypeId,
             };
 
             user.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
 
-        public static void Update(User user)
+        public void Update(User user)
         {
-            var sql = @"UPDATE `user`
-                            SET username = @username,
-                                first_name = @firstName,
-                                last_name = @lastName,
-                                email = @email,
-                                birthday = @birthday,
-                                mobile = @mobile,
-                                is_active = @isActive,
-                                editor_id = @editorId,
-                                edited_at = NOW()
-                        WHERE id = @id";
+            string sql = @"
+                UPDATE `user`
+                     SET name = @name,
+                         email = @email,
+                         birthday = @birthday,
+                         mobile = @mobile,
+                         description = @description,
+                         location = @location,
+                         is_active = @isActive,
+                         user_type_id = @userTypeId,
+                         editor_id = @editorId,
+                         edited_at = NOW()
+                WHERE id = @id";
 
             var queryParams = new
             {
                 id = user.Id,
-                username = user.Username,
-                firstName = user.FirstName,
-                lastName = user.LastName,
+                name = user.Name,
                 email = user.Email,
                 birthday = user.Birthday,
                 mobile = user.Mobile,
+                description = user.Descripton,
+                location = user.Location,
                 isActive = user.IsActive,
+                userTypeId = user.UserTypeId,
                 editorId = user.EditorId
             };
 
             Db.Mapper.Execute(sql, queryParams);
         }
 
-        public static void Delete(uint id)
+        public void SetPassword(uint id, string password)
         {
-            var sql = "DELETE FROM `user` WHERE id = @id";
+            string sql = @"
+                UPDATE `user`
+                    SET password = fn_password(@password)
+                WHERE id = @id";
 
-            Db.Mapper.Query(sql, new { id });
+            Db.Mapper.Execute(sql, new { id, password });
         }
     }
 }

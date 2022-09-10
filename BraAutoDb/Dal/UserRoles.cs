@@ -2,17 +2,10 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class UserRoles
+    public class UserRoles : BaseDal<UserRole>
     {
-        public static List<UserRole> GetUserRoles(IEnumerable<uint> ids)
-        {
-            string sql = @"
-                SELECT *
-                FROM user_role
-                WHERE id IN @ids
-                ORDER BY `order`";
+        public readonly uint UserRoleId = 2;
 
-            return Db.Mapper.Query<UserRole>(sql, new { ids }).ToList();
-        }
+        public UserRoles() : base("user_role", "id", "sort_order") { }
     }
 }

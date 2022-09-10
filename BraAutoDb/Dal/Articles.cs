@@ -2,23 +2,11 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class Articles
+    public class Articles : BaseDal<Article>
     {
-        public static Article GetById(uint id)
-        {
-            var sql = "SELECT * FROM article WHERE id = @id";
+        public Articles() : base("article", "id", "created_at", sortDesc: true) { }
 
-            return Db.Mapper.Query<Article>(sql, new { id }).FirstOrDefault();
-        }
-
-        public static List<Article> GetAll()
-        {
-            var sql = "SELECT * FROM article";
-
-            return Db.Mapper.Query<Article>(sql).ToList();
-        }
-
-        public static void Insert(Article article)
+        public void Insert(Article article)
         {
             var sql = @"INSERT INTO `article`
                         (
@@ -50,7 +38,7 @@ namespace BraAutoDb.Dal
             article.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
 
-        public static void Update(Article article)
+        public void Update(Article article)
         {
             var sql = @"UPDATE `article`
                             SET title = @title,
@@ -69,11 +57,6 @@ namespace BraAutoDb.Dal
             Db.Mapper.Execute(sql, queryParams);
         }
 
-        public static void Delete(uint id)
-        {
-            var sql = "DELETE FROM `article` WHERE id = @id";
-
-            Db.Mapper.Query(sql, new { id });
-        }
+        public void Delete(uint id) => this.Delete(id);
     }
 }

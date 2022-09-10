@@ -1,9 +1,13 @@
-﻿<!-- Offcanvas Menu Begin -->
+﻿@using BraAutoDb.Models
+
+@{
+    var loggedUser = (User)ViewBag.LoggedUser;
+}
+
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__widget">
         <a href="#"><i class="fa fa-cart-plus"></i></a>
-        <a href="#" class="search-switch"><i class="fa fa-search"></i></a>
         <a href="#" class="primary-btn">Add Car</a>
     </div>
     <div class="offcanvas__logo">
@@ -65,27 +69,27 @@
                 <div class="header__nav">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
-                            <li><a href="./car.html">Cars</a></li>
+                            <li class="active"><a asp-action="Home" asp-controller="Cars">Home</a></li>
+                            <li><a asp-action="Search" asp-controller="Cars">Cars</a></li>
                             <li><a href="./blog.html">Blog</a></li>
-                            <li>
-                                <a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./car-details.html">Car Details</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./about.html">About</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
+                            @if(loggedUser == null)
+                            {
+                                <li><a asp-action="Login" asp-controller="Users">Login</a></li>
+                                <li><a asp-action="Register" asp-controller="Users">Register</a></li>
+                            }else
+                            {
+                                <li><a asp-action="My" asp-controller="Cars">Hello "@loggedUser.Username"</a></li>
+                            }
                         </ul>
                     </nav>
                     <div class="header__nav__widget">
-                        <div class="header__nav__widget__btn">
-                            <a href="#"><i class="fa fa-cart-plus"></i></a>
-                            <a href="#" class="search-switch"><i class="fa fa-search"></i></a>
-                        </div>
-                        <a href="#" class="primary-btn">Add Car</a>
+                        @if (loggedUser != null)
+                        {
+                            <div class="header__nav__widget__btn">
+                                <a href="#"><i class="fa fa-cart-plus"></i></a>
+                            </div>
+                            <a href="#" class="primary-btn">Add Car</a>
+                        }
                     </div>
                 </div>
             </div>

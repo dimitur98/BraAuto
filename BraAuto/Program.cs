@@ -69,7 +69,7 @@ try
 
     app.MapControllerRoute(
            name: "default",
-           pattern: "{controller=Cars}/{action=Main}/{id?}");
+           pattern: "{controller=Cars}/{action=Home}/{id?}");
 
     //app.MapRazorPages();
 

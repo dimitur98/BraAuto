@@ -1,0 +1,9 @@
+﻿@model BraAuto.ViewModels.UserEditModel
+
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.RegisterLazyMultiselect = true;
+}
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<partial name="_FormPartial" model="Model" />

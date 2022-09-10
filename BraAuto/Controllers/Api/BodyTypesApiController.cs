@@ -11,7 +11,7 @@ namespace BraAuto.Controllers.Api
         [AllowAnonymous]
         public List<SimpleSearchModel> GetAll()
         {
-            return BodyTypes.GetAll().Select(bt => new SimpleSearchModel(bt.Id, bt.Name)).ToList();
+            return Db.BodyTypes.GetAll().Select(bt => new SimpleSearchModel(bt.Id, bt.Name)).ToList();
         }
     }
 }

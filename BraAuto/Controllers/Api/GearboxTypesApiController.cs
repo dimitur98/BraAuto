@@ -11,7 +11,7 @@ namespace BraAuto.Controllers.Api
         [AllowAnonymous]
         public List<SimpleSearchModel> GetAll()
         {
-            return GearboxTypes.GetAll().Select(gt => new SimpleSearchModel(gt.Id, gt.Name)).ToList();
+            return Db.GearboxTypes.GetAll().Select(gt => new SimpleSearchModel(gt.Id, gt.Name)).ToList();
         }
     }
 }

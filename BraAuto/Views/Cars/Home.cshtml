@@ -1,4 +1,4 @@
-﻿@model BraAuto.ViewModels.CarMainSearchModel
+﻿@model BraAuto.ViewModels.HomeCarSearchModel
 
 @{
     ViewBag.FullPageWidth = true;
@@ -21,17 +21,20 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="hero__tab__form">
                                 <h2>Find Your Dream Car</h2>
-                                <form asp-action="Search" asp-controller="Cars">
+                                <form asp-action="Search" asp-controller="Cars" method="GET">
                                     <div class="select-list">
                                         <div class="select-list-item">
-                                            <label asp-for="YearIds" class="form-label"></label>
-                                            <lazymultiselect asp-for="YearIds" lms-request-url="@Url.Action("GetAll", "YearsApi", new { area = "" })" lms-map-func="response.map(function(y){ return { value: y.id, label: ' '+y.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
+                                            <label asp-for="YearFromId" class="form-label"></label>
+                                            <select class="form-select" asp-for="MakeId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                                <option value="">All</option>
+                                            </select>
                                         </div>
                                         <div class="select-list-item">
-                                            <label asp-for="BodyTypeIds" class="form-label"></label>
-                                            <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
+                                            <label asp-for="YearToId" class="form-label"></label>
+                                            <select class="form-select" asp-for="YearToId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                                <option value="">All</option>
+                                            </select>
                                         </div>
-
                                         <div class="select-list-item">
                                             <label asp-for="MakeId" class="form-label"></label>
                                             <select class="form-select" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
@@ -43,12 +46,12 @@
                                             <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', reloadOnOpen: true"></lazymultiselect>
                                         </div>
                                         <div class="select-list-item">
-                                            <label asp-for="FuelTypeIds" class="form-label"></label>
-                                            <lazymultiselect asp-for="FuelTypeIds" lms-request-url="@Url.Action("GetAll", "FuelTypesApi", new { area = "" })" lms-map-func="response.map(function(ft){ return { value: ft.id, label: ' '+ft.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
+                                            <label asp-for="BodyTypeIds" class="form-label"></label>
+                                            <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
                                         </div>
                                         <div class="select-list-item">
-                                            <label asp-for="GearboxTypeIds" class="form-label"></label>
-                                            <lazymultiselect asp-for="GearboxTypeIds" lms-request-url="@Url.Action("GetAll", "GearboxTypesApi", new { area = "" })" lms-map-func="response.map(function(gt){ return { value: gt.id, label: ' '+gt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
+                                            <label asp-for="FuelTypeIds" class="form-label"></label>
+                                            <lazymultiselect asp-for="FuelTypeIds" lms-request-url="@Url.Action("GetAll", "FuelTypesApi", new { area = "" })" lms-map-func="response.map(function(ft){ return { value: ft.id, label: ' '+ft.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
                                         </div>
                                     </div>
                                     <div class="car-price">
@@ -58,6 +61,8 @@
                                             <div class="range-slider">
                                                 <div class="price-input">
                                                     <input type="text" id="amount">
+                                                     <input type="hidden" asp-for="PriceFrom">
+                                                    <input type="hidden" asp-for="PriceTo">
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +132,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="site-btn">Searching</button>
+                                    <button type="submit" class="site-btn">Search</button>
                                 </form>
                             </div>
                         </div>
@@ -641,14 +646,3 @@
 </div>
 <!-- Cta End -->
 <!-- Footer Section End -->
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
-<!-- Search End -->
-<!-- Js Plugins -->

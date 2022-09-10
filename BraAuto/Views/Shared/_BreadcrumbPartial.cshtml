@@ -1,0 +1,29 @@
+﻿@model BraAuto.ViewModels.Breadcrumb
+
+<div class="breadcrumb-option set-bg" data-setbg="../img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>@ViewBag.Title</h2>
+                    <div class="breadcrumb__links">
+                        @if (Model.Paths.Count() > 1)
+                        {
+                            @foreach (var path in Model.Paths.Take(Model.Paths.Count() - 1))
+                            {
+                                <a asp-action="@path.Action" asp-controller="@path.Controller">
+                                    @if (path.Action == "Home")
+                                    {
+                                        <i class="fa fa-home"></i>
+                                    }
+                                    @path.Action
+                                </a>
+                            }
+                        }
+                        <span>@Model.Paths.Last().Action</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

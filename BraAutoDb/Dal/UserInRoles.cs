@@ -2,23 +2,39 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class UserInRoles
+    public class UserInRoles : BaseDal<UserInRole>
     {
-        public static List<UserInRole> GetByUserId(uint userId) => UserInRoles.GetByUsers(new uint[] { userId });
+        public UserInRoles() : base("user_in_role", "id", "user_id") { }
 
-        public static List<UserInRole> GetByUsers(IEnumerable<uint> userIds)
+        public void Insert(UserInRole userInRole)
         {
-            string sql = @"
-                SELECT *
-                FROM user_in_role               
-                WHERE user_id IN @userIds";
+            var sql = @"INSERT INTO `user_in_role`
+                        (
+                            `user_id`,
+                            `user_role_id`
+                        )VALUES(
+                            @userId,
+                            @userRoleId
+                        );
 
-            return Db.Mapper.Query<UserInRole>(sql, new { userIds }).ToList();
+                        SELECT LAST_INSERT_ID() AS id;";
+
+            var queryParams = new
+            {
+                userId = userInRole.UserId,
+                userRoleId  = userInRole.UserRoleId
+            };
+
+            userInRole.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
 
-        public static void LoadUserRoles(IEnumerable<UserInRole> userInRoles)
+        public IEnumerable<UserInRole> GetByUserId(uint userId) => this.GetByFieldValues("user_id", new uint[] { userId });
+
+        public void DeleteByUserId(uint userId) => this.DeleteByField(new uint[] { userId }, "user_id");
+
+        public void LoadUserRoles(IEnumerable<UserInRole> userInRoles)
         {
-            Db.LoadEntities(userInRoles, uir => uir.UserRoleId, userRoleIds => UserRoles.GetUserRoles(userRoleIds), (userInRole, userRoles) => userInRole.UserRole = userRoles.FirstOrDefault(ur => ur.Id == userInRole.UserRoleId));
+            Db.LoadEntities(userInRoles, uir => uir.UserRoleId, userRoleIds => Db.UserRoles.GetByIds(userRoleIds), (userInRole, userRoles) => userInRole.UserRole = userRoles.FirstOrDefault(ur => ur.Id == userInRole.UserRoleId));
         }
     }
 }

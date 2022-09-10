@@ -18,9 +18,9 @@ namespace BraAutoDb.Models.CarsSearch
 
         public IEnumerable<uint> FuelTypeIds { get; set; }
         
-        public DateTime? ProductionDateFrom { get; set; }
+        public uint? YearFromId { get; set; }
 
-        public DateTime? ProductionDateTo { get; set; }
+        public uint? YearToId { get; set; }
 
         public uint? HorsePowerFrom { get; set; }
         
@@ -35,7 +35,9 @@ namespace BraAutoDb.Models.CarsSearch
         public IEnumerable<uint> LocationIds { get; set; }
 
         public IEnumerable<uint> DoorNumberIds { get; set; }
-        
+
+        public IEnumerable<uint> UserIds { get; set; }
+
         public bool? HasAirConditioning { get; set; }
         
         public bool? HasClimatronic { get; set; }
@@ -58,7 +60,7 @@ namespace BraAutoDb.Models.CarsSearch
         
         public bool? HasDvdTv { get; set; }
         
-        public bool? HasMultiStearingWheel { get; set; }
+        public bool? HasMultiSteeringWheel { get; set; }
         
         public bool? HasAllWheelDrive { get; set; }
         
@@ -78,7 +80,7 @@ namespace BraAutoDb.Models.CarsSearch
         
         public bool? HasAlarm { get; set; }
         
-        public bool? HasImobilizer { get; set; }
+        public bool? HasImmobilizer { get; set; }
         
         public bool? HasCentralLock { get; set; }
         

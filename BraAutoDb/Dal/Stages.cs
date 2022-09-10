@@ -2,13 +2,8 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class Stages
+    public class Stages : BaseDal<Stage>
     {
-        public static List<Stage> GetAll()
-        {
-            var sql = "SELECT * FROM stage";
-
-            return Db.Mapper.Query<Stage>(sql).ToList();
-        }
+        public Stages() : base("stage", "id", "sort_order") { }
     }
 }

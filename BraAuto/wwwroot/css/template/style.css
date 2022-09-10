@@ -143,7 +143,7 @@ ol {
 }
 
 .spad {
-	padding-top: 100px;
+	padding-top: 75px;
 	padding-bottom: 100px;
 }
 
@@ -177,7 +177,7 @@ ol {
 	color: #ffffff;
 	font-weight: 700;
 	display: inline-block;
-	padding: 15px 35px 12px 38px;
+	padding: 6px 30px 9px 30px;
 	background: #db2d2e;
 	border: none;
 	border-radius: 2px;
@@ -256,7 +256,7 @@ ol {
 	z-index: 999;
 }
 
-.spacial-controls .search-switch {
+.spacial-controls .extras-switch {
 	display: block;
 	height: 100%;
 	padding-top: 30px;
@@ -265,31 +265,33 @@ ol {
 	cursor: pointer;
 }
 
-.search-model {
+.extras-model {
 	display: none;
 	position: fixed;
-	width: 100%;
-	height: 100%;
-	left: 0;
-	top: 0;
-	background: #ffffff;
+	padding: 1rem;
+	width: 50%;
+	height: 60%;
+	left: 26%;
+	background: #f7f7f7;
 	z-index: 99999;
+	border-style: groove;
+	border-radius: 50px;
 }
 
-.search-model-form {
+.extras-model-form {
 	padding: 0 15px;
 }
 
-.search-model-form input {
-	width: 470px;
-	font-size: 40px;
-	border: none;
-	border-bottom: 2px solid #ededed;
-	background: 0 0;
-	color: #999;
-}
+	.extras-model-form input {
+		width: 470px;
+		font-size: 40px;
+		border: none;
+		border-bottom: 2px solid #ededed;
+		background: 0 0;
+		color: #999;
+	}
 
-.search-close-switch {
+.extras-close-switch-btn {
 	position: absolute;
 	width: 50px;
 	height: 50px;
@@ -1167,7 +1169,7 @@ ol {
 	padding-top: 20px;
 }
 
-.pagination__option a {
+.pagination__option a{
 	display: inline-block;
 	height: 50px;
 	width: 50px;
@@ -1194,7 +1196,7 @@ ol {
 	margin-right: 0;
 }
 
-.pagination__option a span {
+.pagination__option a {
 	font-size: 18px;
 	position: relative;
 	top: 2px;
@@ -2053,23 +2055,28 @@ ol {
 	cursor: pointer;
 }
 
-.car__details__tab .nav-tabs {
+.my-car-settings .nav-tabs {
 	border-bottom: none;
 	background: #f7f7f7;
 	padding: 0 30px;
 }
+.my-car-settings span {
+	font-size: 20px;
+	color: #707070;
+	font-weight: 700;
+}
 
-.car__details__tab .nav-tabs .nav-item {
+.my-car-settings .nav-tabs .nav-item {
 	display: inline-block;
 	margin-right: 62px;
 }
 
-.car__details__tab .nav-tabs .nav-item:last-child {
+.my-car-settings .nav-tabs .nav-item:last-child {
 	margin-right: 0;
 }
 
-.car__details__tab .nav-tabs .nav-item .nav-link {
-	font-size: 20px;
+.my-car-settings .nav-tabs .nav-item .nav-link {
+	font-size: 17px;
 	color: #707070;
 	font-weight: 700;
 	border: none;
@@ -2079,7 +2086,7 @@ ol {
 	position: relative;
 }
 
-.car__details__tab .nav-tabs .nav-item .nav-link:after {
+.my-car-settings .nav-tabs .nav-item .nav-link:after {
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -2090,11 +2097,11 @@ ol {
 	opacity: 0;
 }
 
-.car__details__tab .nav-tabs .nav-item .nav-link.active {
+.my-car-settings .nav-tabs .nav-item .nav-link.active {
 	background-color: transparent;
 }
 
-.car__details__tab .nav-tabs .nav-item .nav-link.active:after {
+.my-car-settings .nav-tabs .nav-item .nav-link.active:after {
 	opacity: 1;
 }
 

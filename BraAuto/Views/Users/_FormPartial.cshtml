@@ -1,0 +1,143 @@
+﻿@model BraAuto.ViewModels.UserBaseModel
+@using BraAuto.ViewModels;
+@using BraAutoDb.Models;
+
+@{
+    var isRegisterPage = Model is UserRegisterModel;
+    var loggedUser = (User)ViewBag.Loggeduser;
+}
+
+<section class="contact spad">
+    <form asp-action="@(isRegisterPage ? "Register" : "Edit")" asp-controller="Users" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        @if (!isRegisterPage)
+        {
+            <input asp-for="@(((UserEditModel)Model).Id)" type="hidden" />
+        }
+
+        <div class="container">
+            <div class="row">
+                @if (!isRegisterPage)
+                {
+                    <partial name="~/Views/Cars/_MyCarsSettingsPartial.cshtml" />
+                }
+                @*<div class="@(!isRegisterPage ? "col-lg-1 col-md-1" : "" )"></div>*@
+                <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
+                    <div class="contact__form">
+                        @if (isRegisterPage)
+                        {
+                            <div class="form-group">
+                                <label asp-for="@(((UserRegisterModel)Model).Username)" class="form-label"></label>
+                                <input asp-for="@(((UserRegisterModel)Model).Username)" class="form-control" />
+                                <span asp-validation-for="@(((UserRegisterModel)Model).Username)"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@(((UserRegisterModel)Model).Email)" class="form-label"></label>
+                                <input asp-for="@(((UserRegisterModel)Model).Email)" class="form-control" />
+                                <span asp-validation-for="@(((UserRegisterModel)Model).Email)"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@(((UserRegisterModel)Model).Password)" class="form-label"></label>
+                                <input type="password" asp-for="@(((UserRegisterModel)Model).Password)" class="form-control" />
+                                <span asp-validation-for="@(((UserRegisterModel)Model).Password)"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@(((UserRegisterModel)Model).ConfirmPassword)" class="form-label"></label>
+                                <input type="password" asp-for="@(((UserRegisterModel)Model).ConfirmPassword)" class="form-control" />
+                                <span asp-validation-for="@(((UserRegisterModel)Model).ConfirmPassword)"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="@(((UserEditModel)Model).Username)" class="form-label"></label>
+                                <input asp-for="@(((UserEditModel)Model).Username)" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@(((UserEditModel)Model).Email)" class="form-label"></label>
+                                <input asp-for="@(((UserEditModel)Model).Email)" class="form-control" disabled />
+                            </div>
+                        }
+
+                        @if (loggedUser != null && loggedUser.IsAdmin())
+                        {
+                            <div class="form-group">
+                                <label asp-for="@(((UserEditModel)Model).UserRoleIds)" class="form-label"></label>
+                                <lazymultiselect asp-for="@(((UserEditModel)Model).UserRoleIds)" lms-request-url="@Url.Action("GetAll", "UserRolesApi", new { area = "" })" lms-map-func="response.map(function(ur){ return { value: ur.id, label: ' '+ur.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                                <span asp-validation-for="@(((UserEditModel)Model).UserRoleIds)"></span>
+                            </div>
+                            <div class="form-check mt-3">
+                                <label asp-for="@(((UserEditModel)Model).IsActive)" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="@(((UserEditModel)Model).IsActive)" class="form-check-input" />
+                                <span asp-validation-for="@(((UserEditModel)Model).IsActive)"></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
+                    <div class="contact__form">
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Birthday" class="form-label"></label>
+                            <input type="date" asp-for="Birthday" class="form-control" />
+                            <span asp-validation-for="Birthday"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Mobile" class="form-label"></label>
+                            <input asp-for="Mobile" class="form-control" />
+                            <span asp-validation-for="Mobile"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserTypeId" class="form-label"></label>
+                            <select class="form-select" asp-for="UserTypeId" asp-items="@(new SelectList(Model.UserTypes.Select(ut => new { Fullname = ut.Name, Id = ut.Id}), "Id", "Fullname"))">
+                                <option value="">Select User Type</option>
+                            </select>
+                            <span asp-validation-for="UserTypeId"></span>
+                        </div>
+                        <div class="form-group service-field d-none">
+                            <label asp-for="Description" class="form-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description"></span>
+                        </div>
+                        <div class="form-group service-field d-none">
+                            <label asp-for="Location" class="form-label"></label>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="@(isRegisterPage ? "text-center" : "edit-profile-btn")">
+                <button type="submit" class="site-btn">@(isRegisterPage ? "Register" : "Edit")</button>
+            </div>
+        </div>
+    </form>
+</section>
+@*TODO fix classes for edit and register pages *@
+<script>
+    $(document).ready(function () {
+        var $serviseFields = $(".service-field");
+
+        $("#UserTypeId").on("change", function () {
+            var value = $(this).val();
+
+            if (value == @BraAutoDb.Dal.Db.UserTypes.ServiceId) {
+                $serviseFields.each(function () {
+                    $(this).removeClass("d-none");
+                });
+            } else {
+                $serviseFields.each(function () {
+                    var $field = $(this);
+
+                    $field.find("input").val("");
+                    $field.addClass("d-none");
+                });
+            }
+        });
+    });
+</script>

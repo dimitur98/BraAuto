@@ -1,4 +1,5 @@
-﻿using DapperMySqlMapper;
+﻿using BraAutoDb.Dal;
+using DapperMySqlMapper;
 
 namespace BraAutoDb.Models
 {
@@ -10,8 +11,14 @@ namespace BraAutoDb.Models
 
         [Column(Name = "make_id")]
         public uint MakeId { get; set; }
+        public Make Make { get; set; }
 
         [Column(Name = "sort_order")]
         public int SortOrder { get; set; }
+
+        public void LoadMake()
+        {
+            this.Make = Db.Makes.GetById(this.MakeId);
+        }
     }
 }

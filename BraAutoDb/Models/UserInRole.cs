@@ -3,7 +3,7 @@
 namespace BraAutoDb.Models
 { 
     [Table(Name = "user_in_role")]
-    public class UserInRole
+    public class UserInRole : BaseModel<uint>
     {
         [Column(Name = "user_id")]
         public uint UserId { get; set; }

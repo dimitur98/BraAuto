@@ -13,8 +13,8 @@ namespace BraAuto.Controllers.Api
         public List<SimpleSearchModel> GetByMakeId(uint? makeId = null)
         {
             if (makeId == null) { return new List<SimpleSearchModel>(); }
-            var a = Models.GetByMakeId(makeId.Value).Select(m => new SimpleSearchModel(m.Id, m.Name)).ToList();
-            return Models.GetByMakeId(makeId.Value).Select(m => new SimpleSearchModel(m.Id, m.Name)).ToList();
+
+            return Db.Models.GetByMakeId(makeId.Value).Select(m => new SimpleSearchModel(m.Id, m.Name)).ToList();
         }
     }
 }

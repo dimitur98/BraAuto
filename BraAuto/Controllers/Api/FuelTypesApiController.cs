@@ -11,7 +11,7 @@ namespace BraAuto.Controllers.Api
         [AllowAnonymous]
         public List<SimpleSearchModel> GetAll()
         {
-            return FuelTypes.GetAll().Select(ft => new SimpleSearchModel(ft.Id, ft.Name)).ToList();
+            return Db.FuelTypes.GetAll().Select(ft => new SimpleSearchModel(ft.Id, ft.Name)).ToList();
         }
     }
 }

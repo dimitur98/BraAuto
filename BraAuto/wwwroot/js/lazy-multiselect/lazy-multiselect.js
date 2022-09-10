@@ -13,6 +13,7 @@
             buttonText: 'Items',
             class: '',
             buttonClass: '',
+            selectClass: '',
             noneSelectedText: null,
             noItemsText: 'No results found',
             selectAllText: 'Select All',
@@ -72,10 +73,9 @@
             var selectedValues = this.$select.val();
 
             if (selectedValues === null) { selectedValues = []; }
-
+            if (this.options.selectClass != '') { this.$select.addClass(this.options.selectClass); }
 
             this.$select.hide();
-
             this.$container = $('<div class="dropdown lazy-multiselect"></div>')
                 .addClass(this.options.class)
                 .on('hidden.bs.dropdown', function (event) {

@@ -2,16 +2,8 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class Makes
+    public class Makes : BaseDal<Make>
     {
-        public static List<Make> GetAll()
-        {
-            var sql = @"
-                SELECT *
-                FROM make
-                ORDER BY sort_order";
-
-            return Db.Mapper.Query<Make>(sql).ToList();
-        }
+        public Makes() : base("make", "id", "sort_order") { }
     }
 }

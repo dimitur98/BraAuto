@@ -2,26 +2,9 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class CarServices
+    public class CarServices : BaseDal<CarService>
     {
-        public static CarService GetById(uint id)
-        {
-            var sql = @"
-                SELECT * 
-                FROM car_service 
-                WHERE id = @id";
-
-            return Db.Mapper.Query<CarService>(sql, new { id }).FirstOrDefault();
-        }
-
-        public static List<CarService> GetAll()
-        {
-            var sql = @"
-                SELECT * 
-                FROM car_service";
-
-            return Db.Mapper.Query<CarService>(sql).ToList();
-        }
+        public CarServices() : base("car_service", "id", "id") { }
 
         public static void Insert(CarService carService)
         {
@@ -83,13 +66,6 @@ namespace BraAutoDb.Dal
             };
 
             Db.Mapper.Execute(sql, queryParams);
-        }
-
-        public static void Delete(uint id)
-        {
-            var sql = "DELETE FROM `car_service` WHERE id = @id";
-
-            Db.Mapper.Query(sql, new { id });
         }
     }
 }

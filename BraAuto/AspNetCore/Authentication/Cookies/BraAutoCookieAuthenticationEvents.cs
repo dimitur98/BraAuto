@@ -14,7 +14,7 @@ namespace BraAuto.AspNetCore.Authentication.Cookies
 
             if (!string.IsNullOrWhiteSpace(username))
             {
-                var user = Users.GetByUsername(username);
+                var user = Db.Users.GetByUsername(username);
 
                 if (user != null && user.IsActive == false)
                 {
@@ -28,7 +28,7 @@ namespace BraAuto.AspNetCore.Authentication.Cookies
 
                     if (!user.Roles.IsNullOrEmpty())
                     {
-                        UserInRoles.LoadUserRoles(user.Roles);
+                        Db.UserInRoles.LoadUserRoles(user.Roles);
 
                         var roles = user.Roles.Select(uir => uir.UserRole.Name.Replace(" ", "-").ToLower());
 

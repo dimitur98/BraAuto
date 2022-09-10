@@ -1,0 +1,278 @@
+﻿@model BraAuto.ViewModels.CarSearchModel
+
+@{
+    ViewBag.Title = "Search";
+    ViewBag.ShowHeader = true;
+    ViewBag.RegisterLazyMultiselect = true;
+}
+
+<div class="extras-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="extras-close-switch-btn extras-close-switch">+</div>
+        <div class="row">
+            <div>
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAirConditioning)" asp-for="HasAirConditioning" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasClimatronic)" asp-for="HasClimatronic" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasLetherInterior)" asp-for="HasLetherInterior" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasElectricWindows)" asp-for="HasElectricWindows" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasElectricMirrors)" asp-for="HasElectricMirrors" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasElectricSeats)" asp-for="HasElectricSeats" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasSeatHeating)" asp-for="HasSeatHeating" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasClimatronic)" asp-for="HasClimatronic" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasSunroof)" asp-for="HasSunroof" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasStereo)" asp-for="HasStereo" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAlloyWheels)" asp-for="HasAlloyWheels" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasDvdTv)" asp-for="HasDvdTv" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasMultiSteeringWheel)" asp-for="HasMultiSteeringWheel" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAllWheelDrive)" asp-for="HasAllWheelDrive" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAbs)" asp-for="HasAbs" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasEsp)" asp-for="HasEsp" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAirBag)" asp-for="HasAirBag" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasXenonLights)" asp-for="HasXenonLights" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasHalogenHeadlights)" asp-for="HasHalogenHeadlights" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasTractionControl)" asp-for="HasTractionControl" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasParktronic)" asp-for="HasParktronic" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAlarm)" asp-for="HasAlarm" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasImmobilizer)" asp-for="HasImmobilizer" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasCentralLock)" asp-for="HasCentralLock" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasInsurance)" asp-for="HasInsurance" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsArmored)" asp-for="IsArmored" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsKeyless)" asp-for="IsKeyless" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsTiptronicMultitronic)" asp-for="IsTiptronicMultitronic" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasAutopilot)" asp-for="HasAutopilot" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasPowerSteering)" asp-for="HasPowerSteering" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasOnboardComputer)" asp-for="HasOnboardComputer" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasServiceBook)" asp-for="HasServiceBook" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasWarranty)" asp-for="HasWarranty" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasNavigationSystem)" asp-for="HasNavigationSystem" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsRightHandDrive)" asp-for="IsRightHandDrive" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasTuning)" asp-for="HasTuning" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasPanoramicRoof)" asp-for="HasPanoramicRoof" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsTaxi)" asp-for="IsTaxi" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.IsRetro)" asp-for="IsRetro" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasTow)" asp-for="HasTow" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasMoreSeats)" asp-for="HasMoreSeats" />
+                <input type="button" class="btn btn-filter btn-extras me-1 mb-2" value="@Html.DisplayNameFor(model => model.HasRefrigerator)" asp-for="HasRefrigerator" />
+            </div>
+            <div class="extras-search">
+                <input type="submit" class="extras-close-switch btn extras-search-btn" value="Done" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<!-- Car Section Begin -->
+<section class="car spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="car__sidebar">
+                    <div class="car__filter">
+                        <h5>Filters</h5>
+                        <form asp-action="Search" asp-controller="Cars" method="get" id="search-form">
+                            <div class="form-group">
+                                <label asp-for="VehicleTypeId" class="form-label"></label>
+                                <select class="form-select filter" asp-for="VehicleTypeId" asp-items="@(new SelectList(Model.VehicleTypes.Select(vt => new { Fullname = vt.Name, Id = vt.Id}), "Id", "Fullname"))">
+                                    <option value="">-- All --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BodyTypeIds" class="form-label"></label>
+                                <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MakeId" class="form-label"></label>
+                                <select class="form-select" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                    <option value="">-- All --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ModelIds" class="form-label"></label>
+                                <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ConditionIds" class="form-label"></label>
+                                <lazymultiselect asp-for="ConditionIds" lms-request-url="@Url.Action("GetAll", "ConditionsApi", new { area = "" })" lms-map-func="response.map(function(c){ return { value: c.id, label: ' '+c.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="YearFromId" class="form-label"></label>
+                                <div class="input-group">
+                                    <select class="form-select" asp-for="YearFromId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">To</span>
+                                    </div>
+                                    <select class="form-select" asp-for="YearToId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                        <option value="">-- All --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ColorIds" class="form-label"></label>
+                                <lazymultiselect asp-for="ColorIds" lms-request-url="@Url.Action("GetAll", "ColorsApi", new { area = "" })" lms-map-func="response.map(function(c){ return { value: c.id, label: ' '+c.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FuelTypeIds" class="form-label"></label>
+                                <lazymultiselect asp-for="FuelTypeIds" lms-request-url="@Url.Action("GetAll", "FuelTypesApi", new { area = "" })" lms-map-func="response.map(function(ft){ return { value: ft.id, label: ' '+ft.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="GearboxTypeIds" class="form-label"></label>
+                                <lazymultiselect asp-for="GearboxTypeIds" lms-request-url="@Url.Action("GetAll", "GearboxTypesApi", new { area = "" })" lms-map-func="response.map(function(gt){ return { value: gt.id, label: ' '+gt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="HorsePowerFrom" class="form-label"></label>
+                                <input class="form-control filter" asp-for="HorsePowerFrom" type="number" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EuroStandartIds" class="form-label"></label>
+                                <lazymultiselect asp-for="EuroStandartIds" lms-request-url="@Url.Action("GetAll", "EuroStandartsApi", new { area = "" })" lms-map-func="response.map(function(es){ return { value: es.id, label: ' '+es.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LocationIds" class="form-label"></label>
+                                <lazymultiselect asp-for="LocationIds" lms-request-url="@Url.Action("GetAll", "LocationsApi", new { area = "" })" lms-map-func="response.map(function(l){ return { value: l.id, label: ' '+l.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DoorNumberIds" class="form-label"></label>
+                                <lazymultiselect asp-for="DoorNumberIds" lms-request-url="@Url.Action("GetAll", "DoorNumbersApi", new { area = "" })" lms-map-func="response.map(function(dn){ return { value: dn.id, label: ' '+dn.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PriceFrom" class="form-label"></label>
+                                <div class="input-group">
+                                    <input type="number" asp-for="PriceFrom" class="form-control filter" min="0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">To</span>
+                                    </div>
+                                    <input type="number" asp-for="PriceTo" class="form-control filter" min="0">
+                                </div>
+                            </div>
+                            <div class="car__filter__btn">
+                                <button type="button" class="btn extras mb-2 extras-switch" title="Extras"><i class="fa fa-plus"></i></button>
+                                <br />
+                                <button type="submit" class="site-btn">Search</button>
+                                <a href="@Url.Action(action: null, controller: null)" class="btn  btn-outline-info"><i class="fas fa-times"></i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Response.Records.IsNullOrEmpty())
+            {
+                <div class="col-lg-9">There are no cars yet.</div>
+
+                return;
+            }
+            <div class="col-lg-9">
+                <div class="car__filter__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="car__filter__option__item">
+                                <h6>Show On Page</h6>
+                                <select>
+                                    <option value="">9 Car</option>
+                                    <option value="">15 Car</option>
+                                    <option value="">20 Car</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="car__filter__option__item car__filter__option__item--right">
+                                <h6>Sort By</h6>
+                                <select>
+                                    <option value="">Price: Highest Fist</option>
+                                    <option value="">Price: Lowest Fist</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var car in Model.Response.Records)
+                    {
+                        <div class="col-lg-4 col-md-4">
+                            <div class="car__item">
+                                <div class="car__item__pic__slider owl-carousel">
+                                    @*<img src="img/cars/car-1.jpg" alt="">
+                                <img src="img/cars/car-8.jpg" alt="">*@
+                                </div>
+                                <div class="car__item__text">
+                                    <div class="car__item__text__inner">
+                                        <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
+                                        <h5><a href="#">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
+                                        <ul>
+                                            <li><span>@car.Mileage</span> km</li>
+                                            <li>@car.GearboxType.Name</li>
+                                            <li><span>@car.HorsePower</span> hp</li>
+                                        </ul>
+                                    </div>
+                                    <div class="car__item__price">
+                                        <span class="car-option">Price</span>
+                                        <h6>@car.Price</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <partial name="_PagedListPartial" model="Model.ToPager()" />
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Car Section End -->
+
+<script>
+    $(document).ready(function () {
+        var model = @(Html.Raw(Json.Serialize(Model)))
+                            var propNames = Object.getOwnPropertyNames(model);
+
+        propNames.forEach(function (propName) {
+            var value = model[propName];
+
+            if (typeof value == "boolean" && value == true) {
+                propName = propName.charAt(0).toUpperCase() + propName.slice(1);
+
+                $("#" + propName).removeClass("btn-extras");
+                $("#" + propName).addClass("btn-extras-selected");
+            }
+        });
+
+        $(".btn-filter").on("click", function () {
+            var $btn = $(this);
+
+            if ($btn.hasClass("btn-extras")) {
+                $btn.removeClass("btn-extras");
+                $btn.addClass("btn-extras-selected");
+            } else {
+                $btn.removeClass("btn-extras-selected");
+                $btn.addClass("btn-extras");
+            }
+        });
+
+        $("#search-form").submit(function (e) {
+            e.preventDefault();
+            var filters = $(".btn-extras-selected,.filter");
+            var data = {};
+
+            filters.each(function (i) {
+                var $filter = $(this);
+                var propertyName = $filter.attr("id");
+                var value = true;
+
+                if ($filter.is("select")) { value = $filter.val(); }
+                if ($filter.is("input[type='number']")) { value = parseInt($filter.val()) || null; }
+
+                data[propertyName] = value;
+            });
+
+            braAuto.submitJson({
+                url: @(Html.Raw(Json.Serialize(Url.Action("Search", "Cars")))),
+                method: "GET",
+                data: data
+            });
+
+            return;
+        })
+    });
+</script>

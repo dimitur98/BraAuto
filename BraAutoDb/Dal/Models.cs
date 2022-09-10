@@ -2,16 +2,15 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class Models
+    public class Models : BaseDal<Model>
     {
-        public static List<Model> GetByMakeId(uint makeId)
-        {
-            var sql = @"
-                SELECT * 
-                FROM model
-                WHERE make_id = @makeId";
+        public Models() : base("model", "id", "sort_order") { }
 
-            return Db.Mapper.Query<Model>(sql, new { makeId }).ToList();
+        public List<Model> GetByMakeId(uint makeId) => this.GetByFieldValues("make_id", new uint[] { makeId });
+
+        public void LoadMakes(IEnumerable<Model> models)
+        {
+            Db.LoadEntities(models, m => m.MakeId, makeIds => Db.Makes.GetByIds(makeIds), (car, makes) => car.Make = makes.FirstOrDefault(m => m.Id == car.MakeId));
         }
     }
 }

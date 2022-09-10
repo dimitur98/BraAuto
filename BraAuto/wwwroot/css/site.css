@@ -1,26 +1,105 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
-}
-
-a {
-    color: #25bcac;
+    margin-bottom: 60px;
 }
 
 a:hover {
-    color: #21968a;
+    color: #0e55bf;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.extras {
+    background: #4971FF !important;
+}
+
+.btn-outline-info {
+    color: #db2d2e !important;
+    border-color: #db2d2e !important;
+}
+
+    .btn-outline-info:hover {
+        color: #000 !important;
+        background-color: #db2d2e !important;
+        border-color: #db2d2e !important;
+    }
+
+.btn-extras {
+    color: #4971FF !important;
+    border-color: #4971FF !important;
+}
+
+.btn-extras-selected {
+    color: #000 !important;
+    background-color: #4971FF !important;
+    border-color: #4971FF !important;
+}
+
+.extras-search {
+    text-align: center;
+    position: absolute;
+    top: 85%;
+}
+
+.extras-search-btn {
+    background: #4971FF !important;
+    color: white;
+}
+
+.login {
+    max-width: 330px !important;
+}
+
+/* validation errors */
+.validation-summary-errors,
+.field-validation-error {
+    color: #c93333;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000 !important;
+    background-color: #ffeeee;
+}
+
+.validation-summary-valid,
+.field-validation-valid {
+    display: none;
+}
+
+.my-car-settings-thead {
+    background: #f7f7f7;
+}
+
+
+.btn-info {
+    color: #0d6efd !important;
+    background-color: white !important;
+    border-color: #0d6efd !important;
+}
+
+    .btn-info:hover {
+        color: #000 !important;
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+.edit-profile-btn{
+    position: relative;
+    left: 55%;
 }

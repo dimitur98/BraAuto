@@ -1,0 +1,27 @@
+﻿@using BraAutoDb.Models;
+
+@{
+    var loggedUser = (User)ViewBag.LoggedUser;
+}
+
+<div class="col-lg-3">
+    <div class="car__sidebar">
+        <div class="my-car-settings">
+            <span>Settings</span>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" asp-action="My" asp-controller="Cars"  role="tab">My Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" asp-action="Edit" asp-controller="Users" asp-route-userId="@loggedUser.Id" role="tab">Edit profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" asp-action="ChangePassword" asp-controller="Users" asp-route-userId="@loggedUser.Id" role="tab">Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" asp-action="LogOff" asp-controller="Users"  role="tab">Log Off</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

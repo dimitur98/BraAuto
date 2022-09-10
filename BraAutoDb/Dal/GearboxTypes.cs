@@ -2,16 +2,8 @@
 
 namespace BraAutoDb.Dal
 {
-    public static class GearboxTypes
+    public class GearboxTypes : BaseDal<GearboxType>
     {
-        public static List<GearboxType> GetAll()
-        {
-            var sql = @"
-                SELECT *
-                FROM gearbox_type
-                ORDER BY sort_order";
-
-            return Db.Mapper.Query<GearboxType>(sql).ToList();
-        }
+        public GearboxTypes() : base("gearbox_type", "id", "sort_order") { }
     }
 }

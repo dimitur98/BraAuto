@@ -24,7 +24,7 @@ namespace BraAuto.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserRegisterModel model)
+        public IActionResult Register(UserRegisterModel model)
         {
             try
             {

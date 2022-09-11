@@ -516,126 +516,126 @@ namespace BraAuto.ViewModels
         public string Mobile { get; set; }
 
         [DisplayName("Air Conditioning")]
-        public bool? HasAirConditioning { get; set; }
+        public bool HasAirConditioning { get; set; }
 
         [DisplayName("Climatronic")]
-        public bool? HasClimatronic { get; set; }
+        public bool HasClimatronic { get; set; }
 
         [DisplayName("Lether Interior")]
-        public bool? HasLetherInterior { get; set; }
+        public bool HasLetherInterior { get; set; }
 
         [DisplayName("Electric Windows")]
-        public bool? HasElectricWindows { get; set; }
+        public bool HasElectricWindows { get; set; }
 
         [DisplayName("Electric Mirrors")]
-        public bool? HasElectricMirrors { get; set; }
+        public bool HasElectricMirrors { get; set; }
 
         [DisplayName("Electric Seats")]
-        public bool? HasElectricSeats { get; set; }
+        public bool HasElectricSeats { get; set; }
 
         [DisplayName("Seat Heating")]
-        public bool? HasSeatHeating { get; set; }
+        public bool HasSeatHeating { get; set; }
 
         [DisplayName("Sunroof")]
-        public bool? HasSunroof { get; set; }
+        public bool HasSunroof { get; set; }
 
         [DisplayName("Stereo")]
-        public bool? HasStereo { get; set; }
+        public bool HasStereo { get; set; }
 
         [DisplayName("Alloy Wheels")]
-        public bool? HasAlloyWheels { get; set; }
+        public bool HasAlloyWheels { get; set; }
 
         [DisplayName("Dvd/Tv")]
-        public bool? HasDvdTv { get; set; }
+        public bool HasDvdTv { get; set; }
 
         [DisplayName("Multi Steering Wheel")]
-        public bool? HasMultiSteeringWheel { get; set; }
+        public bool HasMultiSteeringWheel { get; set; }
 
         [DisplayName("4WD")]
-        public bool? HasAllWheelDrive { get; set; }
+        public bool HasAllWheelDrive { get; set; }
 
         [DisplayName("ABS")]
-        public bool? HasAbs { get; set; }
+        public bool HasAbs { get; set; }
 
         [DisplayName("ESP")]
-        public bool? HasEsp { get; set; }
+        public bool HasEsp { get; set; }
 
         [DisplayName("AirBag")]
-        public bool? HasAirBag { get; set; }
+        public bool HasAirBag { get; set; }
 
         [DisplayName("Xenon Lights")]
-        public bool? HasXenonLights { get; set; }
+        public bool HasXenonLights { get; set; }
 
         [DisplayName("Halogen Lights")]
-        public bool? HasHalogenHeadlights { get; set; }
+        public bool HasHalogenHeadlights { get; set; }
 
         [DisplayName("Traction Control")]
-        public bool? HasTractionControl { get; set; }
+        public bool HasTractionControl { get; set; }
 
         [DisplayName("Parktronic")]
-        public bool? HasParktronic { get; set; }
+        public bool HasParktronic { get; set; }
 
         [DisplayName("Alarm")]
-        public bool? HasAlarm { get; set; }
+        public bool HasAlarm { get; set; }
 
         [DisplayName("Imobilizer")]
-        public bool? HasImmobilizer { get; set; }
+        public bool HasImmobilizer { get; set; }
 
         [DisplayName("Central Lock")]
-        public bool? HasCentralLock { get; set; }
+        public bool HasCentralLock { get; set; }
 
         [DisplayName("Insurance")]
-        public bool? HasInsurance { get; set; }
+        public bool HasInsurance { get; set; }
 
         [DisplayName("Armored")]
-        public bool? IsArmored { get; set; }
+        public bool IsArmored { get; set; }
 
         [DisplayName("Keyless")]
-        public bool? IsKeyless { get; set; }
+        public bool IsKeyless { get; set; }
 
         [DisplayName("Tiptronic/Multitronic")]
-        public bool? IsTiptronicMultitronic { get; set; }
+        public bool IsTiptronicMultitronic { get; set; }
 
         [DisplayName("Autopilot")]
-        public bool? HasAutopilot { get; set; }
+        public bool HasAutopilot { get; set; }
 
         [DisplayName("Power Steering")]
-        public bool? HasPowerSteering { get; set; }
+        public bool HasPowerSteering { get; set; }
 
         [DisplayName("Onboard Computer")]
-        public bool? HasOnboardComputer { get; set; }
+        public bool HasOnboardComputer { get; set; }
 
         [DisplayName("Service Book")]
-        public bool? HasServiceBook { get; set; }
+        public bool HasServiceBook { get; set; }
 
         [DisplayName("Warranty")]
-        public bool? HasWarranty { get; set; }
+        public bool HasWarranty { get; set; }
 
         [DisplayName("Navigation System")]
-        public bool? HasNavigationSystem { get; set; }
+        public bool HasNavigationSystem { get; set; }
 
         [DisplayName("Right Hand Drive")]
-        public bool? IsRightHandDrive { get; set; }
+        public bool IsRightHandDrive { get; set; }
 
         [DisplayName("Tuning")]
-        public bool? HasTuning { get; set; }
+        public bool HasTuning { get; set; }
 
         [DisplayName("Panoramic Roof")]
-        public bool? HasPanoramicRoof { get; set; }
+        public bool HasPanoramicRoof { get; set; }
 
         [DisplayName("Taxi")]
-        public bool? IsTaxi { get; set; }
+        public bool IsTaxi { get; set; }
 
         [DisplayName("Retro")]
-        public bool? IsRetro { get; set; }
+        public bool IsRetro { get; set; }
 
         [DisplayName("Tow")]
-        public bool? HasTow { get; set; }
+        public bool HasTow { get; set; }
 
         [DisplayName("More Seats")]
-        public bool? HasMoreSeats { get; set; }
+        public bool HasMoreSeats { get; set; }
 
         [DisplayName("Refrigerator")]
-        public bool? HasRefrigerator { get; set; }
+        public bool HasRefrigerator { get; set; }
     }
 }

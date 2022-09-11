@@ -20,295 +20,164 @@
                     </div>
                 </div>
                 <div class="car__details__tab">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+                    <ul class="nav nav-tabs" id="details-car-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link active" id="vehicle-overview" data-bs-toggle="tab" data-bs-target="#vehicle-overview-pane" role="tab" aria-controls="vehicle-overview-pane" aria-selected="true">
                                 Vehicle
                                 Overview
-                            </a>
+                            </button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Technical</a>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="technical" data-bs-toggle="tab" data-bs-target="#technical-pane" role="tab" aria-controls="technical-pane" aria-selected="false">Technical</button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Features & Options</a>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="features-and-options" data-bs-toggle="tab" data-bs-target="#features-and-options-pane" role="tab" aria-controls="features-and-options-pane" aria-selected="false">Features & Options</button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Vehicle Location</a>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="vehicle-location" data-bs-toggle="tab" data-bs-target="#vehicle-location-pane" role="tab" aria-controls="vehicle-location-pane" aria-selected="false">Vehicle Location</button>
                         </li>
                     </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <div class="car__details__tab__info">
-                                <h5>Description</h5>
-                                <span>@Model.Description</span>
-                            </div>
-                            <div class="car__details__tab__feature">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Interior Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Auxiliary heating</li>
-                                                <li><i class="fa fa-check-circle"></i> Bluetooth</li>
-                                                <li><i class="fa fa-check-circle"></i> CD player</li>
-                                                <li><i class="fa fa-check-circle"></i> Central locking</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Safety Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Head-up display</li>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Alloy wheels</li>
-                                                <li><i class="fa fa-check-circle"></i> Electric side mirror</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports package</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports suspension</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                                <li><i class="fa fa-check-circle"></i> Parking sensors</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="tab-content" id="details-car-tab-content">
+                        <div class="tab-pane fade show active" id="vehicle-overview-pane" role="tabpanel" aria-labelledby="vehicle-overview" tabindex="0">
+                            <div class="car__details__tab__info__item">
+                                <h5>@Html.DisplayNameFor(model => model.Description)</h5>
+                                <br />
+                                @Html.DisplayFor(model => model.Description)
                             </div>
                         </div>
-                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                        <div class="tab-pane fade" id="technical-pane" role="tabpanel" aria-labelledby="technical" tabindex="0">
                             <div class="car__details__tab__info">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
-                                            <h5>General Information2</h5>
-                                            <ul>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Pellentesque lacus urna, feugiat non
-                                                    consectetur nec
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Aliquam sem neque, efficitur atero
-                                                    lectus vitae.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Pellentesque erat libero, eleifend
-                                                    sit amet felis ido.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Maecenas eget consectetur quam.
-                                                    Vestibulum ligula.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Praesent lorem sapien, vestibulum
-                                                    eget aliquet et.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="car__details__tab__info__item">
                                             <h5>General Information</h5>
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Pellentesque lacus urna, feugiat non
-                                                    consectetur nec
+                                                    <i class="fa fa-car"></i>@Html.DisplayNameFor(model => model.BodyType): @Html.DisplayFor(model => model.BodyType)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Aliquam sem neque, efficitur atero
-                                                    lectus vitae.
+                                                    <i class="fa fa-warehouse"></i>@Html.DisplayNameFor(model => model.Condition): @Html.DisplayFor(model => model.Condition)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Pellentesque erat libero, eleifend
-                                                    sit amet felis ido.
+                                                    <i class="fa fa-calendar"></i>@Html.DisplayNameFor(model => model.ProductionDate): @Html.DisplayFor(model => model.ProductionDate)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Maecenas eget consectetur quam.
-                                                    Vestibulum ligula.
+                                                    <i class="fa fa-paint-brush"></i>@Html.DisplayNameFor(model => model.Color): @Html.DisplayFor(model => model.Color)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Praesent lorem sapien, vestibulum
-                                                    eget aliquet et.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="car__details__tab__feature">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Interior Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Auxiliary heating</li>
-                                                <li><i class="fa fa-check-circle"></i> Bluetooth</li>
-                                                <li><i class="fa fa-check-circle"></i> CD player</li>
-                                                <li><i class="fa fa-check-circle"></i> Central locking</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Safety Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Head-up display</li>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Alloy wheels</li>
-                                                <li><i class="fa fa-check-circle"></i> Electric side mirror</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports package</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports suspension</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                                <li><i class="fa fa-check-circle"></i> Parking sensors</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="tabs-3" role="tabpanel">
-                            <div class="car__details__tab__info">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
-                                            <h5>General Information3</h5>
-                                            <ul>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Pellentesque lacus urna, feugiat non
-                                                    consectetur nec
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Aliquam sem neque, efficitur atero
-                                                    lectus vitae.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Pellentesque erat libero, eleifend
-                                                    sit amet felis ido.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Maecenas eget consectetur quam.
-                                                    Vestibulum ligula.
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-check"></i> Praesent lorem sapien, vestibulum
-                                                    eget aliquet et.
+                                                    <i class="fa fa-gas-pump"></i>@Html.DisplayNameFor(model => model.FuelType): @Html.DisplayFor(model => model.FuelType)
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="car__details__tab__info__item">
-                                            <h5>General Information</h5>
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Pellentesque lacus urna, feugiat non
-                                                    consectetur nec
+                                                    <i class="fa fa-gear"></i> @Html.DisplayNameFor(model => model.GearboxType): @Html.DisplayFor(model => model.GearboxType)
+                                                <li>
+                                                    <i class="fa-solid fa-horse-head"></i> @Html.DisplayNameFor(model => model.HorsePower): @Html.DisplayFor(model => model.HorsePower)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Aliquam sem neque, efficitur atero
-                                                    lectus vitae.
+                                                    <i class="fa-solid fa-horse-head"></i> @Html.DisplayNameFor(model => model.Cc): @Html.DisplayFor(model => model.Cc)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Pellentesque erat libero, eleifend
-                                                    sit amet felis ido.
+                                                    <i class="fa fa-leaf"></i> @Html.DisplayNameFor(model => model.EuroStandart): @Html.DisplayFor(model => model.EuroStandart)
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Maecenas eget consectetur quam.
-                                                    Vestibulum ligula.
+                                                    <i class="fa fa-road"></i> @Html.DisplayNameFor(model => model.Mileage): @Html.DisplayFor(model => model.Mileage) km
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-check"></i> Praesent lorem sapien, vestibulum
-                                                    eget aliquet et.
+                                                    <i class="fa fa-door-closed"></i> @Html.DisplayNameFor(model => model.DoorNumber): @Html.DisplayFor(model => model.DoorNumber)
                                                 </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="car__details__tab__feature">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Interior Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Auxiliary heating</li>
-                                                <li><i class="fa fa-check-circle"></i> Bluetooth</li>
-                                                <li><i class="fa fa-check-circle"></i> CD player</li>
-                                                <li><i class="fa fa-check-circle"></i> Central locking</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Safety Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Head-up display</li>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> Alloy wheels</li>
-                                                <li><i class="fa fa-check-circle"></i> Electric side mirror</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports package</li>
-                                                <li><i class="fa fa-check-circle"></i> Sports suspension</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
-                                            <h5>Extra Design</h5>
-                                            <ul>
-                                                <li><i class="fa fa-check-circle"></i> MP3 interface</li>
-                                                <li><i class="fa fa-check-circle"></i> Navigation system</li>
-                                                <li><i class="fa fa-check-circle"></i> Panoramic roof</li>
-                                                <li><i class="fa fa-check-circle"></i> Parking sensors</li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="tabs-4" role="tabpanel">
+                        <div class="tab-pane fade" id="features-and-options-pane" role="tabpanel" aria-labelledby="features-and-options" tabindex="0">
+                            <div class="car__details__tab__feature">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Safety</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasAbs ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAbs)</li>
+                                                <li><i class="@(Model.HasEsp ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasEsp)</li>
+                                                <li><i class="@(Model.HasAirBag ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAirBag)</li>
+                                                <li><i class="@(Model.HasTractionControl ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTractionControl)</li>
+                                                <li><i class="@(Model.HasParktronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasParktronic)</li>
+                                                <li><i class="@(Model.HasCentralLock ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasCentralLock)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Interior</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasLetherInterior ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasLetherInterior)</li>
+                                                <li><i class="@(Model.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsRightHandDrive)</li>
+                                                <li><i class="@(Model.HasMoreSeats ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMoreSeats)</li>
+                                            </ul>
+                                            <h5 class="mt-3">Exterior</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasSunroof ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasSunroof)</li>
+                                                <li><i class="@(Model.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAlloyWheels)</li>
+                                                <li><i class="@(Model.HasXenonLights ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasXenonLights)</li>
+                                                <li><i class="@(Model.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasHalogenHeadlights)</li>
+                                                <li><i class="@(Model.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasPanoramicRoof)</li>
+                                                <li><i class="@(Model.HasTow ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTow)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Comfort</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasAirConditioning ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAirConditioning)</li>
+                                                <li><i class="@(Model.HasClimatronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasClimatronic)</li>
+                                                <li><i class="@(Model.HasElectricWindows ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricWindows)</li>
+                                                <li><i class="@(Model.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricMirrors)</li>
+                                                <li><i class="@(Model.HasElectricSeats ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricSeats)</li>
+                                                <li><i class="@(Model.HasSeatHeating ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasSeatHeating)</li>
+                                                <li><i class="@(Model.HasStereo ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasStereo)</li>
+                                                <li><i class="@(Model.HasDvdTv ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasDvdTv)</li>
+                                                <li><i class="@(Model.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMultiSteeringWheel)</li>
+                                                <li><i class="@(Model.IsKeyless ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsKeyless)</li>
+                                                <li><i class="@(Model.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsTiptronicMultitronic)</li>
+                                                <li><i class="@(Model.HasAutopilot ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAutopilot)</li>
+                                                <li><i class="@(Model.HasPowerSteering ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasPowerSteering)</li>
+                                                <li><i class="@(Model.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMultiSteeringWheel)</li>
+                                                <li><i class="@(Model.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasNavigationSystem)</li>
+                                                <li><i class="@(Model.HasRefrigerator ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasRefrigerator)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Protection</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasImmobilizer ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasImmobilizer)</li>
+                                                 <li><i class="@(Model.HasAlarm ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAlarm)</li>
+                                                 <li><i class="@(Model.IsArmored ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsArmored)</li>
+                                            </ul>
+                                            <h5 class="mt-3">Other</h5>
+                                            <ul>
+                                                <li><i class="@(Model.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAllWheelDrive)</li>
+                                                <li><i class="@(Model.HasInsurance ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasInsurance)</li>
+                                                <li><i class="@(Model.HasServiceBook ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasServiceBook)</li>
+                                                <li><i class="@(Model.HasWarranty ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasWarranty)</li>
+                                                <li><i class="@(Model.HasTuning ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTuning)</li>
+                                                <li><i class="@(Model.IsTaxi ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsTaxi)</li>
+                                                <li><i class="@(Model.IsRetro ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsRetro)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="vehicle-location-pane" role="tabpanel" aria-labelledby="vehicle-location" tabindex="0">
                             <div class="car__details__tab__info">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">

@@ -2106,7 +2106,7 @@ ol {
 }
 
 .car__details__tab .tab-content {
-	padding-top: 45px;
+	padding-top: 20px;
 }
 
 .car__details__tab__info {
@@ -2134,7 +2134,6 @@ ol {
 .car__details__tab__info__item ul li i {
 	color: #db2d2e;
 	margin-right: 8px;
-	font-size: 10px;
 }
 
 .car__details__tab__feature__item {

@@ -199,7 +199,7 @@
                                 <div class="car__item__text">
                                     <div class="car__item__text__inner">
                                         <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
-                                        <h5><a href="#">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
+                                        <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
                                         <ul>
                                             <li><span>@car.Mileage</span> km</li>
                                             <li>@car.GearboxType.Name</li>
@@ -225,7 +225,7 @@
 <script>
     $(document).ready(function () {
         var model = @(Html.Raw(Json.Serialize(Model)))
-                            var propNames = Object.getOwnPropertyNames(model);
+        var propNames = Object.getOwnPropertyNames(model);
 
         propNames.forEach(function (propName) {
             var value = model[propName];

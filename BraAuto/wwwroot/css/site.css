@@ -103,3 +103,15 @@ a:hover {
     position: relative;
     left: 55%;
 }
+
+.c-white:hover{
+    color: white;
+}
+
+td .fa-check-circle{
+    color:green;
+}
+
+td .fa-circle {
+    color: red;
+}

@@ -9,6 +9,9 @@ namespace BraAutoDb.Models
         [Column(Name = "description")]
         public string Description { get; set; }
 
+        [Column(Name = "vin")]
+        public string Vin { get; set; }
+
         [Column(Name = "vehicle_type_id")]
         public uint VehicleTypeId { get; set; }
 
@@ -35,7 +38,7 @@ namespace BraAutoDb.Models
         public DateTime ProductionDate { get; set; }
 
         [Column(Name = "horse_power")]
-        public uint HorsePower { get; set; }
+        public uint? HorsePower { get; set; }
 
         [Column(Name = "cc")]
         public uint? CC { get; set; }

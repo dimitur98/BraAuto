@@ -1,6 +1,8 @@
 ﻿using BraAutoDb.Models;
 using BraAutoDb.Models.CarsSearch;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BraAuto.ViewModels
 {
@@ -182,6 +184,8 @@ namespace BraAuto.ViewModels
         [DisplayName("Refrigerator")]
         public bool? HasRefrigerator { get; set; }
 
+        public bool? IsApproved { get; set; }
+
         public Request ToSearchRequest()
         {
             var request = new Request
@@ -243,7 +247,8 @@ namespace BraAuto.ViewModels
                 IsRetro = this.IsRetro,
                 HasTow = this.HasTow,
                 HasMoreSeats = this.HasMoreSeats,
-                HasRefrigerator = this.HasRefrigerator
+                HasRefrigerator = this.HasRefrigerator,
+                IsApproved = this.IsApproved
             };
 
             this.SetSearchRequest(request);
@@ -273,187 +278,242 @@ namespace BraAuto.ViewModels
 
     public class CarBaseModel
     {
+        [Required]
         [DisplayName("Vehicle Type")]
-        public uint? VehicleTypeId { get; set; }
-        public VehicleType VehicleType { get; set; }
+        public uint VehicleTypeId { get; set; }
+        public IEnumerable<VehicleType> VehicleTypes { get; set; }
 
+        [Required]
         [DisplayName("Body Type")]
         public uint BodyTypeId { get; set; }
+        public IEnumerable<BodyType> BodyTypes { get; set; }
 
+        [Required]
         [DisplayName("Make")]
         public uint? MakeId { get; set; }
         public IEnumerable<Make> Makes { get; set; }
 
+        [Required]
         [DisplayName("Model")]
-        public IEnumerable<uint> ModelIds { get; set; }
+        public uint ModelId { get; set; }
 
+        [DisplayName("Variant")]
+        public string Variant { get; set; }
+
+        [Required]
         [DisplayName("Condition")]
-        public IEnumerable<uint> ConditionIds { get; set; }
+        public uint ConditionId { get; set; }
+        public IEnumerable<Condition> Conditions { get; set; }
 
-        [DisplayName("Year")]
-        public uint? YearFromId { get; set; }
-
-        [DisplayName("To")]
-        public uint? YearToId { get; set; }
-        public IEnumerable<Year> Years { get; set; }
+        [Required]
+        [DisplayName("Production Date")]
+        public DateTime ProductionDate { get; set; }
 
         [DisplayName("Color")]
-        public IEnumerable<uint> ColorIds { get; set; }
+        public uint ColorId { get; set; }
+        public IEnumerable<Color> Colors { get; set; }
 
+        [Required]
         [DisplayName("Fuel")]
-        public IEnumerable<uint> FuelTypeIds { get; set; }
+        public uint FuelTypeId { get; set; }
+        public IEnumerable<FuelType> FuelTypes { get; set; }
 
+        [Required]
         [DisplayName("Gearbox")]
-        public IEnumerable<uint> GearboxTypeIds { get; set; }
+        public uint GearboxTypeId { get; set; }
+        public IEnumerable<GearboxType> GearboxTypes { get; set; }
 
         [DisplayName("Horse Power")]
-        public uint? HorsePowerFrom { get; set; }
+        public uint? HorsePower { get; set; }
+
+        [DisplayName("CC")]
+        public uint? CC { get; set; }
 
         [DisplayName("Euro Standart")]
-        public IEnumerable<uint> EuroStandartIds { get; set; }
+        public uint EuroStandartId { get; set; }
+        public IEnumerable<EuroStandart> EuroStandarts { get; set; }
 
+        [Required]
         [DisplayName("Price")]
-        public uint? PriceFrom { get; set; }
+        public uint Price { get; set; }
 
-        public uint? PriceTo { get; set; }
-
+        [Required]
         [DisplayName("Location")]
-        public IEnumerable<uint> LocationIds { get; set; }
+        public uint LocationId { get; set; }
+        public IEnumerable<Location> Locations { get; set; }
+
+        [DisplayName("Specific Location")]
+        public string SpecificLocation { get; set; }
+
+        [DisplayName("Mileage")]
+        public uint Mileage { get; set; }
 
         [DisplayName("Door Number")]
-        public IEnumerable<uint> DoorNumberIds { get; set; }
+        public uint DoorNumberId { get; set; }
+        public IEnumerable<DoorNumber> DoorNumbers { get; set; }
 
-        [DisplayName("User")]
-        public IEnumerable<uint> UserIds { get; set; }
+        [DisplayName("Vin")]
+        public string Vin { get; set; }
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
 
         [DisplayName("Air Conditioning")]
-        public bool? HasAirConditioning { get; set; }
+        public bool HasAirConditioning { get; set; }
 
         [DisplayName("Climatronic")]
-        public bool? HasClimatronic { get; set; }
+        public bool HasClimatronic { get; set; }
 
         [DisplayName("Lether Interior")]
-        public bool? HasLetherInterior { get; set; }
+        public bool HasLetherInterior { get; set; }
 
         [DisplayName("Electric Windows")]
-        public bool? HasElectricWindows { get; set; }
+        public bool HasElectricWindows { get; set; }
 
         [DisplayName("Electric Mirrors")]
-        public bool? HasElectricMirrors { get; set; }
+        public bool HasElectricMirrors { get; set; }
 
         [DisplayName("Electric Seats")]
-        public bool? HasElectricSeats { get; set; }
+        public bool HasElectricSeats { get; set; }
 
         [DisplayName("Seat Heating")]
-        public bool? HasSeatHeating { get; set; }
+        public bool HasSeatHeating { get; set; }
 
         [DisplayName("Sunroof")]
-        public bool? HasSunroof { get; set; }
+        public bool HasSunroof { get; set; }
 
         [DisplayName("Stereo")]
-        public bool? HasStereo { get; set; }
+        public bool HasStereo { get; set; }
 
         [DisplayName("Alloy Wheels")]
-        public bool? HasAlloyWheels { get; set; }
+        public bool HasAlloyWheels { get; set; }
 
         [DisplayName("Dvd/Tv")]
-        public bool? HasDvdTv { get; set; }
+        public bool HasDvdTv { get; set; }
 
         [DisplayName("Multi Steering Wheel")]
-        public bool? HasMultiSteeringWheel { get; set; }
+        public bool HasMultiSteeringWheel { get; set; }
 
         [DisplayName("4WD")]
-        public bool? HasAllWheelDrive { get; set; }
+        public bool HasAllWheelDrive { get; set; }
 
         [DisplayName("ABS")]
-        public bool? HasAbs { get; set; }
+        public bool HasAbs { get; set; }
 
         [DisplayName("ESP")]
-        public bool? HasEsp { get; set; }
+        public bool HasEsp { get; set; }
 
         [DisplayName("AirBag")]
-        public bool? HasAirBag { get; set; }
+        public bool HasAirBag { get; set; }
 
         [DisplayName("Xenon Lights")]
-        public bool? HasXenonLights { get; set; }
+        public bool HasXenonLights { get; set; }
 
         [DisplayName("Halogen Lights")]
-        public bool? HasHalogenHeadlights { get; set; }
+        public bool HasHalogenHeadlights { get; set; }
 
         [DisplayName("Traction Control")]
-        public bool? HasTractionControl { get; set; }
+        public bool HasTractionControl { get; set; }
 
         [DisplayName("Parktronic")]
-        public bool? HasParktronic { get; set; }
+        public bool HasParktronic { get; set; }
 
         [DisplayName("Alarm")]
-        public bool? HasAlarm { get; set; }
+        public bool HasAlarm { get; set; }
 
         [DisplayName("Imobilizer")]
-        public bool? HasImmobilizer { get; set; }
+        public bool HasImmobilizer { get; set; }
 
         [DisplayName("Central Lock")]
-        public bool? HasCentralLock { get; set; }
+        public bool HasCentralLock { get; set; }
 
         [DisplayName("Insurance")]
-        public bool? HasInsurance { get; set; }
+        public bool HasInsurance { get; set; }
 
         [DisplayName("Armored")]
-        public bool? IsArmored { get; set; }
+        public bool IsArmored { get; set; }
 
         [DisplayName("Keyless")]
-        public bool? IsKeyless { get; set; }
+        public bool IsKeyless { get; set; }
 
-        [DisplayName("Tiptronic/Multitronic")]
-        public bool? IsTiptronicMultitronic { get; set; }
+        [DisplayName("Tiptronic/ Multitronic")]
+        public bool IsTiptronicMultitronic { get; set; }
 
         [DisplayName("Autopilot")]
-        public bool? HasAutopilot { get; set; }
+        public bool HasAutopilot { get; set; }
 
         [DisplayName("Power Steering")]
-        public bool? HasPowerSteering { get; set; }
+        public bool HasPowerSteering { get; set; }
 
         [DisplayName("Onboard Computer")]
-        public bool? HasOnboardComputer { get; set; }
+        public bool HasOnboardComputer { get; set; }
 
         [DisplayName("Service Book")]
-        public bool? HasServiceBook { get; set; }
+        public bool HasServiceBook { get; set; }
 
         [DisplayName("Warranty")]
-        public bool? HasWarranty { get; set; }
+        public bool HasWarranty { get; set; }
 
         [DisplayName("Navigation System")]
-        public bool? HasNavigationSystem { get; set; }
+        public bool HasNavigationSystem { get; set; }
 
         [DisplayName("Right Hand Drive")]
-        public bool? IsRightHandDrive { get; set; }
+        public bool IsRightHandDrive { get; set; }
 
         [DisplayName("Tuning")]
-        public bool? HasTuning { get; set; }
+        public bool HasTuning { get; set; }
 
         [DisplayName("Panoramic Roof")]
-        public bool? HasPanoramicRoof { get; set; }
+        public bool HasPanoramicRoof { get; set; }
 
         [DisplayName("Taxi")]
-        public bool? IsTaxi { get; set; }
+        public bool IsTaxi { get; set; }
 
         [DisplayName("Retro")]
-        public bool? IsRetro { get; set; }
+        public bool IsRetro { get; set; }
 
         [DisplayName("Tow")]
-        public bool? HasTow { get; set; }
+        public bool HasTow { get; set; }
 
         [DisplayName("More Seats")]
-        public bool? HasMoreSeats { get; set; }
+        public bool HasMoreSeats { get; set; }
 
         [DisplayName("Refrigerator")]
-        public bool? HasRefrigerator { get; set; }
+        public bool HasRefrigerator { get; set; }
+    }
+
+    public class CarCreateModel : CarBaseModel 
+    {
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Create", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class CarEditModel : CarBaseModel
+    {
+        [Key]
+        [Required]
+        [HiddenInput]
+        public uint Id { get; set; }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("Edit", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
     }
 
     public class DetailsCarModel
     {
         [DisplayName("Description")]
         public string Description { get; set; }
+
+        [DisplayName("Vin")]
+        public string Vin { get; set; }
 
         [DisplayName("Vehicle Type")]
         public string VehicleType { get; set; }

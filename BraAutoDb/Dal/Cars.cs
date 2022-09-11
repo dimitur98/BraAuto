@@ -74,8 +74,8 @@ namespace BraAutoDb.Dal
                     if (request.HasRefrigerator.HasValue) { query.Where.Add(" AND c.has_refrigerator = @hasRefrigerator"); }
                     if (request.IsApproved.HasValue) { query.Where.Add(" AND c.is_approved = @isApproved"); }
                     if (request.IsAdvert.HasValue) { query.Where.Add(" AND c.is_advert = @isAdvert"); }
-
-                    if (request.IsActive != null) { query.Where.Add(" AND c.is_active = @isActive"); }
+                    
+                    //if (request.IsActive != null) { query.Where.Add(" AND c.is_active = @isActive"); }
                 },
                 () =>
                 {
@@ -315,6 +315,7 @@ namespace BraAutoDb.Dal
             var sql = @"INSERT INTO `car`
                         (
                             `description`,
+                            `vin`,
                             `vehicle_type_id`,
                             `condition_id`,
                             `model_id`,
@@ -381,6 +382,7 @@ namespace BraAutoDb.Dal
                             `edited_at`
                         )VALUES(
                             @description,
+                            @vin,
                             @vehicleTypeId,
                             @conditionId,
                             @modelId,
@@ -445,13 +447,14 @@ namespace BraAutoDb.Dal
                             NOW(),
                             @editorId,
                             NOW()
-                        )
+                        );
 
                         SELECT LAST_INSERT_ID() AS id;";
 
             var queryParams = new
             {
                 description = car.Description,
+                vin = car.Vin,
                 vehicleTypeId = car.VehicleTypeId,
                 conditionId = car.ConditionId,
                 modelId = car.ModelId,
@@ -512,8 +515,8 @@ namespace BraAutoDb.Dal
                 hasRefrigerator = car.HasRefrigerator,
                 isApproved = car.IsApproved,
                 isAdvert = car.IsAdvert,
-                creatorId = 0,
-                editorId = 0
+                creatorId = car.CreatorId,
+                editorId = car.EditorId
             };
 
             car.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
@@ -523,6 +526,7 @@ namespace BraAutoDb.Dal
         {
             var sql = @"UPDATE `car`
                             SET description = @description,
+                                vin = @vin,
                                 vehicle_type_id = @vehicleTypeId,
                                 condition_id = @conditionId,
                                 model_id = @modelId,
@@ -531,7 +535,7 @@ namespace BraAutoDb.Dal
                                 color_id = @colorId,
                                 fuel_type_id = @fuelTypeId,
                                 production_date = @productionDate,
-                                horse_power @horsePower,
+                                horse_power = @horsePower,
                                 cc = @cc,
                                 euro_standart_id = @euroStandartId,
                                 gearbox_type_id = @gearboxTypeId,
@@ -539,12 +543,12 @@ namespace BraAutoDb.Dal
                                 location_id = @locationId,
                                 specific_location = @specificLocation,
                                 mileage = @mileage,
-                                door_number_id = @doorNumber,
+                                door_number_id = @doorNumberId,
                                 has_air_conditioning = @hasAirConditioning,
                                 has_climatronic = @hasClimatronic,
-                                has_lether_interior = @hasLetherInterior`,
-                                has_electric_windows = @hasElectricWindow,
-                                has_electric_mirrors = @hasElectricMirors,
+                                has_lether_interior = @hasLetherInterior,
+                                has_electric_windows = @hasElectricWindows,
+                                has_electric_mirrors = @hasElectricMirrors,
                                 has_electric_seats = @hasElectricSeats,
                                 has_seat_heating = @hasSeatHeating,
                                 has_sunroof = @hasSunroof,
@@ -591,6 +595,7 @@ namespace BraAutoDb.Dal
             {
                 id = car.Id,
                 description = car.Description,
+                vin = car.Vin,
                 vehicleTypeId = car.VehicleTypeId,
                 conditionId = car.ConditionId,
                 modelId = car.ModelId,

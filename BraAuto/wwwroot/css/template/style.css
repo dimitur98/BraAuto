@@ -2140,7 +2140,7 @@ ol {
 	margin-bottom: 30px;
 }
 
-.car__details__tab__feature__item h5 {
+.car__details__tab__feature__item h5, .checkbox-list h5 {
 	color: #353535;
 	font-weight: 700;
 	margin-bottom: 6px;

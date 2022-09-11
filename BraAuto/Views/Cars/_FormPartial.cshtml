@@ -1,0 +1,427 @@
+﻿@model BraAuto.ViewModels.CarBaseModel
+@using BraAuto.ViewModels;
+
+@{
+    var isEdit = Model is CarEditModel;
+}
+
+<section class="contact spad">
+    <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="Cars" method="post">
+
+        @if (isEdit)
+        {
+            <input asp-for="@(((CarEditModel)Model).Id)" type="hidden" />
+        }
+
+        <div class="container">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__form">
+                        <div class="form-group">
+                            <label asp-for="VehicleTypeId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="VehicleTypeId" asp-items="@(new SelectList(Model.VehicleTypes.Select(vt => new { Fullname = vt.Name, Id = vt.Id}), "Id", "Fullname"))">
+                                <option value="">Select Vehicle Type</option>
+                            </select>
+                            <span asp-validation-for="VehicleTypeId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="BodyTypeId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="BodyTypeId" asp-items="@(new SelectList(Model.BodyTypes.Select(bt => new { Fullname = bt.Name, Id = bt.Id}), "Id", "Fullname"))">
+                                <option value="">Select Body Type</option>
+                            </select>
+                            <span asp-validation-for="BodyTypeId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MakeId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(m => new { Fullname = m.Name, Id = m.Id}), "Id", "Fullname"))">
+                                <option value="">Select Make</option>
+                            </select>
+                            <span asp-validation-for="MakeId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ModelId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="ModelId">
+                                <option value="">Select Make First</option>
+                            </select>
+                            <span asp-validation-for="ModelId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Variant" class="form-label"></label>
+                            <input asp-for="Variant" class="form-control" />
+                            <span asp-validation-for="Variant"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConditionId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="ConditionId" asp-items="@(new SelectList(Model.Conditions.Select(c => new { Fullname = c.Name, Id = c.Id}), "Id", "Fullname"))">
+                                <option value="">Select Condition</option>
+                            </select>
+                            <span asp-validation-for="ConditionId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductionDate" class="form-label"></label>
+                            <input type="date" asp-for="ProductionDate" class="form-control" />
+                            <span asp-validation-for="ProductionDate"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ColorId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="ColorId" asp-items="@(new SelectList(Model.Colors.Select(c => new { Fullname = c.Name, Id = c.Id}), "Id", "Fullname"))">
+                                <option value="">Select Color</option>
+                            </select>
+                            <span asp-validation-for="ColorId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FuelTypeId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="FuelTypeId" asp-items="@(new SelectList(Model.FuelTypes.Select(ft => new { Fullname = ft.Name, Id = ft.Id}), "Id", "Fullname"))">
+                                <option value="">Select Fuel Type</option>
+                            </select>
+                            <span asp-validation-for="FuelTypeId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GearboxTypeId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="GearboxTypeId" asp-items="@(new SelectList(Model.GearboxTypes.Select(gt => new { Fullname = gt.Name, Id = gt.Id}), "Id", "Fullname"))">
+                                <option value="">Select Gearbox Type</option>
+                            </select>
+                            <span asp-validation-for="GearboxTypeId"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__form">
+                        <div class="form-group">
+                            <label asp-for="HorsePower" class="form-label"></label>
+                            <input asp-for="HorsePower" class="form-control" min="0" />
+                            <span asp-validation-for="HorsePower"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CC" class="form-label"></label>
+                            <input asp-for="CC" class="form-control" min="0" />
+                            <span asp-validation-for="CC"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EuroStandartId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="EuroStandartId" asp-items="@(new SelectList(Model.EuroStandarts.Select(es => new { Fullname = es.Name, Id = es.Id}), "Id", "Fullname"))">
+                                <option value="">Select Euro Standart</option>
+                            </select>
+                            <span asp-validation-for="EuroStandartId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Price" class="form-label"></label>
+                            <input asp-for="Price" class="form-control" min="0" />
+                            <span asp-validation-for="Price"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LocationId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="LocationId" asp-items="@(new SelectList(Model.Locations.Select(l => new { Fullname = l.Name, Id = l.Id}), "Id", "Fullname"))">
+                                <option value="">Select Location</option>
+                            </select>
+                            <span asp-validation-for="LocationId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SpecificLocation" class="form-label"></label>
+                            <input asp-for="SpecificLocation" class="form-control" />
+                            <span asp-validation-for="SpecificLocation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Mileage" class="form-label"></label>
+                            <input asp-for="Mileage" class="form-control" min="0" />
+                            <span asp-validation-for="Mileage"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DoorNumberId" class="form-label"></label>
+                            <select class="form-select filter" asp-for="DoorNumberId" asp-items="@(new SelectList(Model.DoorNumbers.Select(l => new { Fullname = l.Name, Id = l.Id}), "Id", "Fullname"))">
+                                <option value="">Select Door Number</option>
+                            </select>
+                            <span asp-validation-for="DoorNumberId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Vin" class="form-label"></label>
+                            <input asp-for="Vin" class="form-control" />
+                            <span asp-validation-for="Vin"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" cols="5"></textarea>
+                        <span asp-validation-for="Description"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 checkbox-list">
+                            <h5>Safty</h5>
+                            <div class="form-check">
+                                <label asp-for="HasAbs" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAbs" class="form-check-input" />
+                                <span asp-validation-for="HasAbs"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasEsp" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasEsp" class="form-check-input" />
+                                <span asp-validation-for="HasEsp"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasAirBag" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAirBag" class="form-check-input" />
+                                <span asp-validation-for="HasAirBag"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasTractionControl" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasTractionControl" class="form-check-input" />
+                                <span asp-validation-for="HasTractionControl"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasParktronic" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasParktronic" class="form-check-input" />
+                                <span asp-validation-for="HasParktronic"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasCentralLock" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasCentralLock" class="form-check-input" />
+                                <span asp-validation-for="HasCentralLock"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 checkbox-list">
+                            <h5>Interior</h5>
+                            <div class="form-check">
+                                <label asp-for="HasLetherInterior" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasLetherInterior" class="form-check-input" />
+                                <span asp-validation-for="HasLetherInterior"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsRightHandDrive" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsRightHandDrive" class="form-check-input" />
+                                <span asp-validation-for="IsRightHandDrive"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasMoreSeats" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasMoreSeats" class="form-check-input" />
+                                <span asp-validation-for="HasMoreSeats"></span>
+                            </div>
+                            <h5 class="mt-3">Exterior</h5>
+                            <div class="form-check">
+                                <label asp-for="HasSunroof" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasSunroof" class="form-check-input" />
+                                <span asp-validation-for="HasSunroof"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasAlloyWheels" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAlloyWheels" class="form-check-input" />
+                                <span asp-validation-for="HasAlloyWheels"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasXenonLights" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasXenonLights" class="form-check-input" />
+                                <span asp-validation-for="HasXenonLights"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasHalogenHeadlights" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasHalogenHeadlights" class="form-check-input" />
+                                <span asp-validation-for="HasHalogenHeadlights"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasPanoramicRoof" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasPanoramicRoof" class="form-check-input" />
+                                <span asp-validation-for="HasPanoramicRoof"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasTow" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasTow" class="form-check-input" />
+                                <span asp-validation-for="HasTow"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 checkbox-list">
+                            <h5>Comfort</h5>
+                            <div class="form-check">
+                                <label asp-for="HasAirConditioning" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAirConditioning" class="form-check-input" />
+                                <span asp-validation-for="HasAirConditioning"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasClimatronic" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasClimatronic" class="form-check-input" />
+                                <span asp-validation-for="HasClimatronic"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasElectricWindows" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasElectricWindows" class="form-check-input" />
+                                <span asp-validation-for="HasElectricWindows"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasElectricMirrors" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasElectricMirrors" class="form-check-input" />
+                                <span asp-validation-for="HasElectricMirrors"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasElectricSeats" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasElectricSeats" class="form-check-input" />
+                                <span asp-validation-for="HasElectricSeats"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasSeatHeating" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasSeatHeating" class="form-check-input" />
+                                <span asp-validation-for="HasSeatHeating"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasStereo" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasStereo" class="form-check-input" />
+                                <span asp-validation-for="HasStereo"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasDvdTv" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasDvdTv" class="form-check-input" />
+                                <span asp-validation-for="HasDvdTv"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasMultiSteeringWheel" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasMultiSteeringWheel" class="form-check-input" />
+                                <span asp-validation-for="HasMultiSteeringWheel"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsKeyless" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsKeyless" class="form-check-input" />
+                                <span asp-validation-for="IsKeyless"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsTiptronicMultitronic" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsTiptronicMultitronic" class="form-check-input" />
+                                <span asp-validation-for="IsTiptronicMultitronic"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasAutopilot" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAutopilot" class="form-check-input" />
+                                <span asp-validation-for="HasAutopilot"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasPowerSteering" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasPowerSteering" class="form-check-input" />
+                                <span asp-validation-for="HasPowerSteering"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasOnboardComputer" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasOnboardComputer" class="form-check-input" />
+                                <span asp-validation-for="HasOnboardComputer"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasNavigationSystem" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasNavigationSystem" class="form-check-input" />
+                                <span asp-validation-for="HasNavigationSystem"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasRefrigerator" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasRefrigerator" class="form-check-input" />
+                                <span asp-validation-for="HasRefrigerator"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 checkbox-list">
+                            <h5>Protection</h5>
+                            <div class="form-check">
+                                <label asp-for="HasImmobilizer" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasImmobilizer" class="form-check-input" />
+                                <span asp-validation-for="HasImmobilizer"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasAlarm" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAlarm" class="form-check-input" />
+                                <span asp-validation-for="HasAlarm"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsArmored" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsArmored" class="form-check-input" />
+                                <span asp-validation-for="IsArmored"></span>
+                            </div>
+                            <h5 class="mt-3">Other</h5>
+                            <div class="form-check">
+                                <label asp-for="HasAllWheelDrive" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasAllWheelDrive" class="form-check-input" />
+                                <span asp-validation-for="HasAllWheelDrive"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasInsurance" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasInsurance" class="form-check-input" />
+                                <span asp-validation-for="HasInsurance"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasServiceBook" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasServiceBook" class="form-check-input" />
+                                <span asp-validation-for="HasServiceBook"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasWarranty" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasWarranty" class="form-check-input" />
+                                <span asp-validation-for="HasWarranty"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="HasTuning" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="HasTuning" class="form-check-input" />
+                                <span asp-validation-for="HasTuning"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsTaxi" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsTaxi" class="form-check-input" />
+                                <span asp-validation-for="IsTaxi"></span>
+                            </div>
+                            <div class="form-check">
+                                <label asp-for="IsRetro" class="form-check-label"></label>
+                                <input type="checkbox" asp-for="IsRetro" class="form-check-input" />
+                                <span asp-validation-for="IsRetro"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="site-btn">@(isEdit ? "Edit" : "Create")</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script>
+    $(document).ready(function () {
+        var id = $("#MakeId").val();
+
+        if (id != "") { 
+            loadModels(id, function(){
+                $("#ModelId").val(@Model.ModelId);
+            }); 
+        }
+
+        $("#MakeId").on("change", function () {
+
+            if (id == "") {
+                loadModels(id);
+
+                return;
+            }
+        })
+    });
+
+    function loadModels(id, callback) {
+        var $modelList = $("#ModelId");
+
+        $modelList.empty();
+        $modelList.append(new Option("Select Make First", ""));
+
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("GetByMakeId", "ModelsApi"))),
+            type: 'GET',
+            data: { makeId: id },
+            success: function (response, status, xhr) {
+                {
+                    if (response && response.length > 0) {
+
+                        $modelList.empty();
+                        $modelList.append(new Option("Select Model", ""));
+
+                        response.forEach(function (r) {
+                            $modelList.append(new Option(r.name, r.id));
+                        });
+
+                        if(callback != undefined) { callback(); }
+                    }
+                }
+            }
+        });
+    }
+</script>

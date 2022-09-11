@@ -33,7 +33,7 @@ namespace BraAutoDb.Dal
             var query = new Query()
             {
                 Select = new List<string>() { "*" },
-                From = _table,
+                From = $"`{_table}`",
                 Where = new List<string> { $"`{_idField}` IN @ids" },
                 Limit = new Limit(offset, size)
             };
@@ -46,11 +46,11 @@ namespace BraAutoDb.Dal
             var query = new Query()
             {
                 Select = new List<string>() { "*" },
-                From = _table,
+                From = $"`{_table}`",
                 Limit = new Limit(offset, size),
                 OrderBys = new List<OrderBy> { new OrderBy(_sortField, descending: _sortDesc) }
             };
-
+            var a = query.ToString();
             return Db.Mapper.Query<T>(query.ToString()).ToList();
         }
 
@@ -89,7 +89,7 @@ namespace BraAutoDb.Dal
             var query = new Query();
 
             query.Select = new List<string>() { "*" };
-            query.From = $"{_table} {tableAlias}";
+            query.From = $"`{_table}` {tableAlias}";
             query.Joins = new List<string>();
             query.Where = new List<string>() { "1 = 1" };
             query.OrderBys = new List<OrderBy>() { new OrderBy(request.SortColumn, request.SortDesc) };

@@ -2,6 +2,7 @@
 
 @{
     var loggedUser = (User)ViewBag.LoggedUser;
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
 }
 
 <div class="offcanvas-menu-overlay"></div>
@@ -69,16 +70,16 @@
                 <div class="header__nav">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a asp-action="Home" asp-controller="Cars">Home</a></li>
-                            <li><a asp-action="Search" asp-controller="Cars">Cars</a></li>
-                            <li><a href="./blog.html">Blog</a></li>
+                            <li class="@(actionName == "Home" ? "active" : "")"><a asp-action="Home" asp-controller="Cars">Home</a></li>
+                            <li class="@(actionName == "Search" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
+                            <li class="@(actionName == "Blog" ? "active" : "")"><a asp-action="Search" asp-controller="Blogs">Blog</a></li>
                             @if(loggedUser == null)
                             {
                                 <li><a asp-action="Login" asp-controller="Users">Login</a></li>
                                 <li><a asp-action="Register" asp-controller="Users">Register</a></li>
                             }else
                             {
-                                <li><a asp-action="My" asp-controller="Cars">Hello "@loggedUser.Username"</a></li>
+                                <li class="@(actionName == "My" ? "active" : "")"><a asp-action="My" asp-controller="Cars">Hello "@loggedUser.Username"</a></li>
                             }
                         </ul>
                     </nav>
@@ -88,7 +89,7 @@
                             <div class="header__nav__widget__btn">
                                 <a href="#"><i class="fa fa-cart-plus"></i></a>
                             </div>
-                            <a href="#" class="primary-btn">Add Car</a>
+                            <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
                         }
                     </div>
                 </div>

@@ -1,4 +1,5 @@
-﻿using DapperMySqlMapper;
+﻿using BraAutoDb.Dal;
+using DapperMySqlMapper;
 
 namespace BraAutoDb.Models
 {
@@ -17,5 +18,10 @@ namespace BraAutoDb.Models
 
         [Column(Name = "edited_at")]
         public DateTime EditedAt { get; set; }
+
+        public void LoadCreator()
+        {
+            this.Creator = Db.Users.GetById(this.CreatorId);
+        }
     }
 }

@@ -54,6 +54,10 @@ namespace BraAutoDb.Dal
             return Db.Mapper.Query<T>(query.ToString()).ToList();
         }
 
+        public void Delete(uint id) => Delete(new uint[] { id });
+
+        public void Delete(IEnumerable<uint> ids) => DeleteByField(ids, _idField);
+
         protected List<T> GetByFieldValues<TFieldType>(string field, IEnumerable<TFieldType> values)
         {
             string sql = $@"
@@ -64,10 +68,6 @@ namespace BraAutoDb.Dal
 
             return Db.Mapper.Query<T>(sql, param: new { values }).ToList();
         }
-
-        protected void Delete(uint id) => Delete(new uint[] { id });
-
-        protected void Delete(IEnumerable<uint> ids) => DeleteByField(ids, _idField);
 
         protected void DeleteByField(IEnumerable<uint> ids, string field)
         {

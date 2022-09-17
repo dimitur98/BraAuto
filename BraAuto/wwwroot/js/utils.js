@@ -84,7 +84,7 @@ braAuto.submitJson = function (options) {
 };
 
 braAuto.confirmDialog = function (title, message, callback) {
-
+    console.log(1)
     var $modal = $('<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" >\
                         <div class="modal-dialog" role="document" > \
                             <div class="modal-content"> \
@@ -97,7 +97,7 @@ braAuto.confirmDialog = function (title, message, callback) {
                                 <div class="modal-body"></div> \
                                 \
                                 <div class="modal-footer"> \
-                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Ok</button> \
+                                    <button type="button" class="btn btn-ok btn-info" data-bs-dismiss="modal">Ok</button> \
                                     <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button> \
                                 </div> \
                             </div> \
@@ -131,8 +131,9 @@ $(document).ready(function () {
         var title = $this.data('dialog-title');
         var message = $this.data('dialog-message');
         var url = $this.attr('href');
-
+        console.log(url)
         braAuto.confirmDialog(title, message, function () {
+            console.log("in")
             window.location.href = url;
         });
 

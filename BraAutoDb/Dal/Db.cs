@@ -19,6 +19,7 @@ namespace BraAutoDb.Dal
         public static CarInCarServices CarInCarServices = new CarInCarServices();
         public static Cars Cars = new Cars();
         public static CarServices CarServices = new CarServices();
+        public static Categories Categories = new Categories();
         public static Colors Colors = new Colors();
         public static Conditions Conditions = new Conditions();
         public static DoorNumbers DoorNumbers = new DoorNumbers();

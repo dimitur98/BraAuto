@@ -70,6 +70,28 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Article with same title already exists..
+        /// </summary>
+        internal static string ArticleTitleExists
+        {
+            get
+            {
+                return ResourceManager.GetString("ArticleTitleExists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ShowAlert.
+        /// </summary>
+        internal static string AlertKey
+        {
+            get
+            {
+                return ResourceManager.GetString("AlertKey", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, it seems that an error occurred..
         /// </summary>
         internal static string GeneralError
@@ -102,6 +124,17 @@ namespace BraAuto.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully deleted.
+        /// </summary>
+        internal static string ItemDeleted
+        {
+            get
+            {
+                return ResourceManager.GetString("ItemDeleted", resourceCulture);
+
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to BraAuto..
         /// </summary>

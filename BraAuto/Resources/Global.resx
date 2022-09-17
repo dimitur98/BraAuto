@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertKey" xml:space="preserve">
+    <value>ShowAlert</value>
+  </data>
+  <data name="ArticleTitleExist" xml:space="preserve">
+    <value>Article with same title already exists</value>
+  </data>
   <data name="GeneralError" xml:space="preserve">
     <value>Sorry, it seems that an error occurred</value>
   </data>
@@ -125,6 +131,9 @@
   </data>
   <data name="IncorrectPassword" xml:space="preserve">
     <value>Provided password is incorrect</value>
+  </data>
+  <data name="ItemDeleted" xml:space="preserve">
+    <value>Successfully deleted.</value>
   </data>
   <data name="WebsiteTitle" xml:space="preserve">
     <value>BraAuto</value>

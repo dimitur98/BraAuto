@@ -82,7 +82,7 @@ a:hover {
     display: none;
 }
 
-.my-car-settings-thead {
+.my-page-thead {
     background: #f7f7f7;
 }
 
@@ -114,4 +114,9 @@ td .fa-check-circle{
 
 td .fa-circle {
     color: red;
+}
+
+.form-control[readonly].flatpickr-input
+{
+    background-color: white;
 }

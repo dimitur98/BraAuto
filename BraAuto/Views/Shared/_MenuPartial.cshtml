@@ -72,7 +72,7 @@
                         <ul>
                             <li class="@(actionName == "Home" ? "active" : "")"><a asp-action="Home" asp-controller="Cars">Home</a></li>
                             <li class="@(actionName == "Search" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
-                            <li class="@(actionName == "Blog" ? "active" : "")"><a asp-action="Search" asp-controller="Blogs">Blog</a></li>
+                            <li class="@(actionName == "Search" ? "active" : "")"><a asp-action="Search" asp-controller="Articles">Blog</a></li>
                             @if(loggedUser == null)
                             {
                                 <li><a asp-action="Login" asp-controller="Users">Login</a></li>
@@ -90,6 +90,10 @@
                                 <a href="#"><i class="fa fa-cart-plus"></i></a>
                             </div>
                             <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
+                            @if(loggedUser.IsAdmin() || loggedUser.IsBlogger())
+                            {
+                                <a asp-action="Create" asp-controller="Articles" class="primary-btn">Add Article</a>
+                            }
                         }
                     </div>
                 </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 using System.Drawing;
+using BraAuto.ViewModels.Helpers;
 
 namespace BraAuto.Controllers
 {
@@ -53,6 +54,8 @@ namespace BraAuto.Controllers
             var model = new CarCreateModel();
 
             this.LoadCarModel(model);
+
+            model.ProductionDate = new DateTime(2000, 1,1);
 
             return this.View(model);
         }
@@ -319,6 +322,29 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        public IActionResult Delete(uint id)
+        {
+            try
+            {
+                var car = Db.Cars.GetById(id);
+
+                if (car == null) { return this.NotFound(); }
+
+                if (!this.LoggedUser.IsAdmin() || this.LoggedUser.Id != car.CreatorId) { return this.RedirectToHttpForbidden(); }
+
+                Db.Cars.Delete(id);
+
+                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info);
+            }
+            catch (Exception ex)
+            {
+                ex.SaveToLog();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
+            }
+
+            return this.RedirectToAction(nameof(My));
+        }
+
         [AllowAnonymous]
         public IActionResult Details(uint id)
         {
@@ -326,9 +352,10 @@ namespace BraAuto.Controllers
 
             if (car == null) { return this.NotFound(); }
 
-            var owner = Db.Users.GetById(car.CreatorId);
             var carModel = Db.Models.GetById(car.ModelId);
+
             carModel.LoadMake();
+            car.LoadCreator();
 
             var model = new DetailsCarModel
             {
@@ -351,8 +378,8 @@ namespace BraAuto.Controllers
                 SpecificLocation = car.SpecificLocation,
                 Mileage = car.Mileage.ToString(),
                 DoorNumber = Db.DoorNumbers.GetById(car.DoorNumberId).Name,
-                OwnerName = owner.Name,
-                Mobile = owner.Mobile,
+                OwnerName = car.Creator.Name,
+                Mobile = car.Creator.Mobile,
                 HasAirConditioning = car.HasAirConditioning,
                 HasClimatronic = car.HasClimatronic,
                 HasLetherInterior = car.HasLetherInterior,

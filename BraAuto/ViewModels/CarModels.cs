@@ -268,7 +268,7 @@ namespace BraAuto.ViewModels
 
     public class MyCarModel : CarSearchModel 
     {
-        public Breadcrumb ToBreadcrumb()
+        public new Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars") };
 

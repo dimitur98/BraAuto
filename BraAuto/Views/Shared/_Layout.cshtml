@@ -144,8 +144,8 @@
     <script src="~/lib/popper-2.10.2/popper.min.js"></script>
     <script src="~/lib/bootstrap-5.1.3-dist/js/bootstrap.js"></script>
     @*<script src="~/js/template/jquery.nice-select.min.js"></script>*@
-    <script src="~/js/template/jquery-ui.min.js"></script>
     <script src="~/js/template/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/template/jquery-ui.min.js"></script>
     <script src="~/js/template/mixitup.min.js"></script>
     <script src="~/js/template/jquery.slicknav.js"></script>
     <script src="~/js/template/owl.carousel.min.js"></script>
@@ -156,6 +156,23 @@
         <script src="~/js/lazy-multiselect/lazy-multiselect.js"></script>
         <link rel="stylesheet" href="~/js/lazy-multiselect/lazy-multiselect.css" type="text/css" />
     }
+
+    @if (ViewBag.RegisterFlatPickr == true || ViewBag.RegisterFlatpickrMonthSelect == true)
+    {
+        <link href="~/lib/flatpickr-4.6.13/flatpickr.min.css" rel="stylesheet" />
+        <script src="~/lib/flatpickr-4.6.13/flatpickr.min.js"></script>
+    }
+
+    @if (ViewBag.RegisterFlatpickrMonthSelect == true)
+    {
+        <link href="~/lib/flatpickr-4.6.13/plugins/monthSelect/style.css" rel="stylesheet" />
+        <script src="~/lib/flatpickr-4.6.13/plugins/monthSelect/index.js"></script>
+    }
+    @*@if (ViewBag.RegisterJQueryUi == true)
+    {
+        <link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+        <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    }*@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

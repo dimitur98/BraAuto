@@ -7,6 +7,8 @@ namespace BraAuto.Helpers.Extensions
     {
         public static bool IsAdmin(this User user) => user.IsInRole("administrator");
 
+        public static bool IsBlogger(this User user) => user.IsInRole("blogger");
+
         public static bool IsInRole(this User user, string role)
         {
             var principal = new HttpContextAccessor()?.HttpContext?.User;

@@ -20,7 +20,7 @@
             <div class="row">
                 @if (!isRegisterPage)
                 {
-                    <partial name="~/Views/Cars/_MyCarsSettingsPartial.cshtml" />
+                    <partial name="_UserSettingsPartial" />
                 }
                 @*<div class="@(!isRegisterPage ? "col-lg-1 col-md-1" : "" )"></div>*@
                 <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Birthday" class="form-label"></label>
-                            <input type="date" asp-for="Birthday" class="form-control" />
+                            <flatpickr asp-for="Birthday" class="form-control" />
                             <span asp-validation-for="Birthday"></span>
                         </div>
                         <div class="form-group">
@@ -118,7 +118,7 @@
         </div>
     </form>
 </section>
-@*TODO fix classes for edit and register pages *@
+
 <script>
     $(document).ready(function () {
         var $serviseFields = $(".service-field");
@@ -140,4 +140,5 @@
             }
         });
     });
+
 </script>

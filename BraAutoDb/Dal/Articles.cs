@@ -1,4 +1,5 @@
 ﻿using BraAutoDb.Models;
+using BraAutoDb.Models.ArticlesSearch;
 
 namespace BraAutoDb.Dal
 {
@@ -6,12 +7,42 @@ namespace BraAutoDb.Dal
     {
         public Articles() : base("article", "id", "created_at", sortDesc: true) { }
 
+        public Response Search(Request request)
+        {
+            return this.Search<Response>(request,
+                (query) =>
+                {
+                    if (!string.IsNullOrEmpty(request.Keywords)) { query.Where.Add("AND (a.title LIKE @keywords)"); }
+                    if (request.CategoryId != null) { query.Where.Add(" AND a.category_id = @categoryId"); }
+                },
+                () =>
+                {
+                    return new
+                    {
+                        keywords = string.Format("%{0}%", request.Keywords),
+                        categoryId = request.CategoryId
+                    };
+                },
+                "a");
+        }
+
+        public Article GetByTitle(string title)
+        {
+            var sql = @"
+                SELECT *
+                FROM article
+                WHERE title LIKE @title";
+
+            return Db.Mapper.Query<Article>(sql, new { title = string.Format("%{0}%", title)}).FirstOrDefault();
+        }
+
         public void Insert(Article article)
         {
             var sql = @"INSERT INTO `article`
                         (
                             `title`,
                             `body`,
+                            `category_id`,
                             `creator_id`,
                             `created_at`,
                             `editor_id`,
@@ -19,11 +50,12 @@ namespace BraAutoDb.Dal
                         )VALUES(
                             @title,
                             @body,
+                            @categoryId,
                             @creatorId,
                             NOW(),
                             @editorId,
                             NOW()
-                        )
+                        );
 
                         SELECT LAST_INSERT_ID() AS id;";
 
@@ -31,8 +63,9 @@ namespace BraAutoDb.Dal
             {
                 title = article.Title,
                 body = article.Body,
-                creatorId = 0,
-                editorId = 0
+                categoryId = article.CategoryId,
+                creatorId = article.CreatorId,
+                editorId = article.EditorId
             };
 
             article.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
@@ -43,6 +76,7 @@ namespace BraAutoDb.Dal
             var sql = @"UPDATE `article`
                             SET title = @title,
                                 body = @body,
+                                category_id = @categoryId,
                                 editor_id = @editorId,
                                 edited_at = NOW()
                         WHERE id = @id";
@@ -51,12 +85,16 @@ namespace BraAutoDb.Dal
                 id = article.Id,
                 title = article.Title,
                 body = article.Body,
-                editorId = 0
+                categoryId = article.CategoryId,
+                editorId = article.EditorId
             };
 
             Db.Mapper.Execute(sql, queryParams);
         }
 
-        public void Delete(uint id) => this.Delete(id);
+        public void LoadCreators(IEnumerable<Article> articles)
+        {
+            Db.LoadEntities(articles, a => a.CreatorId, creatorIds => Db.Users.GetByIds(creatorIds), (article, creators) => article.Creator = creators.FirstOrDefault(c => c.Id == article.CreatorId));
+        }
     }
 }

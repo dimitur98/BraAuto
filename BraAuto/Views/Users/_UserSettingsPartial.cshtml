@@ -3,6 +3,7 @@
 @{
     var loggedUser = (User)ViewBag.LoggedUser;
     var actionName = ViewContext.RouteData.Values["action"].ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 <div class="col-lg-3">
@@ -11,8 +12,14 @@
             <span>Settings</span>
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link @(actionName == "My" ? "active" : "")" data-toggle="tab" asp-action="My" asp-controller="Cars"  role="tab">My Cars</a>
+                    <a class="nav-link @(actionName == "My" && controllerName == "Cars" ? "active" : "")" data-toggle="tab" asp-action="My" asp-controller="Cars"  role="tab">My Cars</a>
                 </li>
+                @if (loggedUser.IsBlogger() || loggedUser.IsAdmin())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(actionName == "My" && controllerName == "Articles" ? "active" : "")" data-toggle="tab" asp-action="My" asp-controller="Articles" role="tab">My Articles</a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a class="nav-link @(actionName == "Edit" ? "active" : "")" data-toggle="tab" asp-action="Edit" asp-controller="Users" asp-route-userId="@loggedUser.Id" role="tab">Edit profile</a>
                 </li>

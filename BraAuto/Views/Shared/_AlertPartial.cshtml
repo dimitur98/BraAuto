@@ -1,0 +1,16 @@
+﻿@using BraAuto.ViewModels.Helpers;
+@using BraAuto.Resources;
+
+@{
+    var alert = TempData[Global.AlertKey] as Alert;
+}
+
+@if (alert != null)
+{
+    @if (alert.Type == AlertTypes.Info)
+    {
+        <div class="alert alert-info" role="alert">
+            @alert.Text
+        </div>
+    }
+}

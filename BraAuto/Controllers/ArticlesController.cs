@@ -21,9 +21,19 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "administrator")]
+        public IActionResult Admin(ArticleAdminModel model)
+        {
+            this.ExecuteSearch(model);
+
+            Db.Articles.LoadCreators(model.Response.Records);
+
+            return this.View(model);
+        }
         public IActionResult Search(ArticleSearchModel model)
         {
             model.Categories = Db.Categories.GetAll();
+            model.IsApproved = true;
 
             this.ExecuteSearch(model);
 
@@ -177,9 +187,9 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        protected void ExecuteSearch(ArticleSearchModel model)
+        protected void ExecuteSearch(ArticleSearchBaseModel model)
         {
-            model.SetDefaultSort("c.created_at", sortDesc: true);
+            model.SetDefaultSort("a.created_at", sortDesc: true);
 
             var request = model.ToSearchRequest();
 

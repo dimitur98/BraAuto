@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BraAuto.ViewModels
 {
-    public class CarSearchModel : BaseSearchModel<Response, Car>
+    public abstract class CarSearchBaseModel : BaseSearchModel<Response, Car>
     {
         [DisplayName("Vehicle Type")]
         public uint? VehicleTypeId { get; set; }
@@ -255,7 +255,10 @@ namespace BraAuto.ViewModels
 
             return request;
         }
+    }
 
+    public class CarSearchModel : CarSearchBaseModel
+    {
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Cars") };
@@ -263,14 +266,23 @@ namespace BraAuto.ViewModels
             return new Breadcrumb(paths);
         }
     }
+    public class HomeCarSearchModel : CarSearchBaseModel { }
 
-    public class HomeCarSearchModel : CarSearchModel { }
-
-    public class MyCarModel : CarSearchModel 
+    public class MyCarModel : CarSearchBaseModel
     {
-        public new Breadcrumb ToBreadcrumb()
+        public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class CarAdminModel : CarSearchBaseModel
+    {
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Admin", "Cars") };
 
             return new Breadcrumb(paths);
         }
@@ -482,7 +494,7 @@ namespace BraAuto.ViewModels
         public bool HasRefrigerator { get; set; }
     }
 
-    public class CarCreateModel : CarBaseModel 
+    public class CarCreateModel : CarBaseModel
     {
         public Breadcrumb ToBreadcrumb()
         {

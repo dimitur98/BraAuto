@@ -4,7 +4,7 @@ using DapperMySqlMapper;
 namespace BraAutoDb.Models
 {
     [Table(Name = "user")]
-    public class User : BaseModel<uint>
+    public class User : AuditInfo<uint>
     {
         [Column(Name = "username")]
         public string Username { get; set; }
@@ -35,15 +35,6 @@ namespace BraAutoDb.Models
 
         [Column(Name = "user_type_id")]
         public uint UserTypeId { get; set; }
-
-        [Column(Name = "created_at")]
-        public DateTime CreatedAt { get; set; }
-
-        [Column(Name = "editor_id")]
-        public uint EditorId { get; set; }
-
-        [Column(Name = "edited_at")]
-        public DateTime EditedAt { get; set; }
 
         public virtual IEnumerable<UserInRole> Roles { get; set; }
 

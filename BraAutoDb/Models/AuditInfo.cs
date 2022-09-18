@@ -13,7 +13,7 @@ namespace BraAutoDb.Models
         public DateTime CreatedAt { get; set; }
 
         [Column(Name = "editor_id")]
-        public uint? EditorId { get; set; }
+        public uint EditorId { get; set; }
         public User Editor { get; set; }
 
         [Column(Name = "edited_at")]

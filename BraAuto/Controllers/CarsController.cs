@@ -35,6 +35,16 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "administrator")]
+        public IActionResult Admin(CarAdminModel model)
+        {
+            this.ExecuteSearch(model);
+
+            Db.Cars.LoadCreators(model.Response.Records);
+
+            return this.View(model);
+        }
+
         [AllowAnonymous]
         public IActionResult Search(CarSearchModel model)
         {
@@ -426,7 +436,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        protected void ExecuteSearch(CarSearchModel model)
+        protected void ExecuteSearch(CarSearchBaseModel model)
         {
             model.SetDefaultSort("c.created_at", sortDesc: true);
 

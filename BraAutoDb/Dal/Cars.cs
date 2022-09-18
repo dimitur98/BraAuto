@@ -672,5 +672,10 @@ namespace BraAutoDb.Dal
         {
             Db.LoadEntities(cars, c => c.GearboxTypeId, gearboxTypeIds => Db.GearboxTypes.GetByIds(gearboxTypeIds), (car, gearboxTypes) => car.GearboxType = gearboxTypes.FirstOrDefault(gt => gt.Id == car.GearboxTypeId));
         }
+
+        public void LoadCreators(IEnumerable<Car> cars)
+        {
+            Db.LoadEntities(cars, c => c.CreatorId, creatorIds => Db.Users.GetByIds(creatorIds), (car, creators) => car.Creator = creators.FirstOrDefault(c => c.Id == car.CreatorId));
+        }
     }
 }

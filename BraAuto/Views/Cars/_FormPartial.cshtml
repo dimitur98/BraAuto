@@ -389,10 +389,10 @@
         }
 
         $("#MakeId").on("change", function () {
-            if (id == "") {
+             id = $(this).val();
+             console.log(id)
+            if (id != "") {
                 loadModels(id);
-
-                return;
             }
         })
     });

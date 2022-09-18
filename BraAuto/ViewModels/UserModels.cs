@@ -1,11 +1,33 @@
-﻿using BraAuto.ViewModels;
-using BraAutoDb.Models;
+﻿using BraAutoDb.Models;
+using BraAutoDb.Models.UsersSearch;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BraAuto.ViewModels
 {
+    public abstract class UserSearchBaseModel : BaseSearchModel<Response, User>
+    {
+        public Request ToSearchRequest()
+        {
+            var request = new Request();
+
+            this.SetSearchRequest(request);
+
+            return request;
+        }
+    }
+
+    public class UserAdminModel : UserSearchBaseModel
+    {
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Admin", "Users") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
     public class UserBaseModel
     {
         [Required]
@@ -30,6 +52,7 @@ namespace BraAuto.ViewModels
 
         public IEnumerable<UserType>? UserTypes { get; set; }
     }
+
 
     public class UserRegisterModel : UserBaseModel
     {

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BraAuto.ViewModels
 {
-    public class ArticleSearchModel : BaseSearchModel<Response, Article>
+    public abstract class ArticleSearchBaseModel : BaseSearchModel<Response, Article>
     {
         public string Keywords { get; set; }
 
@@ -14,17 +14,25 @@ namespace BraAuto.ViewModels
 
         public IEnumerable<Category> Categories { get; set; }
 
+        public bool? IsApproved { get; set; }
+
         public Request ToSearchRequest()
         {
             var request = new Request
             {
                 Keywords = this.Keywords,
-                CategoryId = this.CategoryId
+                CategoryId = this.CategoryId,
+                IsApproved = this.IsApproved
             };
+
+            this.SetSearchRequest(request);
 
             return request;
         }
+    }
 
+    public class ArticleSearchModel : ArticleSearchBaseModel
+    {
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Articles") };
@@ -33,7 +41,7 @@ namespace BraAuto.ViewModels
         }
     }
 
-    public class MyArticleModel : ArticleSearchModel
+    public class MyArticleModel : ArticleSearchBaseModel
     {
         [DisplayName("User")]
         public IEnumerable<uint> UserIds { get; set; }
@@ -41,6 +49,16 @@ namespace BraAuto.ViewModels
         public new Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My Articles", "Articles") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class ArticleAdminModel : ArticleSearchBaseModel
+    {
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Admin", "Articles") };
 
             return new Breadcrumb(paths);
         }

@@ -7,5 +7,7 @@ namespace BraAutoDb.Models.ArticlesSearch
         public string Keywords { get; set; }
 
         public uint? CategoryId { get; set; }
+
+        public bool? IsApproved { get; set; }
     }
 }

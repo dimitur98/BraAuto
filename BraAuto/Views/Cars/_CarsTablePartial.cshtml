@@ -1,0 +1,127 @@
+﻿@model BraAuto.ViewModels.CarSearchBaseModel
+@using BraAuto.ViewModels;
+@using BraAutoDb.Models
+
+@{
+    var loggedUser = (User)ViewBag.LoggedUser;
+    var isAdminPage = Model is CarAdminModel;
+}
+
+<section class="car spad">
+    <div class="container">
+        <div class="row">
+            <partial name="~/Views/Users/_UserSettingsPartial.cshtml">
+                @if (Model.Response.Records.IsNullOrEmpty())
+                {
+                    <div class="col-lg-9">There are no cars yet.</div>
+
+                    return;
+                }
+                <div class="col-lg-9">
+                    <div class="car__filter__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="car__filter__option__item">
+                                    <h6>Show On Page</h6>
+                                    <select>
+                                        <option value="">9 Car</option>
+                                        <option value="">15 Car</option>
+                                        <option value="">20 Car</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="car__filter__option__item car__filter__option__item--right">
+                                    <h6>Sort By</h6>
+                                    <select>
+                                        <option value="">Price: Highest Fist</option>
+                                        <option value="">Price: Lowest Fist</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <partial name="_AlertPartial" />
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="my-car-settings-thead">
+                                <th scope="col"></th>
+                                <th scope="col">Car</th>
+                                <th scope="col">Approved</th>
+                                @if (loggedUser.IsAdmin() && isAdminPage)
+                                {
+                                    <th scope="col">Creator</th>
+                                }
+                                <th scope="col">Created At</th>
+                                <th scope="col">Edited At</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model.Response.Records)
+                            {
+                                <tr>
+                                    <td>img</td>
+                                    <td><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
+                                    <td>
+                                        @if (car.IsApproved)
+                                        {
+                                            <a id="@car.Id" class="disapprove"><i class="fa fa-check-circle"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a id="@car.Id" class="approve"><i class="fa-regular fa-circle"></i></a>
+                                        }
+                                    </td>
+                                    @if (loggedUser.IsAdmin() && isAdminPage)
+                                    {
+                                        <td>@car.Creator.Name</td>
+                                    }
+                                    <td>@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
+                                    <td>@car.EditedAt.ToWebDateFormat(showTime:true)</td>
+                                    <td class="text-nowrap ms-3">
+                                        <a asp-action="Edit" asp-route-id="@car.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@car.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete @car.Model.Make.Name @car.Model.Name @car.Variant?"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <partial name="_PagedListPartial" model="Model.ToPager()" />
+                </div>
+        </div>
+    </div>
+</section>
+
+@if (loggedUser.IsAdmin() && isAdminPage)
+{
+    <script>
+        $(document).ready(function () {
+            $(".approve").attr("title", "Approve Advert");
+            $(".disapprove").attr("title", "Disapprove Advert");
+
+            $(".approve").on("click", function () {
+                statusChange($(this).attr("id"), true);
+            });
+
+            $(".disapprove").on("click", function () {
+                statusChange($(this).attr("id"), false);
+            });
+
+            function statusChange(id, status) {
+                $.ajax({
+                    url: @Html.Raw(Json.Serialize(Url.Action("StatusChange", "CarsApi"))),
+                    type: 'GET',
+                    data: { id, status },
+                    success: function (response, status, xhr) {
+                        if (response) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

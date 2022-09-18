@@ -13,6 +13,15 @@ namespace BraAuto.Controllers
 {
     public class UsersController : BaseController
     {
+        public IActionResult Admin(UserAdminModel model)
+        {
+            this.ExecuteSearch(model);
+
+            Db.Users.LoadEditors(model.Response.Records);
+
+            return this.View(model);
+        }
+
         public IActionResult Register()
         {
             var model = new UserRegisterModel
@@ -119,9 +128,9 @@ namespace BraAuto.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(uint userId)
+        public IActionResult Edit(uint id)
         {
-            var user = Db.Users.GetById(userId);
+            var user = Db.Users.GetById(id);
 
             if (user == null) { return this.NotFound(); }
 
@@ -245,6 +254,19 @@ namespace BraAuto.Controllers
             await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction(String.Empty, String.Empty);
+        }
+
+        protected void ExecuteSearch(UserSearchBaseModel model)
+        {
+            model.SetDefaultSort("u.created_at", sortDesc: true);
+
+            var request = model.ToSearchRequest();
+
+            request.ReturnTotalRecords = true;
+
+            var response = Db.Users.Search(request);
+
+            model.Response = response;
         }
     }
 }

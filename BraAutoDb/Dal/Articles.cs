@@ -14,13 +14,15 @@ namespace BraAutoDb.Dal
                 {
                     if (!string.IsNullOrEmpty(request.Keywords)) { query.Where.Add("AND (a.title LIKE @keywords)"); }
                     if (request.CategoryId != null) { query.Where.Add(" AND a.category_id = @categoryId"); }
+                    if (request.IsApproved != null) { query.Where.Add(" AND a.is_approved = @isApproved"); }
                 },
                 () =>
                 {
                     return new
                     {
                         keywords = string.Format("%{0}%", request.Keywords),
-                        categoryId = request.CategoryId
+                        categoryId = request.CategoryId,
+                        isApproved = request.IsApproved
                     };
                 },
                 "a");
@@ -43,6 +45,7 @@ namespace BraAutoDb.Dal
                             `title`,
                             `body`,
                             `category_id`,
+                            `is_approved`,
                             `creator_id`,
                             `created_at`,
                             `editor_id`,
@@ -52,6 +55,7 @@ namespace BraAutoDb.Dal
                             @body,
                             @categoryId,
                             @creatorId,
+                            @isApproved,
                             NOW(),
                             @editorId,
                             NOW()
@@ -64,6 +68,7 @@ namespace BraAutoDb.Dal
                 title = article.Title,
                 body = article.Body,
                 categoryId = article.CategoryId,
+                isApproved = article.IsApproved,
                 creatorId = article.CreatorId,
                 editorId = article.EditorId
             };
@@ -77,6 +82,7 @@ namespace BraAutoDb.Dal
                             SET title = @title,
                                 body = @body,
                                 category_id = @categoryId,
+                                is_approved = @isApproved,
                                 editor_id = @editorId,
                                 edited_at = NOW()
                         WHERE id = @id";
@@ -86,6 +92,7 @@ namespace BraAutoDb.Dal
                 title = article.Title,
                 body = article.Body,
                 categoryId = article.CategoryId,
+                isApproved = article.IsApproved,
                 editorId = article.EditorId
             };
 

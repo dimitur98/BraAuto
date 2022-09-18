@@ -17,6 +17,9 @@ namespace BraAutoDb.Models
 
         public Category Category { get; set; }
 
+        [Column(Name = "is_approved")]
+        public bool IsApproved { get; set; }
+
         public void LoadCategory()
         {
             this.Category = Db.Categories.GetById(this.CategoryId);

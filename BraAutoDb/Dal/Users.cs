@@ -1,4 +1,5 @@
 ﻿using BraAutoDb.Models;
+using BraAutoDb.Models.UsersSearch;
 
 namespace BraAutoDb.Dal
 {
@@ -6,6 +7,18 @@ namespace BraAutoDb.Dal
     {
         public Users() : base("user", "id", "created_at") { }
 
+        public Response Search(Request request)
+        {
+            return this.Search<Response>(request,
+                (query) =>
+                {
+                },
+                () =>
+                {
+                    return new { };
+                },
+                "u");
+        }
 
         public User GetByUsername(string username) => this.GetByFieldValues<string>("username", new string[] { username }).FirstOrDefault();
 
@@ -112,6 +125,11 @@ namespace BraAutoDb.Dal
                 WHERE id = @id";
 
             Db.Mapper.Execute(sql, new { id, password });
+        }
+
+        public void LoadEditors(IEnumerable<User> users)
+        {
+            Db.LoadEntities(users, u => u.EditorId, editorIds => Db.Users.GetByIds(editorIds), (user, editors) => user.Editor = editors.FirstOrDefault(e => e.Id == user.EditorId));
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿@model BraAuto.ViewModels.ArticleSearchBaseModel
 @using BraAuto.ViewModels;
 @using BraAutoDb.Models;
+@inject IConfiguration Configuration
 
 @{
 
     var loggedUser = (User)ViewBag.LoggedUser;
     var isAdminPage = Model is ArticleAdminModel;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <section class="car spad">
@@ -48,6 +50,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr class="my-page-thead">
+                                <th scope="col"></th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Approved</th>
                                 @if (loggedUser.IsAdmin() && isAdminPage)
@@ -63,8 +66,9 @@
                             @foreach (var article in Model.Response.Records)
                             {
                                 <tr>
-                                    <td><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></td>
-                                    <td>
+                                    <td><img class="table-img" src="@(cloudinaryUrl + article.ImgUrl)"/></td>
+                                    <td class="align-middle"><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></td>
+                                    <td class="align-middle">
                                         @if (article.IsApproved)
                                         {
                                             <a id="@article.Id" class="disapprove"><i class="fa fa-check-circle"></i></a>
@@ -76,11 +80,11 @@
                                     </td>
                                     @if (loggedUser.IsAdmin() && isAdminPage)
                                     {
-                                        <td>@article.Creator.Name</td>
+                                        <td class="align-middle">@article.Creator.Name</td>
                                     }
-                                    <td>@article.CreatedAt.ToWebDateFormat(showTime: true)</td>
-                                    <td>@article.EditedAt.ToWebDateFormat(showTime:true)</td>
-                                    <td class="text-nowrap ms-3">
+                                    <td class="align-middle">@article.CreatedAt.ToWebDateFormat(showTime: true)</td>
+                                    <td class="align-middle">@article.EditedAt.ToWebDateFormat(showTime:true)</td>
+                                    <td class="text-nowrap ms-3 align-middle">
                                         <a asp-action="Edit" asp-route-id="@article.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                         <a asp-action="Delete" asp-route-id="@article.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete '@article.Title' article?"><i class="far fa-trash-alt"></i></a>
                                     </td>

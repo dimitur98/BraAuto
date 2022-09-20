@@ -16,19 +16,24 @@ braAuto.submitJson = function (options) {
     var form = jQuery("<form>")
         .attr("method", defaults.method)
         .attr("accept-charset", "UTF-8")
-        .attr("action", defaults.url);
+        .attr("action", defaults.url)
+        .attr("enctype", "multipart/form-data");
 
     if (defaults.target !== undefined) { form.attr("target", defaults.target); }
 
     var data = serializeObject(defaults.data);
 
     for (var i = 0; i < data.length; i++) {
-        jQuery("<input type='hidden'>")
+        console.log(data[i].value)
+        jQuery("<input type='hidden' id='test-1'>")
             .attr("name", data[i].name)
-            .attr("value", data[i].value)
+            //.attr("value", data[i].value)
             .appendTo(form);
+        form.find("input").val("C:\\fakepath\\img2.jpeg")
+        console.log("dd: ", jQuery("#test-1"))
+        console.log(form.find("input").val())
     }
-
+    //return
     if (defaults.submit == true) {
         form.appendTo("body");
         form.submit();
@@ -40,7 +45,6 @@ braAuto.submitJson = function (options) {
         var plainObjectsIndex = -1;
 
         jQuery.each(object, function (name, value) {
-
             if (jQuery.isPlainObject(value)) {
                 var items = serializeObject(value);
                 var key = null;
@@ -84,7 +88,6 @@ braAuto.submitJson = function (options) {
 };
 
 braAuto.confirmDialog = function (title, message, callback) {
-    console.log(1)
     var $modal = $('<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" >\
                         <div class="modal-dialog" role="document" > \
                             <div class="modal-content"> \

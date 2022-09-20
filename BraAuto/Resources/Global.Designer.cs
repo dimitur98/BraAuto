@@ -125,6 +125,17 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Image is invalid format or too big..
+        /// </summary>
+        internal static string InvalidImg
+        {
+            get
+            {
+                return ResourceManager.GetString("InvalidImg", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Successfully deleted.
         /// </summary>
         internal static string ItemDeleted

@@ -83,6 +83,10 @@ namespace BraAuto.ViewModels
 
     public class ArticleCreateModel : ArticleBaseModel 
     {
+
+        [Required]
+        public IFormFile Img { get; set; }
+
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Search", "Articles"), ("Create", "Articles") };
@@ -97,6 +101,10 @@ namespace BraAuto.ViewModels
         [Required]
         [HiddenInput]
         public uint Id { get; set; }
+
+        public IFormFile Img { get; set; }
+
+        public string ImgUrl { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {
@@ -116,6 +124,8 @@ namespace BraAuto.ViewModels
 
         [DisplayName("Category")]
         public Category Category { get; set; }
+
+        public string ImgUrl { get; set; }
 
         [DisplayName("Creator")]
         public User Creator { get; set; }

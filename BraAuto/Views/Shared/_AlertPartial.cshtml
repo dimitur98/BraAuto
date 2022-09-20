@@ -1,8 +1,9 @@
 ﻿@using BraAuto.ViewModels.Helpers;
 @using BraAuto.Resources;
+@using BraAuto.Helpers.Extensions;
 
 @{
-    var alert = TempData[Global.AlertKey] as Alert;
+    var alert = TempData[Global.AlertKey]?.ToString().DeserializeAlert() ?? null;
 }
 
 @if (alert != null)

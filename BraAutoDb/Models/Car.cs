@@ -65,6 +65,11 @@ namespace BraAutoDb.Models
         [Column(Name = "door_number_id")]
         public uint DoorNumberId { get; set; }
 
+        [Column(Name = "imgs_config")]
+        public string SerializedImgsConfig { get; set; }
+
+        public ImgsConfig ImgsConfig { get; set; }
+
         [Column(Name = "has_air_conditioning")]
         public bool HasAirConditioning { get; set; }
 
@@ -202,6 +207,14 @@ namespace BraAutoDb.Models
         public void LoadGearboxType()
         {
             this.GearboxType = Db.GearboxTypes.GetById(this.GearboxTypeId);
+        }
+
+        public void LoadConfig()
+        {
+            if (!string.IsNullOrWhiteSpace(this.SerializedImgsConfig))
+            {
+                this.ImgsConfig = ImgsConfig.Deserialize(this.SerializedImgsConfig);
+            }
         }
     }
 }

@@ -72,12 +72,17 @@ namespace BraAuto.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(CarCreateModel model)
+        public async Task<IActionResult> Create(CarCreateModel model)
         {
             try
             {
                 if (this.ModelState.IsValid)
                 {
+                    var imgsConfig = new ImgsConfig
+                    {
+                        Urls = await UploadImgs(model.Imgs)
+                    };
+
                     var car = new Car
                     {
                         Description = model.Description,
@@ -99,6 +104,7 @@ namespace BraAuto.Controllers
                         SpecificLocation = model.SpecificLocation,
                         Mileage = model.Mileage,
                         DoorNumberId = model.DoorNumberId,
+                        ImgsConfig = imgsConfig,
                         HasAirConditioning = model.HasAirConditioning,
                         HasClimatronic = model.HasClimatronic,
                         HasLetherInterior = model.HasLetherInterior,
@@ -466,6 +472,109 @@ namespace BraAuto.Controllers
             model.EuroStandarts = Db.EuroStandarts.GetAll();
             model.Locations = Db.Locations.GetAll();
             model.DoorNumbers = Db.DoorNumbers.GetAll();
+        }
+
+        protected async Task<List<string>> UploadImgs(Imgs imgs)
+        {
+            var urls = new List<string>();
+
+            if (imgs.ImgMain.IsValidImg())
+            {
+                var url = await imgs.ImgMain.UploadImgAsync();
+
+                imgs.ImgMainUrl = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img2.IsValidImg())
+            {
+                var url = await imgs.Img2.UploadImgAsync();
+
+                imgs.Img2Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img3.IsValidImg())
+            {
+                var url = await imgs.Img3.UploadImgAsync();
+
+                imgs.Img3Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img4.IsValidImg())
+            {
+                var url = await imgs.Img4.UploadImgAsync();
+
+                imgs.Img4Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img5.IsValidImg())
+            {
+                var url = await imgs.Img5.UploadImgAsync();
+
+                imgs.Img5Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img6.IsValidImg())
+            {
+                var url = await imgs.Img6.UploadImgAsync();
+
+                imgs.Img6Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img7.IsValidImg())
+            {
+                var url = await imgs.Img7.UploadImgAsync();
+
+                imgs.Img7Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img8.IsValidImg())
+            {
+                var url = await imgs.Img8.UploadImgAsync();
+
+                imgs.Img8Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img9.IsValidImg())
+            {
+                var url = await imgs.Img9.UploadImgAsync();
+
+                imgs.Img9Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img10.IsValidImg())
+            {
+                var url = await imgs.Img10.UploadImgAsync();
+
+                imgs.Img10Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img11.IsValidImg())
+            {
+                var url = await imgs.Img11.UploadImgAsync();
+
+                imgs.Img11Url = url;
+                urls.Add(url);
+            }
+
+            if (imgs.Img12.IsValidImg())
+            {
+                var url = await imgs.Img12.UploadImgAsync();
+
+                imgs.Img12Url = url;
+                urls.Add(url);
+            }
+
+            return urls;
         }
     }
 }

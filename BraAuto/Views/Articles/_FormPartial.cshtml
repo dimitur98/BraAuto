@@ -1,15 +1,16 @@
 ﻿@model BraAuto.ViewModels.ArticleBaseModel
 @using BraAuto.ViewModels;
+@inject IConfiguration Configuration
 
 @{
     var isEdit = Model is ArticleEditModel;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <section class="spad">
     <div class="container">
-        <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="Articles" method="post">
+        <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="Articles" id="article-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly"></div>
-
             <div class="form-group">
                 <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -19,7 +20,7 @@
                 <label asp-for="CategoryId" class="form-label"></label>
                 <select class="form-select filter" asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories.Select(c => new { Fullname = c.Name, Id = c.Id}), "Id", "Fullname"))">
                     <option value="">Select Category</option>
-                </select>                
+                </select>
                 <span asp-validation-for="CategoryId"></span>
             </div>
             <div class="form-group">
@@ -27,9 +28,55 @@
                 <textarea asp-for="Body" class="form-control"></textarea>
                 <span asp-validation-for="Body"></span>
             </div>
+
+            <div class="mt-3 col-sm-2 imgUp">
+                <div class="imagePreview"></div>
+                <label class="btn btn-primary">
+                    Upload
+                    @if (isEdit)
+                    {
+                        <input type="file" class="uploadFile img" asp-for="@(((ArticleEditModel)Model).Img)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                    }else
+                    {
+                        <input type="file" class="uploadFile img" asp-for="@(((ArticleCreateModel)Model).Img)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                    }
+                </label>
+                @if (!isEdit)
+                {
+                    <span asp-validation-for="@(((ArticleEditModel)Model).Img)"></span>
+                }
+            </div>
             <div class="text-center">
                 <button type="submit" class="site-btn">@(isEdit ? "Edit" : "Create")</button>
             </div>
         </form>
     </div>
 </section>
+
+<script>
+    $(document).ready(function () {
+        $(".uploadFile").on("change", function () {
+            var $uploadFile = $(this);
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) { return; }
+
+            if (/^image/.test(files[0].type)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(files[0]);
+
+                reader.onloadend = function () {
+                    $('.imagePreview').css("background-image", "url(" + this.result + ")");
+                }
+            }
+        });
+    });
+</script>
+
+@if(isEdit)
+{
+    <script>
+        $(document).ready(function(){
+            $('.imagePreview').css("background-image", "url(@(cloudinaryUrl + ((ArticleEditModel)Model).ImgUrl))");
+        });
+    </script>
+}

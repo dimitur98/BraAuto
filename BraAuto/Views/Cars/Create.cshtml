@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "Create";
     ViewBag.RegisterFlatpickrMonthSelect = true;
+    ViewBag.RegisterImageUploader = true;
 }
 
 <partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<partial name="_AlertPartial" />
 <partial name="_FormPartial" model="Model" />

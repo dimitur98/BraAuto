@@ -1,5 +1,6 @@
 using BraAuto.AspNetCore.Authentication.Cookies;
 using BraAuto.Helpers.Log;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -46,6 +47,14 @@ try
     builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
     builder.Services.AddSingleton<ILogHelper, LogHelper>();
     builder.Services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+    Account account = new Account(
+                                 builder.Configuration["Cloudinary:AppName"],
+                                 builder.Configuration["Cloudinary:AppKey"],
+                                 builder.Configuration["Cloudinary:AppSecret"]);
+
+    Cloudinary cloudinary = new Cloudinary(account);
+    builder.Services.AddSingleton(cloudinary);
+
     //builder.Services.AddSingleton<IEmailSender, EmailSender>();
     builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 

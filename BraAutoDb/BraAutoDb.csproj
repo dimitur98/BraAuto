@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BraAuto.Helpers\BraAuto.Helpers.csproj" />
     <ProjectReference Include="..\DapperMySqlMapper\DapperMySqlMapper.csproj" />
     <ProjectReference Include="..\SqlQueryBuilder\SqlQueryBuilder.csproj" />

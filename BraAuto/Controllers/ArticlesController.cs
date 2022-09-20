@@ -4,14 +4,25 @@ using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
+using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace BraAuto.Controllers
 {
     [Authorize(Roles = "administrator, blogger")]
     public class ArticlesController : BaseController
     {
+        private Cloudinary _cloudinary;
+
+        public ArticlesController(Cloudinary cloudinary)
+        {
+            _cloudinary = cloudinary;
+        }
+
         public IActionResult My(MyArticleModel model)
         {
             model.UserIds = new uint[] { this.LoggedUser.Id };
@@ -51,7 +62,7 @@ namespace BraAuto.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ArticleCreateModel model)
+        public async Task<IActionResult> Create(ArticleCreateModel model)
         {
             try
             {
@@ -67,11 +78,23 @@ namespace BraAuto.Controllers
                         return this.View(model);
                     }
 
+                    if (!model.Img.IsValidImg())
+                    {
+                        model.Categories = Db.Categories.GetAll();
+                        this.ModelState.AddModelError(string.Empty, Global.InvalidImg);
+
+                        return this.View(model);
+                    }
+
+                    var imgUrl = await model.Img.UploadImgAsync();
+
                     article = new Article
                     {
                         Title = model.Title,
                         Body = model.Body,
                         CategoryId = model.CategoryId,
+                        ImgUrl = imgUrl,
+                        IsApproved = false,
                         CreatorId = this.LoggedUser.Id,
                         EditorId = this.LoggedUser.Id
                     };
@@ -104,6 +127,7 @@ namespace BraAuto.Controllers
                 Title = article.Title,
                 Body = article.Body,
                 CategoryId = article.CategoryId,
+                ImgUrl = article.ImgUrl,
                 Categories = Db.Categories.GetAll()
                 
             };
@@ -112,7 +136,7 @@ namespace BraAuto.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(ArticleEditModel model)
+        public async Task<IActionResult> Edit(ArticleEditModel model)
         {
             try
             {
@@ -121,6 +145,27 @@ namespace BraAuto.Controllers
                     var article = Db.Articles.GetById(model.Id);
 
                     if (article == null) { return this.NotFound(); }
+
+                    if(model.Img != null)
+                    {
+                        var publicId = System.IO.Path.ChangeExtension(article.ImgUrl.Split("/").Last(), null);
+
+                        DeletionParams deletionParams = new DeletionParams(publicId);
+
+                        await this._cloudinary.DestroyAsync(deletionParams);
+
+                        if (!model.Img.IsValidImg())
+                        {
+                            model.Categories = Db.Categories.GetAll();
+                            this.ModelState.AddModelError(string.Empty, Global.InvalidImg);
+
+                            return this.View(model);
+                        }
+
+                        var imgUrl = await model.Img.UploadImgAsync();
+
+                        article.ImgUrl = imgUrl;
+                    }
 
                     article.Title = model.Title;
                     article.Body = model.Body;
@@ -155,7 +200,7 @@ namespace BraAuto.Controllers
 
                 Db.Articles.Delete(id);
 
-                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info);
+                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info).SerializeAlert();
             }
             catch (Exception ex)
             {
@@ -180,6 +225,7 @@ namespace BraAuto.Controllers
                 Title = article.Title,
                 Body = article.Body,
                 Category = article.Category,
+                ImgUrl = article.ImgUrl,
                 Creator = article.Creator,
                 CreatedAt = article.CreatedAt
             };
@@ -203,6 +249,39 @@ namespace BraAuto.Controllers
             }
 
             model.Response = response;
+        }
+    
+        protected async Task<string> UploadImg(IFormFile file)
+        {
+            if (!file.IsValidImg() || file == null)
+            {
+                return string.Empty;
+            }
+
+            byte[] destinationImage;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                destinationImage = memoryStream.ToArray();
+            }
+
+            var result = string.Empty;
+
+            using (var destinationStream = new MemoryStream(destinationImage))
+            {
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(file.FileName, destinationStream),
+                };
+
+                var res = await _cloudinary.UploadAsync(uploadParams);
+                var url = res.Url.AbsoluteUri.Split("/", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                result = url[url.Count - 2] + "/" + url[url.Count - 1];
+            }
+
+            return result;
         }
     }
 }

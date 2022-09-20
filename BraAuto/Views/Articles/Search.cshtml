@@ -1,7 +1,9 @@
 ﻿@model BraAuto.ViewModels.ArticleSearchModel
+@inject IConfiguration Configuration
 
 @{
     ViewBag.Title = "Blog";
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
@@ -20,7 +22,7 @@
                     {
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="blog__item">
-                                <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-1.jpg">
+                                <div class="blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.ImgUrl)">
                                     <ul>
                                         <li>By @article.Creator.Name</li>
                                         <li>@article.CreatedAt.ToWebDateFormat()</li>
@@ -30,7 +32,7 @@
                                 <div class="blog__item__text">
                                     <h5><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></h5>
                                     <p>
-                                        @article.Body.Substring(0,200) ...
+                                        @(article.Body.Length > 200 ? article.Body.Substring(0,200) + " ..." : article.Body)
                                     </p>
                                 </div>
                             </div>

@@ -45,6 +45,7 @@ namespace BraAutoDb.Dal
                             `title`,
                             `body`,
                             `category_id`,
+                            `img_url`,
                             `is_approved`,
                             `creator_id`,
                             `created_at`,
@@ -54,8 +55,9 @@ namespace BraAutoDb.Dal
                             @title,
                             @body,
                             @categoryId,
-                            @creatorId,
+                            @imgUrl,
                             @isApproved,
+                            @creatorId,
                             NOW(),
                             @editorId,
                             NOW()
@@ -68,6 +70,7 @@ namespace BraAutoDb.Dal
                 title = article.Title,
                 body = article.Body,
                 categoryId = article.CategoryId,
+                imgUrl = article.ImgUrl,
                 isApproved = article.IsApproved,
                 creatorId = article.CreatorId,
                 editorId = article.EditorId
@@ -82,6 +85,7 @@ namespace BraAutoDb.Dal
                             SET title = @title,
                                 body = @body,
                                 category_id = @categoryId,
+                                img_url = @imgUrl,
                                 is_approved = @isApproved,
                                 editor_id = @editorId,
                                 edited_at = NOW()
@@ -92,6 +96,7 @@ namespace BraAutoDb.Dal
                 title = article.Title,
                 body = article.Body,
                 categoryId = article.CategoryId,
+                imgUrl = article.ImgUrl,
                 isApproved = article.IsApproved,
                 editorId = article.EditorId
             };

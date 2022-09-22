@@ -1,4 +1,5 @@
-﻿using BraAutoDb.Models;
+﻿using BraAutoDb.Dal;
+using BraAutoDb.Models;
 using BraAutoDb.Models.CarsSearch;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -508,6 +509,11 @@ namespace BraAuto.ViewModels
 
     public class CarEditModel : CarBaseModel
     {
+        public CarEditModel()
+        {
+            Imgs = new Imgs();
+        }
+
         [Key]
         [Required]
         [HiddenInput]
@@ -590,6 +596,8 @@ namespace BraAuto.ViewModels
 
         [DisplayName("Mobile")]
         public string Mobile { get; set; }
+
+        public IEnumerable<string> ImgUrls { get; set; }
 
         [DisplayName("Air Conditioning")]
         public bool HasAirConditioning { get; set; }
@@ -717,10 +725,9 @@ namespace BraAuto.ViewModels
 
     public class Imgs
     {
-        [Required]
         [DisplayName("Images")]
-        public IFormFile ImgMain { get; set; }
-        public string ImgMainUrl { get; set; }
+        public IFormFile Img1 { get; set; }
+        public string Img1Url { get; set; }
 
         public IFormFile? Img2 { get; set; }
         public string Img2Url { get; set; }
@@ -754,5 +761,16 @@ namespace BraAuto.ViewModels
 
         public IFormFile? Img12 { get; set; }
         public string Img12Url { get; set; }
+
+        public void LoadImgUrls(uint carId)
+        {
+            var carImgs = Db.CarImgs.GetByCarId(carId);
+            var props = this.GetType().GetProperties().Where(p => p.PropertyType == typeof(string)).ToList();
+
+            for (int i = 0; i < carImgs.Count(); i++)
+            {
+                props[i].SetValue(this, carImgs[i].Url);
+            }
+        }
     }
 }

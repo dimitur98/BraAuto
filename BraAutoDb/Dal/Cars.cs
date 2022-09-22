@@ -333,7 +333,6 @@ namespace BraAutoDb.Dal
                             `specific_location`,
                             `mileage`,
                             `door_number_id`,
-                            `imgs_config`,
                             `has_air_conditioning`,
                             `has_climatronic`,
                             `has_lether_interior`,
@@ -401,7 +400,6 @@ namespace BraAutoDb.Dal
                             @specificLocation,
                             @mileage,
                             @doorNumberId,
-                            @imgsConfig,
                             @hasAirConditioning, 
                             @hasClimatronic, 
                             @hasLetherInterior, 
@@ -474,7 +472,6 @@ namespace BraAutoDb.Dal
                 specificLocation = car.SpecificLocation?.Trim(),
                 mileage = car.Mileage,
                 doorNumberId = car.DoorNumberId,
-                imgsConfig = car.ImgsConfig.Serialize(),
                 hasAirConditioning = car.HasAirConditioning,
                 hasClimatronic = car.HasClimatronic,
                 hasLetherInterior = car.HasLetherInterior,
@@ -547,7 +544,6 @@ namespace BraAutoDb.Dal
                                 specific_location = @specificLocation,
                                 mileage = @mileage,
                                 door_number_id = @doorNumberId,
-                                imgs_config = @imgsConfig,
                                 has_air_conditioning = @hasAirConditioning,
                                 has_climatronic = @hasClimatronic,
                                 has_lether_interior = @hasLetherInterior,
@@ -617,7 +613,6 @@ namespace BraAutoDb.Dal
                 specificLocation = car.SpecificLocation?.Trim(),
                 mileage = car.Mileage,
                 doorNumberId = car.DoorNumberId,
-                imgsConfig = car.ImgsConfig.Serialize(),
                 hasAirConditioning = car.HasAirConditioning,
                 hasClimatronic = car.HasClimatronic,
                 hasLetherInterior = car.HasLetherInterior,
@@ -681,6 +676,11 @@ namespace BraAutoDb.Dal
         public void LoadCreators(IEnumerable<Car> cars)
         {
             Db.LoadEntities(cars, c => c.CreatorId, creatorIds => Db.Users.GetByIds(creatorIds), (car, creators) => car.Creator = creators.FirstOrDefault(c => c.Id == car.CreatorId));
+        }
+
+        public void LoadImgUrls(IEnumerable<Car> cars)
+        {
+            Db.LoadEntities(cars, c => c.Id, ids => Db.CarImgs.GetByCarIds(ids), (car, carImgs) => car.ImgUrls = carImgs.Where(ci => ci.CarId == car.Id).Select(ci => ci.Url));
         }
     }
 }

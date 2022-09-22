@@ -1,4 +1,9 @@
 ﻿@model BraAuto.ViewModels.DetailsCarModel
+@inject IConfiguration Configuration
+
+@{
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+}
 
 <section class="car-details spad">
     <div class="container">
@@ -6,16 +11,17 @@
             <div class="col-lg-9">
                 <div class="car__details__pic">
                     <div class="car__details__pic__large">
-                        <img class="car-big-img" src="img/cars/details/cd-1.jpg" alt="">
+                        <img class="car-big-img" src="@(cloudinaryUrl + Model.ImgUrls.FirstOrDefault())" alt="">
                     </div>
                     <div class="car-thumbs">
                         <div class="car-thumbs-track car__thumb__slider owl-carousel">
-                            <div class="ct" data-imgbigurl="img/cars/details/cd-2.jpg">
-                                <img src="img/cars/details/sm-1.jpg" alt="">
-                            </div>
-                            <div class="ct" data-imgbigurl="img/cars/details/cd-3.jpg">
-                                <img src="img/cars/details/sm-2.jpg" alt="">
-                            </div>
+                            @foreach(var url in Model.ImgUrls)
+                            {
+                                <div class="ct" data-imgbigurl="@(cloudinaryUrl + url)">
+                                    <img src="@(cloudinaryUrl + url)" alt="">
+                                </div>
+                            }
+                            <div id="navEl"></div>
                         </div>
                     </div>
                 </div>

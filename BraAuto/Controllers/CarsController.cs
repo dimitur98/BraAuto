@@ -1,18 +1,25 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAuto.Resources;
 using BraAuto.ViewModels;
+using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
-using System.Drawing;
-using BraAuto.ViewModels.Helpers;
 
 namespace BraAuto.Controllers
 {
     public class CarsController : BaseController
     {
+        private Cloudinary _cloudinary;
+
+        public CarsController(Cloudinary cloudinary)
+        {
+            _cloudinary = cloudinary;
+        }
+
         [AllowAnonymous]
         public IActionResult Home()
         {
@@ -52,6 +59,7 @@ namespace BraAuto.Controllers
             model.Makes = Db.Makes.GetAll();
             model.Years = Db.Years.GetAll();
             model.IsApproved = true;
+            model.ShowAllSortFields = false;
 
             this.ExecuteSearch(model);
 
@@ -78,11 +86,6 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
-                    var imgsConfig = new ImgsConfig
-                    {
-                        Urls = await UploadImgs(model.Imgs)
-                    };
-
                     var car = new Car
                     {
                         Description = model.Description,
@@ -104,7 +107,6 @@ namespace BraAuto.Controllers
                         SpecificLocation = model.SpecificLocation,
                         Mileage = model.Mileage,
                         DoorNumberId = model.DoorNumberId,
-                        ImgsConfig = imgsConfig,
                         HasAirConditioning = model.HasAirConditioning,
                         HasClimatronic = model.HasClimatronic,
                         HasLetherInterior = model.HasLetherInterior,
@@ -154,6 +156,8 @@ namespace BraAuto.Controllers
 
                     Db.Cars.Insert(car);
 
+                    await this.UploadImgs(model.Imgs, car.Id);
+
                     return this.RedirectToAction(actionName: nameof(Home));
                 }
             }
@@ -176,7 +180,7 @@ namespace BraAuto.Controllers
             if (car == null) { return this.NotFound(); }
 
             car.LoadModel();
-
+            
             var model = new CarEditModel
             {
                 Id = car.Id,
@@ -243,6 +247,8 @@ namespace BraAuto.Controllers
                 HasRefrigerator = car.HasRefrigerator
             };
 
+            model.Imgs.LoadImgUrls(car.Id);
+
             this.LoadCarModel(model);
 
             return this.View(model);
@@ -250,7 +256,7 @@ namespace BraAuto.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(CarEditModel model)
+        public async Task<IActionResult> Edit(CarEditModel model)
         {
             try
             {
@@ -259,6 +265,7 @@ namespace BraAuto.Controllers
                     var car = Db.Cars.GetById(model.Id);
 
                     if (car == null) { return this.NotFound(); }
+
 
                     car.Description = model.Description;
                     car.Vin = model.Vin;
@@ -323,6 +330,9 @@ namespace BraAuto.Controllers
 
                     Db.Cars.Update(car);
 
+                    Db.CarImgs.DeleteByCarId(car.Id);
+                    await this.UploadImgs(model.Imgs, car.Id);
+
                     return this.RedirectToAction(nameof(My));
                 }
             }
@@ -338,7 +348,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult Delete(uint id)
+        public async Task<IActionResult> Delete(uint id)
         {
             try
             {
@@ -348,7 +358,9 @@ namespace BraAuto.Controllers
 
                 if (!this.LoggedUser.IsAdmin() || this.LoggedUser.Id != car.CreatorId) { return this.RedirectToHttpForbidden(); }
 
-                Db.Cars.Delete(id);
+                Db.Cars.Delete(car.Id);
+
+                await this.DeleteImgs(Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url));
 
                 this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info);
             }
@@ -396,6 +408,7 @@ namespace BraAuto.Controllers
                 DoorNumber = Db.DoorNumbers.GetById(car.DoorNumberId).Name,
                 OwnerName = car.Creator.Name,
                 Mobile = car.Creator.Mobile,
+                ImgUrls = Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url),
                 HasAirConditioning = car.HasAirConditioning,
                 HasClimatronic = car.HasClimatronic,
                 HasLetherInterior = car.HasLetherInterior,
@@ -456,6 +469,7 @@ namespace BraAuto.Controllers
             Db.Cars.LoadModels(response.Records);
             Db.Models.LoadMakes(response.Records.Select(r => r.Model));
             Db.Cars.LoadGearboxTypes(response.Records);
+            Db.Cars.LoadImgUrls(response.Records);
 
             model.Response = response;
         }
@@ -474,107 +488,47 @@ namespace BraAuto.Controllers
             model.DoorNumbers = Db.DoorNumbers.GetAll();
         }
 
-        protected async Task<List<string>> UploadImgs(Imgs imgs)
+        protected async Task UploadImgs(Imgs imgs, uint carId)
         {
-            var urls = new List<string>();
+            var imgProps = imgs.GetType().GetProperties().Where(p => p.PropertyType == typeof(IFormFile)).ToList();
+            var urlProps = imgs.GetType().GetProperties().Where(p => p.PropertyType == typeof(string)).ToList();
+            var urlsForDelete = new List<string>();
+            var index = 1;
 
-            if (imgs.ImgMain.IsValidImg())
+            for (int i = 0; i < imgProps.Count(); i++)
             {
-                var url = await imgs.ImgMain.UploadImgAsync();
+                var img = (IFormFile)imgProps[i].GetValue(imgs);
+                var oldUrl = (string)urlProps[i].GetValue(imgs);
+                var url = img.IsValidImg() ? await img.UploadImgAsync() : oldUrl;
 
-                imgs.ImgMainUrl = url;
-                urls.Add(url);
+                if (!string.IsNullOrEmpty(url))
+                {
+                    Db.CarImgs.Insert(new CarImg
+                    {
+                        Url = url,
+                        CarId = carId,
+                        SortOrder = index
+                    });
+
+                    index++;
+                }
+
+                if (img.IsValidImg() && !string.IsNullOrEmpty(oldUrl)) { urlsForDelete.Add(oldUrl); }
             }
 
-            if (imgs.Img2.IsValidImg())
+            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeleteImgs(urlsForDelete); } 
+        }
+    
+        protected async Task DeleteImgs(IEnumerable<string> urls)
+        {
+            foreach (var url in urls)
             {
-                var url = await imgs.Img2.UploadImgAsync();
+                var publicId = System.IO.Path.ChangeExtension(url.Split("/").Last(), null);
 
-                imgs.Img2Url = url;
-                urls.Add(url);
+                DeletionParams deletionParams = new DeletionParams(publicId);
+
+                await this._cloudinary.DestroyAsync(deletionParams);
             }
-
-            if (imgs.Img3.IsValidImg())
-            {
-                var url = await imgs.Img3.UploadImgAsync();
-
-                imgs.Img3Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img4.IsValidImg())
-            {
-                var url = await imgs.Img4.UploadImgAsync();
-
-                imgs.Img4Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img5.IsValidImg())
-            {
-                var url = await imgs.Img5.UploadImgAsync();
-
-                imgs.Img5Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img6.IsValidImg())
-            {
-                var url = await imgs.Img6.UploadImgAsync();
-
-                imgs.Img6Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img7.IsValidImg())
-            {
-                var url = await imgs.Img7.UploadImgAsync();
-
-                imgs.Img7Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img8.IsValidImg())
-            {
-                var url = await imgs.Img8.UploadImgAsync();
-
-                imgs.Img8Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img9.IsValidImg())
-            {
-                var url = await imgs.Img9.UploadImgAsync();
-
-                imgs.Img9Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img10.IsValidImg())
-            {
-                var url = await imgs.Img10.UploadImgAsync();
-
-                imgs.Img10Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img11.IsValidImg())
-            {
-                var url = await imgs.Img11.UploadImgAsync();
-
-                imgs.Img11Url = url;
-                urls.Add(url);
-            }
-
-            if (imgs.Img12.IsValidImg())
-            {
-                var url = await imgs.Img12.UploadImgAsync();
-
-                imgs.Img12Url = url;
-                urls.Add(url);
-            }
-
-            return urls;
         }
     }
 }

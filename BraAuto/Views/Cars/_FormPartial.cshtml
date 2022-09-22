@@ -4,6 +4,7 @@
 
 @{
     var isEdit = Model is CarEditModel;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <section class="contact spad">
@@ -12,82 +13,94 @@
         @if (isEdit)
         {
             <input asp-for="@(((CarEditModel)Model).Id)" type="hidden" />
+            <input asp-for="Imgs.Img1Url" type="hidden" />
+            <input asp-for="Imgs.Img2Url" type="hidden" />
+            <input asp-for="Imgs.Img3Url" type="hidden" />
+            <input asp-for="Imgs.Img4Url" type="hidden" />
+            <input asp-for="Imgs.Img5Url" type="hidden" />
+            <input asp-for="Imgs.Img6Url" type="hidden" />
+            <input asp-for="Imgs.Img7Url" type="hidden" />
+            <input asp-for="Imgs.Img8Url" type="hidden" />
+            <input asp-for="Imgs.Img9Url" type="hidden" />
+            <input asp-for="Imgs.Img10Url" type="hidden" />
+            <input asp-for="Imgs.Img11Url" type="hidden" />
+            <input asp-for="Imgs.Img12Url" type="hidden" />
         }
 
         <div class="container">
             <div asp-validation-summary="ModelOnly"></div>
             <div class="row mb-5">
-                <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Main<input type="file" asp-for="Imgs.ImgMain" class="uploadFile" value="Main Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Main<input type="file" asp-for="Imgs.Img1" class="upload-file" value="Main Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
-                    <span asp-validation-for="Imgs.ImgMain"></span>
+                    <span asp-validation-for="Imgs.Img1"></span>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img2" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                    </label>
-                </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
-                    <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img3" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img2" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img4" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img3" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img5" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img4" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img6" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img5" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img7" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img6" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img8" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img7" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                 <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img9" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img8" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                 <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img10" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img9" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img11" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img10" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
-                <div class="col-sm-2 imgUp">
-                    <div class="imagePreview"><i class="fa f-x del"></i></div>
+                <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
                     <label class="btn btn-primary">
-                        Upload<input type="file" asp-for="Imgs.Img12" class="uploadFile" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" asp-for="Imgs.Img11" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                    </label>
+                </div>
+                <div class="col-sm-2 img-up">
+                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <label class="btn btn-primary">
+                        Upload<input type="file" asp-for="Imgs.Img12" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
             </div>
@@ -472,8 +485,7 @@
             }
         });
 
-
-        $(".uploadFile").on("change", function () {
+        $(".upload-file").on("change", function () {
             var $uploadFile = $(this);
             var files = !!this.files ? this.files : [];
             if (!files.length || !window.FileReader) return;
@@ -483,7 +495,7 @@
                 reader.readAsDataURL(files[0]);
 
                 reader.onloadend = function () {
-                    $uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                    $uploadFile.closest(".img-up").find('.image-preview').css("background-image", "url(" + this.result + ")");
                 }
             }
         });
@@ -492,91 +504,7 @@
             $(this).parent().val("");
             $(this).parent().css("background-image", "");
         });
-
-        //$("#car-form").submit(function (e) {
-        //    e.preventDefault();
-
-        //    var imgs = Object.values(imgsObj);
-
-        //    if (imgs.length == 0) {
-        //        $("#imgs-validation").removeClass("d-none");
-        //        return;
-        //    }
-
-        //    if (/*$(this).valid()*/true) {
-        //        var data = {};
-        //        var carProperties = $(".car-property");
-
-        //        var data = {};
-
-        //        imgs.forEach(function(img){
-        //            data["imgs"] = img;
-        //        });
-
-        //         braAuto.submitJson({
-        //            url: @(Html.Raw(Json.Serialize(Url.Action("Create", "Cars")))),
-        //            method: "POST",
-        //            data: data
-        //        });
-
-        //        //var fd = new FormData(this);
-
-        //        //imgs.forEach(function(img){
-        //        //    fd.append("imgs",img)
-        //        //});
-
-        //        //$.ajax({
-        //        //    url: @(Html.Raw(Json.Serialize(Url.Action("Create", "Cars")))),
-        //        //    method: "POST",
-        //        //    data: fd,
-        //        //    success: function () {
-        //        //    },
-        //        //    contentType: false,
-        //        //    processData: false
-        //        //});
-        //    }
-
-        //    return;
-        //});
     });
-
-
-    //function imgAdd(index){
-    //    $('.img-add').before(`
-    //                          <div class="col-sm-2 imgUp">
-    //                              <div class="imagePreview"><i class="fa fa-times del"></i></div>
-    //                              <label class="btn btn-primary">Upload
-    //                                  <input type="file" id='img-` + index + `' class="uploadFile" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;">
-    //                              </label>
-    //                          </div>`);
-
-    //    if ($(".uploadFile").length == @Configuration["ImgsLimit"]) {
-    //        $('.img-add').hide();
-    //    }
-    //}
-
-    //function uploadFile(self){
-    //    var $uploadFile = $(self);
-    //    var files = !!self.files ? self.files : [];
-    //        if (!files.length || !window.FileReader) return;
-
-    //        if (/^image/.test(files[0].type)) {
-    //            var reader = new FileReader();
-    //            reader.readAsDataURL(files[0]);
-
-    //            var $imgsValidation = $("#imgs-validation");
-
-    //            if (!$imgsValidation.hasClass("d-none")) { $imgsValidation.addClass("d-none"); }
-
-    //            reader.onloadend = function () {
-    //                $uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
-    //            }
-
-    //            return files[0];
-    //        }
-
-    //    return null;
-    //}
 
     function loadModels(id, callback) {
         var $modelList = $("#ModelId");
@@ -606,3 +534,19 @@
         });
     }
 </script>
+
+@if(isEdit)
+{
+    <script>
+        $(document).ready(function(){
+            var urls = Object.values(@Html.Raw(Json.Serialize(((CarEditModel)Model).Imgs)));
+            var $imagePreviews = $(".image-preview");
+
+            urls.forEach(function(url, i){
+                $($imagePreviews[i]).css("background-image", "url(@cloudinaryUrl" + url + ")");
+            });
+        });
+    </script>
+}
+
+                        @*TODO Hiden filed for img props for editModel and save the new ones in db*@

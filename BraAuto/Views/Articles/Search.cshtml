@@ -17,6 +17,7 @@
                     <span>There are no articles</span>
                     return;
                 }
+                <partial name="_OrderListPartial" model="Model.ToPager()" />
                 <div class="row">
                     @foreach(var article in Model.Response.Records)
                     {

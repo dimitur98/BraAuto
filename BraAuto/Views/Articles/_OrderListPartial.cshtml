@@ -1,0 +1,44 @@
+﻿@model BraAuto.ViewModels.Pager
+
+@{
+    var pageParam = "page";
+    var queryString = this.Context.Request.Query.ToNameValueCollection();
+}
+
+<div class="car__filter__option">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="car__filter__option__item">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-page-size btn-no-outline dropdown-toggle btn-white" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Show @Model.PageSize <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu mb-2">
+                        @foreach (var pageSize in Model.PageSizes)
+                        {
+                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("rowCount", pageSize.ToString(), ignoreCase: true))">@pageSize</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="car__filter__option__item car__filter__option__item--right">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-page-size btn-no-outline dropdown-toggle btn-white" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort By: @Model.SortBy.ToSortByText(Model.SortDesc) <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu mb-2">
+                        @if (Model.ShowAllSortFields)
+                        {
+                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.is_approved", ignoreCase: true).AddOrSet("sortDesc", "true", ignoreCase: true))">Approved First</a>
+                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.is_approved", ignoreCase: true).AddOrSet("sortDesc", "false", ignoreCase: true))">Approved Last</a>
+                        }
+                        <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.created_at", ignoreCase: true).AddOrSet("sortDesc", "true", ignoreCase: true))">Newest First</a>
+                        <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.created_at", ignoreCase: true).AddOrSet("sortDesc", "false", ignoreCase: true))">Oldest First</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

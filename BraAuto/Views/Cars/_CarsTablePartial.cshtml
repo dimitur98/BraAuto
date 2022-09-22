@@ -1,10 +1,12 @@
 ﻿@model BraAuto.ViewModels.CarSearchBaseModel
 @using BraAuto.ViewModels;
 @using BraAutoDb.Models
+@inject IConfiguration Configuration
 
 @{
     var loggedUser = (User)ViewBag.LoggedUser;
     var isAdminPage = Model is CarAdminModel;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <section class="car spad">
@@ -18,30 +20,7 @@
                     return;
                 }
                 <div class="col-lg-9">
-                    <div class="car__filter__option">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="car__filter__option__item">
-                                    <h6>Show On Page</h6>
-                                    <select>
-                                        <option value="">9 Car</option>
-                                        <option value="">15 Car</option>
-                                        <option value="">20 Car</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="car__filter__option__item car__filter__option__item--right">
-                                    <h6>Sort By</h6>
-                                    <select>
-                                        <option value="">Price: Highest Fist</option>
-                                        <option value="">Price: Lowest Fist</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <partial name="_OrderListPartial" model="Model.ToPager()"/>
                     <partial name="_AlertPartial" />
 
                     <table class="table table-hover">
@@ -63,9 +42,9 @@
                             @foreach (var car in Model.Response.Records)
                             {
                                 <tr>
-                                    <td>img</td>
-                                    <td><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
-                                    <td>
+                                    <td><img class="table-img" src="@(cloudinaryUrl + car.ImgUrls.FirstOrDefault())"/></td>
+                                    <td class="align-middle"><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
+                                    <td class="align-middle">
                                         @if (car.IsApproved)
                                         {
                                             <a id="@car.Id" class="disapprove"><i class="fa fa-check-circle"></i></a>
@@ -77,11 +56,11 @@
                                     </td>
                                     @if (loggedUser.IsAdmin() && isAdminPage)
                                     {
-                                        <td>@car.Creator.Name</td>
+                                        <td class="align-middle">@car.Creator.Name</td>
                                     }
-                                    <td>@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
-                                    <td>@car.EditedAt.ToWebDateFormat(showTime:true)</td>
-                                    <td class="text-nowrap ms-3">
+                                    <td class="align-middle">@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
+                                    <td class="align-middle">@car.EditedAt.ToWebDateFormat(showTime:true)</td>
+                                    <td class="text-nowrap align-middle ms-3">
                                         <a asp-action="Edit" asp-route-id="@car.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                         <a asp-action="Delete" asp-route-id="@car.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete @car.Model.Make.Name @car.Model.Name @car.Variant?"><i class="far fa-trash-alt"></i></a>
                                     </td>

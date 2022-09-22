@@ -1,9 +1,11 @@
 ﻿@model BraAuto.ViewModels.CarSearchModel
+@inject IConfiguration Configuration
 
 @{
     ViewBag.Title = "Search";
     ViewBag.ShowHeader = true;
     ViewBag.RegisterLazyMultiselect = true;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <div class="extras-model">
@@ -164,37 +166,18 @@
                 return;
             }
             <div class="col-lg-9">
-                <div class="car__filter__option">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="car__filter__option__item">
-                                <h6>Show On Page</h6>
-                                <select>
-                                    <option value="">9 Car</option>
-                                    <option value="">15 Car</option>
-                                    <option value="">20 Car</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="car__filter__option__item car__filter__option__item--right">
-                                <h6>Sort By</h6>
-                                <select>
-                                    <option value="">Price: Highest Fist</option>
-                                    <option value="">Price: Lowest Fist</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <partial name="_OrderListPartial" model="Model.ToPager()"/>
+
                 <div class="row">
                     @foreach (var car in Model.Response.Records)
                     {
                         <div class="col-lg-4 col-md-4">
                             <div class="car__item">
                                 <div class="car__item__pic__slider owl-carousel">
-                                    @*<img src="img/cars/car-1.jpg" alt="">
-                                <img src="img/cars/car-8.jpg" alt="">*@
+                                    @foreach (var imgUrl in car.ImgUrls)
+                                    {
+                                        <img src="@(cloudinaryUrl + imgUrl)" alt="">
+                                    }
                                 </div>
                                 <div class="car__item__text">
                                     <div class="car__item__text__inner">

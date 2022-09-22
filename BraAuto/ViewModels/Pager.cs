@@ -2,10 +2,14 @@
 {
     public class Pager
     {
-        public Pager(long page, int pageSize, long totalItemsCount, object createButtonRouteValues = null)
+        public Pager(long page, int pageSize, IEnumerable<int> pageSizes,string sortBy, bool sortDesc, bool showAllSortFields, long totalItemsCount, object createButtonRouteValues = null)
         {
             this.Page = page;
             this.PageSize = pageSize;
+            this.PageSizes = pageSizes;
+            this.SortBy = sortBy;
+            this.SortDesc = sortDesc;
+            this.ShowAllSortFields = showAllSortFields;
             this.TotalItemsCount = totalItemsCount;
             this.CreateButtonRouteValues = createButtonRouteValues;
         }
@@ -13,6 +17,10 @@
         public long TotalItemsCount { get; set; }
         public long Page { get; set; }
         public int PageSize { get; set; }
+        public IEnumerable<int> PageSizes { get; set; }
+        public string SortBy { get; set; }
+        public bool SortDesc { get; set; }
+        public bool ShowAllSortFields { get; set; }
         public int MaxDisplayedPages { get; set; } = 10;
         public object CreateButtonRouteValues { get; set; }
 

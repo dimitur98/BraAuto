@@ -45,6 +45,7 @@ namespace BraAuto.Controllers
         {
             model.Categories = Db.Categories.GetAll();
             model.IsApproved = true;
+            model.ShowAllSortFields = false;
 
             this.ExecuteSearch(model);
 

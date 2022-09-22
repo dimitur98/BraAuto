@@ -100,14 +100,17 @@
         Car thumb Slider
     -------------------------------*/
     $(".car__thumb__slider").owlCarousel({
-        loop: true,
+        loop: false,
         margin: 25,
         items: 5,
-        dots: false,
         smartSpeed: 1200,
-        autoHeight: false,
-        autoplay: true,
+        autoHeight: true,
+        autoplay: false,
         mouseDrag: false,
+        nav: true,
+        navElement: "#navEl",
+        dots: true,
+        dotsEach:true,
         responsive: {
 
             768: {

@@ -30,7 +30,7 @@ namespace BraAutoDb.Dal
 
         public IEnumerable<UserInRole> GetByUserId(uint userId) => this.GetByFieldValues("user_id", new uint[] { userId });
 
-        public void DeleteByUserId(uint userId) => this.DeleteByField(new uint[] { userId }, "user_id");
+        public void DeleteByUserId(uint userId) => this.DeleteByField("user_id", new uint[] { userId });
 
         public void LoadUserRoles(IEnumerable<UserInRole> userInRoles)
         {

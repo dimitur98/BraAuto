@@ -27,7 +27,7 @@ namespace BraAutoDb.Dal
                             NOW(),
                             @editorId,
                             NOW()
-                        )
+                        );
 
                         SELECT LAST_INSERT_ID() AS id;";
 

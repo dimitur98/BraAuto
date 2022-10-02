@@ -12,12 +12,15 @@
 }
 
 <style>
-    .selected{
-        color: red;
+    .fav-selected{
+        color: #db2d2e;
+    }
+    .compare-selected{
+        color: #4971FF;
     }
     .compare-box{
         border-style: outset;
-        height: 150px;
+        height: 180px;
         margin-bottom: 20px;
     }
     .compare-btn{
@@ -28,6 +31,26 @@
         width: 150px;
         height: 110px;
         background-size: 100% 100%;
+    }
+    .compare-list{
+        overflow-x:auto;
+        white-space: nowrap;
+    }
+
+    .compare-list .compared-car{
+        display:inline-block;
+    }
+    .compare-list::-webkit-scrollbar {
+        width: 2px;
+        height: 7px;
+    }
+    .compare-list::-webkit-scrollbar-track {
+        background-color:#f1f1f1;
+    }
+    .compare-list::-webkit-scrollbar-thumb {
+        width: 10px;
+        border-radius: 5px;
+        background-color: #c1c1c1;
     }
 </style>
 
@@ -94,7 +117,7 @@
         <div class="row">
             <div class="col-lg-3 compare d-none"></div>
             <div class="col-lg-9 compare compare-box d-flex justify-content-between d-none border-outset">
-                        <div class="col-lg-10 compare-list row"></div>
+                        <div class="col-lg-10 compare-list d-flex-root pt-1"></div>
                         <div class="col-md-2">
                             <button type="submit" class="btn site-btn compare-btn">Compare</button>
                         </div>
@@ -218,8 +241,8 @@
                                             @if (loggedUser != null)
                                             {
                                                 <div class="me-2">
-                                                    <a><i id="@car.Id" class="fa-heart car-icon fav-icon me-1 @(Model.UserFavourableCarIds.Contains(car.Id) ? "fa-solid selected" : "fa-regular")"></i></a>
-                                                    <a><i id="@car.Id" class="fa-regular fa-copy car-icon compare-icon"></i></a>
+                                                    <a><i id="@car.Id" class="fa-heart car-icon fav-icon me-1 @(Model.UserFavourableCarIds.Contains(car.Id) ? "fa-solid fav-selected" : "fa-regular")"></i></a>
+                                                    <a><i id="@car.Id" class="fa-copy car-icon compare-icon @(Model.UserCompareCarIds.Contains(car.Id) ? "fa-solid compare-selected" : "fa-regular")"></i></a>
                                                 </div>
                                             }
                                         </div>
@@ -332,9 +355,19 @@
                     success: function (response, status, xhr) {
                         if (response) {                            
                             loadComparedCars();
+
+                            $(self).addClass("compare-selected");
+                            $(self).removeClass("fa-regular");
+                            $(self).addClass("fa-solid");
                         }
                     }
                 });
+            });
+
+            $(".compare-icon.compare-selected").on("click", function () {
+                $(this).removeClass("compare-selected");
+                $(this).removeClass("fa-solid");
+                $(this).addClass("fa-regular");
             });
 
             $(".compare-btn").on("click", function(){
@@ -355,7 +388,7 @@
                 data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.FavouriteId },
                 success: function (response, status, xhr) {
                     if (response) {
-                        $(self).addClass("selected");
+                        $(self).addClass("fav-selected");
                         $(self).removeClass("fa-regular");
                         $(self).addClass("fa-solid");
                         $(self).off("click").on("click", function () {
@@ -373,7 +406,7 @@
                 data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.FavouriteId },
                 success: function (response, status, xhr) {
                     if (response) {
-                        $(self).removeClass("selected");
+                        $(self).removeClass("fav-selected");
                         $(self).removeClass("fa-solid");
                         $(self).addClass("fa-regular");
                         $(self).off("click").on("click", function () {
@@ -394,20 +427,25 @@
                         $(".compare-list").empty();
 
                         response.forEach(function (c) {
-                            var $comparedCar = $("<div class='col-md-3 compared-car'></div>")
-                            var $carPreview = $("<div class='compared-car-preview me-2'><i id='" + c.id + "' class='fas fa-times delete-img'></i></div>");
+                            var $comparedCar = $("<div class='col-md-3 compared-car me-1'></div>")
+                            var $carPreview = $("<div class='compared-car-preview'><i id='" + c.id + "' class='fas fa-times delete-img'></i></div>");
                             
                             $carPreview.find(".delete-img").on("click", function(){
                                 var self = this;
+                                var carId = $(this).attr("id");
 
                                 $.ajax({
                                     url: @Html.Raw(Json.Serialize(Url.Action("Delete", "UserCarsApi"))),
                                     type: 'GET',
-                                    data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.CompareId },
+                                    data: { carId, userCarTypeId: @Db.UserCarTypes.CompareId },
                                     success: function (response, status, xhr) {
                                         if (response) {
                                             $(self).parent().parent().remove();
                                         }
+
+                                        $("#" + carId + ".compare-icon").removeClass("compare-selected");
+                                        $("#" + carId + ".compare-icon").removeClass("fa-solid");
+                                        $("#" + carId + ".compare-icon").addClass("fa-regular");
 
                                         if($(".compared-car").length == 0) { $(".compare").addClass("d-none"); }
                                     }

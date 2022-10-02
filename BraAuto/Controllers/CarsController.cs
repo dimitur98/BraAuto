@@ -36,7 +36,7 @@ namespace BraAuto.Controllers
         public IActionResult My(MyCarModel model)
         {
             model.UserIds = new List<uint>() { this.LoggedUser.Id };
-            model.FavouriteCount = Db.UserCars.GetCount();
+            model.FavouriteCount = Db.UserCars.GetCount(Db.UserCarTypes.FavouriteId);
 
             this.ExecuteSearch(model);
 
@@ -56,7 +56,7 @@ namespace BraAuto.Controllers
         [Authorize(Roles = "administrator")]
         public IActionResult Admin(CarAdminModel model)
         {
-            model.FavouriteCount = Db.UserCars.GetCount();
+            model.FavouriteCount = Db.UserCars.GetCount(Db.UserCarTypes.FavouriteId);
 
             this.ExecuteSearch(model);
 
@@ -76,7 +76,11 @@ namespace BraAuto.Controllers
 
             this.ExecuteSearch(model);
 
-            model.UserFavourableCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.FavouriteId).Select(ur => ur.CarId);
+            if (this.LoggedUser != null)
+            {
+                model.UserFavourableCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.FavouriteId).Select(ur => ur.CarId);
+                model.UserCompareCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.CompareId).Select(ur => ur.CarId);
+            }
 
             return this.View(model);
         }

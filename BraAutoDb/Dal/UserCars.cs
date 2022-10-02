@@ -17,13 +17,14 @@ namespace BraAutoDb.Dal
 
             return Db.Mapper.Query<UserCar>(sql, param: new { userId, userCarTypeId }).ToList();
         }
-        public IEnumerable<(uint CarId, int Count)> GetCount()
+        public IEnumerable<(uint CarId, int Count)> GetCount(uint userCarTypeId)
         {
             var sql = @"
-                    SELECT car_id, COUNT(user_id) AS 'Count' FROM user_car 
+                    SELECT car_id, COUNT(user_id) AS 'Count' FROM user_car
+                    WHERE user_car_type_id = @userCarTypeId
                     GROUP BY car_id";
 
-            return Db.Mapper.Query<(uint CarId, int Count)>(sql).ToList();
+            return Db.Mapper.Query<(uint CarId, int Count)>(sql, new { userCarTypeId }).ToList();
         }
 
         public void Insert(UserCar userCar)

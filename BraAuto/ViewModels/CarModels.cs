@@ -267,6 +267,8 @@ namespace BraAuto.ViewModels
     {
         public IEnumerable<uint> UserFavourableCarIds { get; set; }
 
+        public IEnumerable<uint> UserCompareCarIds { get; set; }
+
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Cars") };

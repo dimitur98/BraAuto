@@ -1,0 +1,232 @@
+﻿@model BraAuto.ViewModels.CarCompareModel
+@inject IConfiguration Configuration
+
+@{
+    ViewBag.StikyHeader = true;
+    ViewBag.ShowFooter = false;
+
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+}
+
+<section class="car-details spad sticky-content">
+    <div class="d-flex ms-3 me-3">
+        @foreach (var car in Model.Cars)
+        {
+            <div class="col-lg-4 me-2">
+                <div class="car__details__pic">
+                    <div>
+                        <img class="compare-car-img" src="@(cloudinaryUrl + car.ImgUrls.FirstOrDefault())" alt="">
+                    </div>
+                </div>
+                <div class="car__details__tab">
+                    <ul class="nav nav-tabs" id="details-car-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link active" id="vehicle-overview-@car.Id" data-bs-toggle="tab" data-bs-target="#vehicle-overview-pane-@car.Id" role="tab" aria-controls="vehicle-overview-pane-@car.Id" aria-selected="true">
+                                Vehicle
+                                Overview
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="technical-@car.Id" data-bs-toggle="tab" data-bs-target="#technical-pane-@car.Id" role="tab" aria-controls="technical-pane-@car.Id" aria-selected="false">Technical</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="features-and-options-@car.Id" data-bs-toggle="tab" data-bs-target="#features-and-options-pane-@car.Id" role="tab" aria-controls="features-and-options-pane-@car.Id" aria-selected="false">Features & Options</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link" id="contacts-@car.Id" data-bs-toggle="tab" data-bs-target="#contacts-pane-@car.Id" role="tab" aria-controls="contacts-pane-@car.Id" aria-selected="false">Contacts</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="details-car-tab-content">
+                        <div class="tab-pane fade show active" id="vehicle-overview-pane-@car.Id" role="tabpanel" aria-labelledby="vehicle-overview-@car.Id" tabindex="0">
+                            <div class="car__details__tab__info__item">
+                                <h5>@Html.Label("Description")</h5>
+                                <br />
+                                @car.Description
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="technical-pane-@car.Id" role="tabpanel" aria-labelledby="technical-@car.Id" tabindex="0">
+                            <div class="car__details__tab__info">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="car__details__tab__info__item">
+                                            <h5>General Information</h5>
+                                            <ul>
+                                                <li>
+                                                    <i class="fa fa-car"></i>@Html.Label("Body Type"): @car.BodyType
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-warehouse"></i>@Html.Label("Condition"): @car.Condition
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-calendar"></i>@Html.Label("Production Date"): @car.ProductionDate
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-paint-brush"></i>@Html.Label("Color"): @car.Color
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-gas-pump"></i>@Html.Label("Fuel"): @car.FuelType
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="car__details__tab__info__item">
+                                            <ul>
+                                                <li>
+                                                    <i class="fa fa-gear"></i> @Html.Label("Gearbox"): @car.GearboxType
+                                                <li>
+                                                    <i class="fa-solid fa-horse-head"></i> @Html.Label("Horse Power"): @car.HorsePower
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-horse-head"></i> @Html.Label("Cc"): @car.Cc
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-leaf"></i> @Html.Label("Euro Standart"): @car.EuroStandart
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-road"></i> @Html.Label("Mileage"): @car.Mileage km
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-door-closed"></i> @Html.Label("Door Number"): @car.DoorNumber
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="features-and-options-pane-@car.Id" role="tabpanel" aria-labelledby="features-and-options-@car.Id" tabindex="0">
+                            <div class="car__details__tab__feature">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Safety</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasAbs ? "fa fa-check-circle" : "")"></i> @Html.Label("Abs")</li>
+                                                <li><i class="@(car.HasEsp ? "fa fa-check-circle" : "")"></i> @Html.Label("Esp")</li>
+                                                <li><i class="@(car.HasAirBag ? "fa fa-check-circle" : "")"></i> @Html.Label("AirBag")</li>
+                                                <li><i class="@(car.HasTractionControl ? "fa fa-check-circle" : "")"></i> @Html.Label("Traction Control")</li>
+                                                <li><i class="@(car.HasParktronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Parktronic")</li>
+                                                <li><i class="@(car.HasCentralLock ? "fa fa-check-circle" : "")"></i> @Html.Label("Central Lock")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Interior</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasLetherInterior ? "fa fa-check-circle" : "")"></i> @Html.Label("Lether Interior")</li>
+                                                <li><i class="@(car.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> @Html.Label("Right Hand Drive")</li>
+                                                <li><i class="@(car.HasMoreSeats ? "fa fa-check-circle" : "")"></i> @Html.Label("More Seats")</li>
+                                            </ul>
+                                            <h5 class="mt-3">Exterior</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasSunroof ? "fa fa-check-circle" : "")"></i> @Html.Label("Sunroof")</li>
+                                                <li><i class="@(car.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> @Html.Label("Alloy Wheels")</li>
+                                                <li><i class="@(car.HasXenonLights ? "fa fa-check-circle" : "")"></i> @Html.Label("Xenon Lights")</li>
+                                                <li><i class="@(car.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> @Html.Label("Halogen Headlights")</li>
+                                                <li><i class="@(car.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> @Html.Label("Panoramic Roof")</li>
+                                                <li><i class="@(car.HasTow ? "fa fa-check-circle" : "")"></i> @Html.Label("Tow")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Comfort</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasAirConditioning ? "fa fa-check-circle" : "")"></i> @Html.Label("Air Conditioning")</li>
+                                                <li><i class="@(car.HasClimatronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Climatronic")</li>
+                                                <li><i class="@(car.HasElectricWindows ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Windows")</li>
+                                                <li><i class="@(car.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Mirrors")</li>
+                                                <li><i class="@(car.HasElectricSeats ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Seats")</li>
+                                                <li><i class="@(car.HasSeatHeating ? "fa fa-check-circle" : "")"></i> @Html.Label("Seat Heating")</li>
+                                                <li><i class="@(car.HasStereo ? "fa fa-check-circle" : "")"></i> @Html.Label("Stereo")</li>
+                                                <li><i class="@(car.HasDvdTv ? "fa fa-check-circle" : "")"></i> @Html.Label("Dvd/Tv")</li>
+                                                <li><i class="@(car.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> @Html.Label("Multi Steering Wheel")</li>
+                                                <li><i class="@(car.IsKeyless ? "fa fa-check-circle" : "")"></i> @Html.Label("Keyless")</li>
+                                                <li><i class="@(car.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Tiptronic/Multitronic")</li>
+                                                <li><i class="@(car.HasAutopilot ? "fa fa-check-circle" : "")"></i> @Html.Label("Autopilot")</li>
+                                                <li><i class="@(car.HasPowerSteering ? "fa fa-check-circle" : "")"></i> @Html.Label("Power Steering")</li>
+                                                <li><i class="@(car.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> @Html.Label("Multi Steering Wheel")</li>
+                                                <li><i class="@(car.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> @Html.Label("Navigation System")</li>
+                                                <li><i class="@(car.HasRefrigerator ? "fa fa-check-circle" : "")"></i> @Html.Label("Refrigerator")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="car__details__tab__feature__item">
+                                            <h5>Protection</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasImmobilizer ? "fa fa-check-circle" : "")"></i> @Html.Label("Immobilizer")</li>
+                                                <li><i class="@(car.HasAlarm ? "fa fa-check-circle" : "")"></i> @Html.Label("Alarm")</li>
+                                                <li><i class="@(car.IsArmored ? "fa fa-check-circle" : "")"></i> @Html.Label("Armored")</li>
+                                            </ul>
+                                            <h5 class="mt-3">Other</h5>
+                                            <ul>
+                                                <li><i class="@(car.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> @Html.Label("4WD")</li>
+                                                <li><i class="@(car.HasInsurance ? "fa fa-check-circle" : "")"></i> @Html.Label("Insurance")</li>
+                                                <li><i class="@(car.HasServiceBook ? "fa fa-check-circle" : "")"></i> @Html.Label("Service Book")</li>
+                                                <li><i class="@(car.HasWarranty ? "fa fa-check-circle" : "")"></i> @Html.Label("Warranty")</li>
+                                                <li><i class="@(car.HasTuning ? "fa fa-check-circle" : "")"></i> @Html.Label("Tuning")</li>
+                                                <li><i class="@(car.IsTaxi ? "fa fa-check-circle" : "")"></i> @Html.Label("Taxi")</li>
+                                                <li><i class="@(car.IsRetro ? "fa fa-check-circle" : "")"></i> @Html.Label("Retro")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="contacts-pane-@car.Id" role="tabpanel" aria-labelledby="contacts-@car.Id" tabindex="0">
+                            <div class="car__details__tab__info">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="car__details__tab__info__item">
+                                            <h5>Vehicle Location</h5>
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i>@Html.Label("Location"): @car.Location)</li>
+                                                <li><i class="fa fa-location-crosshairs"></i>@Html.Label("Specific Location"): @car.SpecificLocation)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="car__details__tab__info__item">
+                                            <h5>Owner Contacts</h5>
+                                            <ul>
+                                                <li><i class="fa fa-user"></i> @Html.Label("Owner Name"): @car.OwnerName)</li>
+                                                <li><i class="fa fa-mobile"></i> @Html.Label("Mobile"): @car.Mobile)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    $(document).ready(function(){
+        var $el = $(window);
+        var lastY = $el.scrollTop();
+        var $header = $("#header");
+
+        $el.on('scroll', function () {
+            var currY = $el.scrollTop();
+
+            var hideHeader = (currY > lastY) ? true : ((currY === lastY) ? false : true);
+
+            if(hideHeader && currY > 39){
+                $header.hide();
+            }
+
+            lastY = currY
+
+            if(currY <= 39){
+                $header.show();
+            }
+        });
+    });
+</script>

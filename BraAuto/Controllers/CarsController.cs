@@ -36,6 +36,17 @@ namespace BraAuto.Controllers
         public IActionResult My(MyCarModel model)
         {
             model.UserIds = new List<uint>() { this.LoggedUser.Id };
+            model.FavouriteCount = Db.UserCars.GetCount();
+
+            this.ExecuteSearch(model);
+
+            return this.View(model);
+        }
+
+        public IActionResult Favourite(FavouriteCarModel model)
+        {
+            model.GetFavouriteCarsOnly = true;
+            model.UserIds = new uint[] { this.LoggedUser.Id };
 
             this.ExecuteSearch(model);
 
@@ -45,6 +56,8 @@ namespace BraAuto.Controllers
         [Authorize(Roles = "administrator")]
         public IActionResult Admin(CarAdminModel model)
         {
+            model.FavouriteCount = Db.UserCars.GetCount();
+
             this.ExecuteSearch(model);
 
             Db.Cars.LoadCreators(model.Response.Records);
@@ -62,6 +75,8 @@ namespace BraAuto.Controllers
             model.ShowAllSortFields = false;
 
             this.ExecuteSearch(model);
+
+            model.UserFavourableCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.FavouriteId).Select(ur => ur.CarId);
 
             return this.View(model);
         }
@@ -385,7 +400,7 @@ namespace BraAuto.Controllers
             carModel.LoadMake();
             car.LoadCreator();
 
-            var model = new DetailsCarModel
+            var model = new CarDetailsModel
             {
                 Description = car.Description,
                 VehicleType = Db.VehicleTypes.GetById(car.VehicleTypeId).Name,
@@ -451,6 +466,97 @@ namespace BraAuto.Controllers
                 HasMoreSeats = car.HasMoreSeats,
                 HasRefrigerator = car.HasRefrigerator,
             };
+
+            return this.View(model);
+        }
+
+        public IActionResult Compare()
+        {
+            var carIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, userCarTypeId: Db.UserCarTypes.CompareId)?.Select(uc => uc.CarId);
+            var cars = Db.Cars.GetByIds(carIds);
+
+            if (cars.IsNullOrEmpty()) { return this.NotFound(); }
+
+            var model = new CarCompareModel 
+            {
+                Cars = new List<CarSpecifications>()
+            };
+
+            foreach (var car in cars)
+            {
+                var carModel = Db.Models.GetById(car.ModelId);
+
+                carModel.LoadMake();
+                car.LoadCreator();
+
+                model.Cars.Add(new CarSpecifications
+                {
+                    Id = car.Id,
+                    Description = car.Description,
+                    VehicleType = Db.VehicleTypes.GetById(car.VehicleTypeId).Name,
+                    Condition = Db.Conditions.GetById(car.ConditionId).Name,
+                    Make = carModel.Make.Name,
+                    Model = carModel.Name,
+                    Variant = car.Variant,
+                    BodyType = Db.BodyTypes.GetById(car.BodyTypeId).Name,
+                    Color = Db.Colors.GetById(car.ColorId).Name,
+                    FuelType = Db.FuelTypes.GetById(car.FuelTypeId).Name,
+                    ProductionDate = car.ProductionDate.ToWebDateFormat(showDay: false).ToString(),
+                    HorsePower = car.HorsePower.ToString(),
+                    Cc = car.CC.ToString(),
+                    EuroStandart = Db.EuroStandarts.GetById(car.EuroStandartId).Name,
+                    GearboxType = Db.GearboxTypes.GetById(car.GearboxTypeId).Name,
+                    Price = car.Price.ToString(),
+                    Location = Db.Locations.GetById(car.LocationId).Name,
+                    SpecificLocation = car.SpecificLocation,
+                    Mileage = car.Mileage.ToString(),
+                    DoorNumber = Db.DoorNumbers.GetById(car.DoorNumberId).Name,
+                    OwnerName = car.Creator.Name,
+                    Mobile = car.Creator.Mobile,
+                    ImgUrls = Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url),
+                    HasAirConditioning = car.HasAirConditioning,
+                    HasClimatronic = car.HasClimatronic,
+                    HasLetherInterior = car.HasLetherInterior,
+                    HasElectricWindows = car.HasElectricWindows,
+                    HasElectricMirrors = car.HasElectricMirrors,
+                    HasElectricSeats = car.HasElectricSeats,
+                    HasSeatHeating = car.HasSeatHeating,
+                    HasSunroof = car.HasSunroof,
+                    HasStereo = car.HasStereo,
+                    HasAlloyWheels = car.HasAlloyWheels,
+                    HasDvdTv = car.HasDvdTv,
+                    HasMultiSteeringWheel = car.HasMultiSteeringWheel,
+                    HasAllWheelDrive = car.HasAllWheelDrive,
+                    HasAbs = car.HasAbs,
+                    HasEsp = car.HasEsp,
+                    HasAirBag = car.HasAirBag,
+                    HasXenonLights = car.HasXenonLights,
+                    HasHalogenHeadlights = car.HasHalogenHeadlights,
+                    HasTractionControl = car.HasTractionControl,
+                    HasParktronic = car.HasParktronic,
+                    HasAlarm = car.HasAlarm,
+                    HasImmobilizer = car.HasImmobilizer,
+                    HasCentralLock = car.HasCentralLock,
+                    HasInsurance = car.HasInsurance,
+                    IsArmored = car.IsArmored,
+                    IsKeyless = car.IsKeyless,
+                    IsTiptronicMultitronic = car.IsTiptronicMultitronic,
+                    HasAutopilot = car.HasAutopilot,
+                    HasPowerSteering = car.HasPowerSteering,
+                    HasOnboardComputer = car.HasOnboardComputer,
+                    HasServiceBook = car.HasServiceBook,
+                    HasWarranty = car.HasWarranty,
+                    HasNavigationSystem = car.HasNavigationSystem,
+                    IsRightHandDrive = car.IsRightHandDrive,
+                    HasTuning = car.HasTuning,
+                    HasPanoramicRoof = car.HasPanoramicRoof,
+                    IsTaxi = car.IsTaxi,
+                    IsRetro = car.IsRetro,
+                    HasTow = car.HasTow,
+                    HasMoreSeats = car.HasMoreSeats,
+                    HasRefrigerator = car.HasRefrigerator,
+                });
+            }
 
             return this.View(model);
         }

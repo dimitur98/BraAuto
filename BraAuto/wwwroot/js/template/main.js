@@ -63,7 +63,7 @@
         Testimonial Slider
     ----------------------------*/
     $(".car__item__pic__slider").owlCarousel({
-        loop: true,
+        loop: false,
         margin: 0,
         items: 1,
         dots: true,
@@ -107,9 +107,6 @@
         autoHeight: true,
         autoplay: false,
         mouseDrag: false,
-        nav: true,
-        navElement: "#navEl",
-        dots: true,
         dotsEach:true,
         responsive: {
 

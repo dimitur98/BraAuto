@@ -1,4 +1,6 @@
 ﻿@model BraAuto.ViewModels.CarSearchModel
+@using BraAutoDb.Models;
+@using BraAutoDb.Dal;
 @inject IConfiguration Configuration
 
 @{
@@ -6,7 +8,28 @@
     ViewBag.ShowHeader = true;
     ViewBag.RegisterLazyMultiselect = true;
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+    var loggedUser = (User)ViewBag.LoggedUser;
 }
+
+<style>
+    .selected{
+        color: red;
+    }
+    .compare-box{
+        border-style: outset;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+    .compare-btn{
+        float: right;
+        transform: rotate(90deg) translateY(-29px) translateX(53px);
+    }
+    .compared-car-preview{
+        width: 150px;
+        height: 110px;
+        background-size: 100% 100%;
+    }
+</style>
 
 <div class="extras-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
@@ -67,7 +90,15 @@
 <!-- Car Section Begin -->
 <section class="car spad">
     <div class="container">
+
         <div class="row">
+            <div class="col-lg-3 compare d-none"></div>
+            <div class="col-lg-9 compare compare-box d-flex justify-content-between d-none border-outset">
+                        <div class="col-lg-10 compare-list row"></div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn site-btn compare-btn">Compare</button>
+                        </div>
+            </div>
             <div class="col-lg-3">
                 <div class="car__sidebar">
                     <div class="car__filter">
@@ -85,7 +116,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="MakeId" class="form-label"></label>
-                                <select class="form-select" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                <select class="form-select filter" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
                                     <option value="">-- All --</option>
                                 </select>
                             </div>
@@ -100,13 +131,13 @@
                             <div class="form-group">
                                 <label asp-for="YearFromId" class="form-label"></label>
                                 <div class="input-group">
-                                    <select class="form-select" asp-for="YearFromId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                    <select class="form-select filter" asp-for="YearFromId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
                                         <option value="">-- All --</option>
                                     </select>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">To</span>
                                     </div>
-                                    <select class="form-select" asp-for="YearToId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                    <select class="form-select filter" asp-for="YearToId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
                                         <option value="">-- All --</option>
                                     </select>
                                 </div>
@@ -166,7 +197,7 @@
                 return;
             }
             <div class="col-lg-9">
-                <partial name="_OrderListPartial" model="Model.ToPager()"/>
+                <partial name="_OrderListPartial" model="Model.ToPager()" />
 
                 <div class="row">
                     @foreach (var car in Model.Response.Records)
@@ -182,7 +213,16 @@
                                 <div class="car__item__text">
                                     <div class="car__item__text__inner">
                                         <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
-                                        <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
+                                        <div class="d-flex justify-content-between">
+                                            <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
+                                            @if (loggedUser != null)
+                                            {
+                                                <div class="me-2">
+                                                    <a><i id="@car.Id" class="fa-heart car-icon fav-icon me-1 @(Model.UserFavourableCarIds.Contains(car.Id) ? "fa-solid selected" : "fa-regular")"></i></a>
+                                                    <a><i id="@car.Id" class="fa-regular fa-copy car-icon compare-icon"></i></a>
+                                                </div>
+                                            }
+                                        </div>
                                         <ul>
                                             <li><span>@car.Mileage</span> km</li>
                                             <li>@car.GearboxType.Name</li>
@@ -207,7 +247,7 @@
 
 <script>
     $(document).ready(function () {
-        var model = @(Html.Raw(Json.Serialize(Model)))
+        var model = @(Html.Raw(Json.Serialize(Model)));
         var propNames = Object.getOwnPropertyNames(model);
 
         propNames.forEach(function (propName) {
@@ -235,20 +275,30 @@
 
         $("#search-form").submit(function (e) {
             e.preventDefault();
+
             var filters = $(".btn-extras-selected,.filter");
             var data = {};
 
             filters.each(function (i) {
                 var $filter = $(this);
                 var propertyName = $filter.attr("id");
-                var value = true;
+                var value = null;
 
-                if ($filter.is("select")) { value = $filter.val(); }
-                if ($filter.is("input[type='number']")) { value = parseInt($filter.val()) || null; }
+                if ($filter.is("select")) {
+                    if(Array.isArray($filter.val())) { 
+                        value = $filter.val(); 
+                    } else if ($filter.val() != "") {
+                        value = parseInt($filter.val()); 
+                    }
+                } else if ($filter.is("input[type='number']")) { 
+                    value = parseInt($filter.val()) || null; 
+                }else if($filter.is("input[type='button']")){
+                    value = true;
+                }
 
                 data[propertyName] = value;
             });
-
+            
             braAuto.submitJson({
                 url: @(Html.Raw(Json.Serialize(Url.Action("Search", "Cars")))),
                 method: "GET",
@@ -256,6 +306,123 @@
             });
 
             return;
-        })
+        });
     });
 </script>
+
+@if (loggedUser != null)
+{
+    <script>
+        $(document).ready(function () {
+            $(".fav-icon").on("click", function () {
+                addFavourite(this);
+            });
+
+            $(".fav-icon.selected").on("click", function () {
+                removeFavourite(this);
+            });
+
+            $(".compare-icon").on("click", function () {
+                var self = this;
+
+                $.ajax({
+                    url: @Html.Raw(Json.Serialize(Url.Action("Create", "UserCarsApi"))),
+                    type: 'GET',
+                    data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.CompareId },
+                    success: function (response, status, xhr) {
+                        if (response) {                            
+                            loadComparedCars();
+                        }
+                    }
+                });
+            });
+
+            $(".compare-btn").on("click", function(){
+                
+                braAuto.submitJson({
+                    url: @(Html.Raw(Json.Serialize(Url.Action("Compare", "Cars")))),
+                    method: "GET"
+                });
+            });
+
+            loadComparedCars();
+        });
+
+        function addFavourite(self) {
+            $.ajax({
+                url: @Html.Raw(Json.Serialize(Url.Action("Create", "UserCarsApi"))),
+                type: 'GET',
+                data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.FavouriteId },
+                success: function (response, status, xhr) {
+                    if (response) {
+                        $(self).addClass("selected");
+                        $(self).removeClass("fa-regular");
+                        $(self).addClass("fa-solid");
+                        $(self).off("click").on("click", function () {
+                            removeFavourite(self);
+                        });
+                    }
+                }
+            });
+        }
+
+        function removeFavourite(self) {
+            $.ajax({
+                url: @Html.Raw(Json.Serialize(Url.Action("Delete", "UserCarsApi"))),
+                type: 'GET',
+                data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.FavouriteId },
+                success: function (response, status, xhr) {
+                    if (response) {
+                        $(self).removeClass("selected");
+                        $(self).removeClass("fa-solid");
+                        $(self).addClass("fa-regular");
+                        $(self).off("click").on("click", function () {
+                            addFavourite(self);
+                        });
+                    }
+                }
+            });
+        }
+
+        function loadComparedCars() {
+            $.ajax({
+                url: @Html.Raw(Json.Serialize(Url.Action("GetComparedCars", "CarsApi"))),
+                type: 'GET',
+                success: function (response, status, xhr) {
+                    if (response && response.length) {
+                        $(".compare").removeClass("d-none");
+                        $(".compare-list").empty();
+
+                        response.forEach(function (c) {
+                            var $comparedCar = $("<div class='col-md-3 compared-car'></div>")
+                            var $carPreview = $("<div class='compared-car-preview me-2'><i id='" + c.id + "' class='fas fa-times delete-img'></i></div>");
+                            
+                            $carPreview.find(".delete-img").on("click", function(){
+                                var self = this;
+
+                                $.ajax({
+                                    url: @Html.Raw(Json.Serialize(Url.Action("Delete", "UserCarsApi"))),
+                                    type: 'GET',
+                                    data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.CompareId },
+                                    success: function (response, status, xhr) {
+                                        if (response) {
+                                            $(self).parent().parent().remove();
+                                        }
+
+                                        if($(".compared-car").length == 0) { $(".compare").addClass("d-none"); }
+                                    }
+                                });
+                            });
+
+                            $carPreview.css("background-image", "url(@cloudinaryUrl" + c.imgUrl + ")");
+                            $comparedCar.append($carPreview);
+                            $comparedCar.append($("<span>" + c.makeModel + "</span>"))
+                            
+                            $(".compare-list").append($comparedCar);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+}

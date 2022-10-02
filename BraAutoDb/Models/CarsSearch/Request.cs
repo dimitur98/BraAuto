@@ -23,7 +23,7 @@ namespace BraAutoDb.Models.CarsSearch
         public uint? YearToId { get; set; }
 
         public uint? HorsePowerFrom { get; set; }
-        
+
         public IEnumerable<uint> EuroStandartIds { get; set; }
 
         public IEnumerable<uint> GearboxTypeIds { get; set; }
@@ -37,6 +37,8 @@ namespace BraAutoDb.Models.CarsSearch
         public IEnumerable<uint> DoorNumberIds { get; set; }
 
         public IEnumerable<uint> UserIds { get; set; }
+
+        public bool GetFavouriteCarsOnly { get; set; } = false;
 
         public bool? HasAirConditioning { get; set; }
         

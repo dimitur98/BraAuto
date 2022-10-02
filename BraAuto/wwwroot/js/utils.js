@@ -1,7 +1,6 @@
 ﻿var braAuto = braAuto || {};
 
 braAuto.submitJson = function (options) {
-
     var defaults = {
         //url: undefined,
         //data: undefined,
@@ -16,24 +15,19 @@ braAuto.submitJson = function (options) {
     var form = jQuery("<form>")
         .attr("method", defaults.method)
         .attr("accept-charset", "UTF-8")
-        .attr("action", defaults.url)
-        .attr("enctype", "multipart/form-data");
+        .attr("action", defaults.url);
 
     if (defaults.target !== undefined) { form.attr("target", defaults.target); }
 
     var data = serializeObject(defaults.data);
 
     for (var i = 0; i < data.length; i++) {
-        console.log(data[i].value)
-        jQuery("<input type='hidden' id='test-1'>")
+        jQuery("<input type='hidden'>")
             .attr("name", data[i].name)
-            //.attr("value", data[i].value)
+            .attr("value", data[i].value)
             .appendTo(form);
-        form.find("input").val("C:\\fakepath\\img2.jpeg")
-        console.log("dd: ", jQuery("#test-1"))
-        console.log(form.find("input").val())
     }
-    //return
+
     if (defaults.submit == true) {
         form.appendTo("body");
         form.submit();
@@ -45,6 +39,7 @@ braAuto.submitJson = function (options) {
         var plainObjectsIndex = -1;
 
         jQuery.each(object, function (name, value) {
+
             if (jQuery.isPlainObject(value)) {
                 var items = serializeObject(value);
                 var key = null;

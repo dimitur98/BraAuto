@@ -36,23 +36,5 @@ namespace BraAutoDb.Dal
         }
 
         public void DeleteByCarId(uint carId) => this.DeleteByField("car_id", new uint[] { carId });
-
-        //public void Update(CarImg carImg)
-        //{
-        //    var sql = @"UPDATE `car_img`
-        //                    SET url = @url,
-        //                        car_id = @carId,
-        //                        sort_order = @sortOrder
-        //                WHERE id = @id";
-        //    var queryParams = new
-        //    {
-        //        id = carImg.Id,
-        //        url = carImg.Url,
-        //        carId = carImg.CarId,
-        //        sortOrder = carImg.SortOrder
-        //    };
-
-        //    Db.Mapper.Execute(sql, queryParams);
-        //}
     }
 }

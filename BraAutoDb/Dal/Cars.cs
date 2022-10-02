@@ -31,6 +31,7 @@ namespace BraAutoDb.Dal
                     if (!request.LocationIds.IsNullOrEmpty()) { query.Where.Add(" AND c.location_id IN @locationIds"); }
                     if (!request.DoorNumberIds.IsNullOrEmpty()) { query.Where.Add(" AND c.door_number_id IN @doorNumberIds"); }
                     if (!request.UserIds.IsNullOrEmpty()) { query.Where.Add(" AND c.creator_id IN @userIds"); }
+                    if (request.GetFavouriteCarsOnly) { query.Where.Add("AND EXISTS(SELECT * FROM user_car uc WHERE uc.car_id = c.id AND uc.user_id IN @userIds)"); }
                     if (request.HasAirConditioning.HasValue) { query.Where.Add("AND c.has_air_conditioning = @hasAirConditioning"); }
                     if (request.HasClimatronic.HasValue) { query.Where.Add(" AND c.has_climatronic = @hasClimatronic"); }
                     if (request.HasLetherInterior.HasValue) { query.Where.Add(" AND c.has_lether_interior = @hasLetherInterior"); }

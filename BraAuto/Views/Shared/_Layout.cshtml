@@ -45,7 +45,7 @@
     <div id="page">
         @if (ViewBag.ShowHeader == null || ViewBag.ShowHeader == true)
         {
-            <header id="header" class="mb-3">
+            <header id="header" class="mb-3 @(ViewBag.StikyHeader == true ? "sticky-header" : "")">
                 <partial name="_MenuPartial" />
             </header>
         }

@@ -62,6 +62,8 @@ namespace BraAuto.ViewModels
         [DisplayName("User")]
         public IEnumerable<uint> UserIds { get; set; }
 
+        public bool GetFavouriteCarsOnly { get; set; } = false;
+
         [DisplayName("Air Conditioning")]
         public bool? HasAirConditioning { get; set; }
 
@@ -187,6 +189,8 @@ namespace BraAuto.ViewModels
 
         public bool? IsApproved { get; set; }
 
+        public IEnumerable<(uint CarId, int Count)> FavouriteCount { get; set; }
+
         public Request ToSearchRequest()
         {
             var request = new Request
@@ -209,6 +213,7 @@ namespace BraAuto.ViewModels
                 DoorNumberIds = this.DoorNumberIds,
                 HasAirConditioning = this.HasAirConditioning,
                 UserIds = this.UserIds,
+                GetFavouriteCarsOnly = this.GetFavouriteCarsOnly,
                 HasClimatronic = this.HasClimatronic,
                 HasLetherInterior = this.HasLetherInterior,
                 HasElectricWindows = this.HasElectricWindows,
@@ -260,6 +265,8 @@ namespace BraAuto.ViewModels
 
     public class CarSearchModel : CarSearchBaseModel
     {
+        public IEnumerable<uint> UserFavourableCarIds { get; set; }
+
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Cars") };
@@ -269,8 +276,18 @@ namespace BraAuto.ViewModels
     }
     public class HomeCarSearchModel : CarSearchBaseModel { }
 
-    public class MyCarModel : CarSearchBaseModel
+    public class FavouriteCarModel : CarSearchBaseModel
     {
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Favourite", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class MyCarModel : CarSearchBaseModel
+    { 
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars") };
@@ -529,9 +546,11 @@ namespace BraAuto.ViewModels
         }
     }
 
-    public class DetailsCarModel
+    public class CarSpecifications
     {
-        [DisplayName("Description")]
+        public uint Id { get; set; }
+
+        [DisplayName("Description d")]
         public string Description { get; set; }
 
         [DisplayName("Vin")]
@@ -721,6 +740,22 @@ namespace BraAuto.ViewModels
 
         [DisplayName("Refrigerator")]
         public bool HasRefrigerator { get; set; }
+    }
+
+    public class CarDetailsModel : CarSpecifications { }
+
+    public class CarCompareModel
+    {
+        public List<CarSpecifications> Cars { get; set; }
+    }
+
+    public class SimpleCarModel
+    {
+        public uint Id { get; set; }
+
+        public string MakeModel { get; set; }
+
+        public string ImgUrl { get; set; }
     }
 
     public class Imgs

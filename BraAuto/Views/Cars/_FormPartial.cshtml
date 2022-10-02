@@ -31,74 +31,74 @@
             <div asp-validation-summary="ModelOnly"></div>
             <div class="row mb-5">
                 <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Main<input type="file" asp-for="Imgs.Img1" class="upload-file" value="Main Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                     <span asp-validation-for="Imgs.Img1"></span>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img2" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img3" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img4" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img5" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img6" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img7" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img8" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                  <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img9" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                 <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img10" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                 <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img11" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
                 </div>
                 <div class="col-sm-2 img-up">
-                    <div class="image-preview"><i class="fa f-x del"></i></div>
+                    <div class="image-preview"><i class="fa f-x delete-img"></i></div>
                     <label class="btn btn-primary">
                         Upload<input type="file" asp-for="Imgs.Img12" class="upload-file" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     </label>
@@ -500,7 +500,7 @@
             }
         });
 
-        $("i.del").on("click", function () {
+        $("i.delete-img").on("click", function () {
             $(this).parent().val("");
             $(this).parent().css("background-image", "");
         });
@@ -548,5 +548,3 @@
         });
     </script>
 }
-
-                        @*TODO Hiden filed for img props for editModel and save the new ones in db*@

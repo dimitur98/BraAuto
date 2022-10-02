@@ -34,6 +34,8 @@ namespace BraAutoDb.Dal
         public static UserInRoles UserInRoles = new UserInRoles();
         public static UserRoles UserRoles = new UserRoles();
         public static Users Users = new Users();
+        public static UserCars UserCars = new UserCars();
+        public static UserCarTypes UserCarTypes = new UserCarTypes();
         public static UserTypes UserTypes = new UserTypes();
         public static VehicleTypes VehicleTypes = new VehicleTypes();
         public static Years Years = new Years();

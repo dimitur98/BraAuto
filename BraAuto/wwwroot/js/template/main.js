@@ -16,9 +16,21 @@
             $('.filter__controls li').removeClass('active');
             $(this).addClass('active');
         });
+
         if ($('.car-filter').length > 0) {
             var containerEl = document.querySelector('.car-filter');
-            var mixer = mixitup(containerEl);
+            var mixer = mixitup(containerEl, {
+                controls: {
+                    toggleDefault: "all"
+                }
+            });
+
+            mixer.toggleOn('.most-viewed')
+                .then(function () {
+                    // Deactivate all active toggles
+
+                    return mixer.toggleOff('.newest')
+                });
         }
     });
 

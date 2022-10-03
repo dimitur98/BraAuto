@@ -26,8 +26,16 @@ namespace BraAuto.Controllers
             var model = new HomeCarSearchModel
             {
                 Makes = Db.Makes.GetAll(),
-                Years = Db.Years.GetAll()
-        }   ;
+                Years = Db.Years.GetAll(),
+                NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", RowCount = 10 }).Records,
+                MostViewedCars = Db.Cars.GetMostViewed(10),
+                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsActive = true, SortColumn = "created_at", RowCount = 6}).Records
+            };
+
+            this.LoadCarProperties(model.NewestCars);
+            this.LoadCarProperties(model.MostViewedCars);
+
+            Db.Articles.LoadCreators(model.NewestArticles);
 
             return this.View(model);
         }
@@ -576,12 +584,17 @@ namespace BraAuto.Controllers
 
             var response = Db.Cars.Search(request);
 
-            Db.Cars.LoadModels(response.Records);
-            Db.Models.LoadMakes(response.Records.Select(r => r.Model));
-            Db.Cars.LoadGearboxTypes(response.Records);
-            Db.Cars.LoadImgUrls(response.Records);
+            LoadCarProperties(response.Records);
 
             model.Response = response;
+        }
+
+        protected void LoadCarProperties(IEnumerable<Car> cars)
+        {
+            Db.Cars.LoadModels(cars);
+            Db.Models.LoadMakes(cars.Select(r => r.Model));
+            Db.Cars.LoadGearboxTypes(cars);
+            Db.Cars.LoadImgUrls(cars);
         }
 
         protected void LoadCarModel(CarBaseModel model)
@@ -628,7 +641,7 @@ namespace BraAuto.Controllers
 
             if (!urlsForDelete.IsNullOrEmpty()) { await this.DeleteImgs(urlsForDelete); } 
         }
-    
+
         protected async Task DeleteImgs(IEnumerable<string> urls)
         {
             foreach (var url in urls)

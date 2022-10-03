@@ -276,7 +276,14 @@ namespace BraAuto.ViewModels
             return new Breadcrumb(paths);
         }
     }
-    public class HomeCarSearchModel : CarSearchBaseModel { }
+    public class HomeCarSearchModel : CarSearchBaseModel 
+    {
+        public IEnumerable<Car> NewestCars { get; set; }
+
+        public IEnumerable<Car> MostViewedCars { get; set; }
+
+        public IEnumerable<Article> NewestArticles { get; set; }
+    }
 
     public class FavouriteCarModel : CarSearchBaseModel
     {

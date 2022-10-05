@@ -1,7 +1,7 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAutoDb.Models;
 using BraAutoDb.Models.CarsSearch;
-
+using SqlQueryBuilder.MySql;
 
 namespace BraAutoDb.Dal
 {
@@ -9,15 +9,27 @@ namespace BraAutoDb.Dal
     {
         public Cars() : base("car", "id", "created_at", sortDesc: true) { }
 
-        public List<Car> GetMostViewed(int limit)
+        public List<Car> GetMostViewed(int limit, bool weekly)
         {
-            var sql = @"
-                SELECT *
-                FROM car
-                ORDER BY created_at
-                LIMIT @limit";
+            var query = new Query
+            {
+                Select = new List<string>() { "c.*" },
+                From = "car c",
+                Where = new List<string>() { " is_advert = true AND is_approved = true" },
+                Joins = new List<string>() { "RIGHT JOIN car_view cv ON cv.car_id = c.id"},
+                GroupBy = new List<string>() { "c.id" },
+                OrderBys = new List<OrderBy>() { new OrderBy("COUNT(cv.car_id)", descending: true)},
+                Limit = new Limit(rowCount: limit)
+            };
 
-            return Db.Mapper.Query<Car>(sql, new { limit }).ToList();
+            if (weekly)
+            {
+                query.Where.Add(" AND cv.created_at >= DATE(@weekFirstDay)");
+            }
+
+            var date = DateTime.Now;
+
+            return Db.Mapper.Query<Car>(query.Build(), new { limit, WeekFirstDay = date.Date.AddDays(DayOfWeek.Monday - date.DayOfWeek) }).ToList();
         }
 
         public Response Search(Request request)
@@ -42,7 +54,7 @@ namespace BraAutoDb.Dal
                     if (!request.LocationIds.IsNullOrEmpty()) { query.Where.Add(" AND c.location_id IN @locationIds"); }
                     if (!request.DoorNumberIds.IsNullOrEmpty()) { query.Where.Add(" AND c.door_number_id IN @doorNumberIds"); }
                     if (!request.UserIds.IsNullOrEmpty()) { query.Where.Add(" AND c.creator_id IN @userIds"); }
-                    if (request.GetFavouriteCarsOnly) { query.Where.Add("AND EXISTS(SELECT * FROM user_car uc WHERE uc.car_id = c.id AND uc.user_id IN @userIds)"); }
+                    if (request.GetFavouriteCarsOnly) { query.Where.Add(string.Format("AND EXISTS(SELECT * FROM user_car uc WHERE uc.car_id = c.id AND uc.user_id IN @userIds AND uc.user_car_type_id = {0})", Db.UserCarTypes.FavouriteId)); }
                     if (request.HasAirConditioning.HasValue) { query.Where.Add("AND c.has_air_conditioning = @hasAirConditioning"); }
                     if (request.HasClimatronic.HasValue) { query.Where.Add(" AND c.has_climatronic = @hasClimatronic"); }
                     if (request.HasLetherInterior.HasValue) { query.Where.Add(" AND c.has_lether_interior = @hasLetherInterior"); }

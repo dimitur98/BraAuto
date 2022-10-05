@@ -1,9 +1,14 @@
 ﻿@model BraAuto.ViewModels.CarDetailsModel
+@using BraAutoDb.Models
+@using BraAutoDb.Dal
 @inject IConfiguration Configuration
 
 @{
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+    var loggedUser = (User)ViewBag.LoggedUser;
 }
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
 
 <section class="car-details spad">
     <div class="container">
@@ -15,7 +20,7 @@
                     </div>
                     <div class="car-thumbs">
                         <div class="car-thumbs-track car__thumb__slider owl-carousel">
-                            @foreach(var url in Model.ImgUrls)
+                            @foreach (var url in Model.ImgUrls)
                             {
                                 <div class="ct" data-imgbigurl="@(cloudinaryUrl + url)">
                                     <img src="@(cloudinaryUrl + url)" alt="">
@@ -45,9 +50,9 @@
                     <div class="tab-content" id="details-car-tab-content">
                         <div class="tab-pane fade show active" id="vehicle-overview-pane" role="tabpanel" aria-labelledby="vehicle-overview" tabindex="0">
                             <div class="car__details__tab__info__item">
-                                <h5>@Html.DisplayNameFor(model => model.Description)</h5>
+                                <h5><label asp-for="Description"></label></h5>
                                 <br />
-                                @Html.DisplayFor(model => model.Description)
+                                @Model.Description
                             </div>
                         </div>
                         <div class="tab-pane fade" id="technical-pane" role="tabpanel" aria-labelledby="technical" tabindex="0">
@@ -58,19 +63,19 @@
                                             <h5>General Information</h5>
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-car"></i>@Html.DisplayNameFor(model => model.BodyType): @Html.DisplayFor(model => model.BodyType)
+                                                    <i class="fa fa-car"></i><label asp-for="BodyType"></label>: @Model.BodyType
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-warehouse"></i>@Html.DisplayNameFor(model => model.Condition): @Html.DisplayFor(model => model.Condition)
+                                                    <i class="fa fa-warehouse"></i><label asp-for="Condition"></label>: @Model.Condition
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-calendar"></i>@Html.DisplayNameFor(model => model.ProductionDate): @Html.DisplayFor(model => model.ProductionDate)
+                                                    <i class="fa fa-calendar"></i><label asp-for="ProductionDate"></label>: @Model.ProductionDate
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-paint-brush"></i>@Html.DisplayNameFor(model => model.Color): @Html.DisplayFor(model => model.Color)
+                                                    <i class="fa fa-paint-brush"></i><label asp-for="Color"></label>: @Model.Color
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-gas-pump"></i>@Html.DisplayNameFor(model => model.FuelType): @Html.DisplayFor(model => model.FuelType)
+                                                    <i class="fa fa-gas-pump"></i><label asp-for="FuelType"></label>: @Model.FuelType
                                                 </li>
                                             </ul>
                                         </div>
@@ -79,21 +84,21 @@
                                         <div class="car__details__tab__info__item">
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-gear"></i> @Html.DisplayNameFor(model => model.GearboxType): @Html.DisplayFor(model => model.GearboxType)
+                                                    <i class="fa fa-gear"></i> <label asp-for="GearboxType"></label>: @Model.GearboxType
                                                 <li>
-                                                    <i class="fa-solid fa-horse-head"></i> @Html.DisplayNameFor(model => model.HorsePower): @Html.DisplayFor(model => model.HorsePower)
+                                                    <i class="fa-solid fa-horse-head"></i> <label asp-for="HorsePower"></label>: @Model.HorsePower
                                                 </li>
                                                 <li>
-                                                    <i class="fa-solid fa-horse-head"></i> @Html.DisplayNameFor(model => model.Cc): @Html.DisplayFor(model => model.Cc)
+                                                    <i class="fa-solid fa-horse-head"></i> <label asp-for="Cc"></label>: @Model.Cc
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-leaf"></i> @Html.DisplayNameFor(model => model.EuroStandart): @Html.DisplayFor(model => model.EuroStandart)
+                                                    <i class="fa fa-leaf"></i> <label asp-for="EuroStandart"></label>: @Model.EuroStandart
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-road"></i> @Html.DisplayNameFor(model => model.Mileage): @Html.DisplayFor(model => model.Mileage) km
+                                                    <i class="fa fa-road"></i> <label asp-for="Mileage"></label>: @Model.Mileage km
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-door-closed"></i> @Html.DisplayNameFor(model => model.DoorNumber): @Html.DisplayFor(model => model.DoorNumber)
+                                                    <i class="fa fa-door-closed"></i> <label asp-for="DoorNumber"></label>: @Model.DoorNumber
                                                 </li>
                                             </ul>
                                         </div>
@@ -108,12 +113,12 @@
                                         <div class="car__details__tab__feature__item">
                                             <h5>Safety</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasAbs ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAbs)</li>
-                                                <li><i class="@(Model.HasEsp ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasEsp)</li>
-                                                <li><i class="@(Model.HasAirBag ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAirBag)</li>
-                                                <li><i class="@(Model.HasTractionControl ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTractionControl)</li>
-                                                <li><i class="@(Model.HasParktronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasParktronic)</li>
-                                                <li><i class="@(Model.HasCentralLock ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasCentralLock)</li>
+                                                <li><i class="@(Model.HasAbs ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAbs"></label></li>
+                                                <li><i class="@(Model.HasEsp ? "fa fa-check-circle" : "")"></i> <label asp-for="HasEsp"></label></li>
+                                                <li><i class="@(Model.HasAirBag ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAirBag"></label></li>
+                                                <li><i class="@(Model.HasTractionControl ? "fa fa-check-circle" : "")"></i> <label asp-for="HasTractionControl"></label></li>
+                                                <li><i class="@(Model.HasParktronic ? "fa fa-check-circle" : "")"></i> <label asp-for="HasParktronic"></label></li>
+                                                <li><i class="@(Model.HasCentralLock ? "fa fa-check-circle" : "")"></i> <label asp-for="HasCentralLock"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -121,18 +126,18 @@
                                         <div class="car__details__tab__feature__item">
                                             <h5>Interior</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasLetherInterior ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasLetherInterior)</li>
-                                                <li><i class="@(Model.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsRightHandDrive)</li>
-                                                <li><i class="@(Model.HasMoreSeats ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMoreSeats)</li>
+                                                <li><i class="@(Model.HasLetherInterior ? "fa fa-check-circle" : "")"></i> <label asp-for="HasLetherInterior"></label></li>
+                                                <li><i class="@(Model.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> <label asp-for="IsRightHandDrive"></label></li>
+                                                <li><i class="@(Model.HasMoreSeats ? "fa fa-check-circle" : "")"></i> <label asp-for="HasMoreSeats"></label></li>
                                             </ul>
                                             <h5 class="mt-3">Exterior</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasSunroof ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasSunroof)</li>
-                                                <li><i class="@(Model.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAlloyWheels)</li>
-                                                <li><i class="@(Model.HasXenonLights ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasXenonLights)</li>
-                                                <li><i class="@(Model.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasHalogenHeadlights)</li>
-                                                <li><i class="@(Model.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasPanoramicRoof)</li>
-                                                <li><i class="@(Model.HasTow ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTow)</li>
+                                                <li><i class="@(Model.HasSunroof ? "fa fa-check-circle" : "")"></i> <label asp-for="HasSunroof"></label></li>
+                                                <li><i class="@(Model.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAlloyWheels"></label></li>
+                                                <li><i class="@(Model.HasXenonLights ? "fa fa-check-circle" : "")"></i> <label asp-for="HasXenonLights"></label></li>
+                                                <li><i class="@(Model.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> <label asp-for="HasHalogenHeadlights"></label></li>
+                                                <li><i class="@(Model.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> <label asp-for="HasPanoramicRoof"></label></li>
+                                                <li><i class="@(Model.HasTow ? "fa fa-check-circle" : "")"></i> <label asp-for="HasTow"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -140,22 +145,22 @@
                                         <div class="car__details__tab__feature__item">
                                             <h5>Comfort</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasAirConditioning ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAirConditioning)</li>
-                                                <li><i class="@(Model.HasClimatronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasClimatronic)</li>
-                                                <li><i class="@(Model.HasElectricWindows ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricWindows)</li>
-                                                <li><i class="@(Model.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricMirrors)</li>
-                                                <li><i class="@(Model.HasElectricSeats ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasElectricSeats)</li>
-                                                <li><i class="@(Model.HasSeatHeating ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasSeatHeating)</li>
-                                                <li><i class="@(Model.HasStereo ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasStereo)</li>
-                                                <li><i class="@(Model.HasDvdTv ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasDvdTv)</li>
-                                                <li><i class="@(Model.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMultiSteeringWheel)</li>
-                                                <li><i class="@(Model.IsKeyless ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsKeyless)</li>
-                                                <li><i class="@(Model.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsTiptronicMultitronic)</li>
-                                                <li><i class="@(Model.HasAutopilot ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAutopilot)</li>
-                                                <li><i class="@(Model.HasPowerSteering ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasPowerSteering)</li>
-                                                <li><i class="@(Model.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasMultiSteeringWheel)</li>
-                                                <li><i class="@(Model.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasNavigationSystem)</li>
-                                                <li><i class="@(Model.HasRefrigerator ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasRefrigerator)</li>
+                                                <li><i class="@(Model.HasAirConditioning ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAirConditioning"></label></li>
+                                                <li><i class="@(Model.HasClimatronic ? "fa fa-check-circle" : "")"></i> <label asp-for="HasClimatronic"></label></li>
+                                                <li><i class="@(Model.HasElectricWindows ? "fa fa-check-circle" : "")"></i> <label asp-for="HasElectricWindows"></label></li>
+                                                <li><i class="@(Model.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> <label asp-for="HasElectricMirrors"></label></li>
+                                                <li><i class="@(Model.HasElectricSeats ? "fa fa-check-circle" : "")"></i> <label asp-for="HasElectricSeats"></label></li>
+                                                <li><i class="@(Model.HasSeatHeating ? "fa fa-check-circle" : "")"></i> <label asp-for="HasSeatHeating"></label></li>
+                                                <li><i class="@(Model.HasStereo ? "fa fa-check-circle" : "")"></i> <label asp-for="HasStereo"></label></li>
+                                                <li><i class="@(Model.HasDvdTv ? "fa fa-check-circle" : "")"></i> <label asp-for="HasDvdTv"></label></li>
+                                                <li><i class="@(Model.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> <label asp-for="HasMultiSteeringWheel"></label></li>
+                                                <li><i class="@(Model.IsKeyless ? "fa fa-check-circle" : "")"></i> <label asp-for="IsKeyless"></label></li>
+                                                <li><i class="@(Model.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> <label asp-for="IsTiptronicMultitronic"></label></li>
+                                                <li><i class="@(Model.HasAutopilot ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAutopilot"></label></li>
+                                                <li><i class="@(Model.HasPowerSteering ? "fa fa-check-circle" : "")"></i> <label asp-for="HasPowerSteering"></label></li>
+                                                <li><i class="@(Model.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> <label asp-for="HasMultiSteeringWheel"></label></li>
+                                                <li><i class="@(Model.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> <label asp-for="HasNavigationSystem"></label></li>
+                                                <li><i class="@(Model.HasRefrigerator ? "fa fa-check-circle" : "")"></i> <label asp-for="HasRefrigerator"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -163,19 +168,25 @@
                                         <div class="car__details__tab__feature__item">
                                             <h5>Protection</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasImmobilizer ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasImmobilizer)</li>
-                                                <li><i class="@(Model.HasAlarm ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAlarm)</li>
-                                                <li><i class="@(Model.IsArmored ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsArmored)</li>
+                                                <li>
+                                                    <i class="@(Model.HasImmobilizer ? "fa fa-check-circle" : "")"></i> <label asp-for="HasImmobilizer"></label>
+                                                </li>
+                                                <li>
+                                                    <i class=" @(Model.HasAlarm ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAlarm"></label>
+                                                </li>
+                                                <li><i class="@(Model.IsArmored ? "fa fa-check-circle" : "")"></i> <label asp-for="IsArmored"></label></li>
                                             </ul>
                                             <h5 class="mt-3">Other</h5>
                                             <ul>
-                                                <li><i class="@(Model.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasAllWheelDrive)</li>
-                                                <li><i class="@(Model.HasInsurance ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasInsurance)</li>
-                                                <li><i class="@(Model.HasServiceBook ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasServiceBook)</li>
-                                                <li><i class="@(Model.HasWarranty ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasWarranty)</li>
-                                                <li><i class="@(Model.HasTuning ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.HasTuning)</li>
-                                                <li><i class="@(Model.IsTaxi ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsTaxi)</li>
-                                                <li><i class="@(Model.IsRetro ? "fa fa-check-circle" : "")"></i> @Html.DisplayNameFor(model => model.IsRetro)</li>
+                                                <li><i class="@(Model.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAllWheelDrive"></label></li>
+                                                <li><i class="@(Model.HasInsurance ? "fa fa-check-circle" : "")"></i> <label asp-for="HasInsurance"></label></li>
+                                                <li><i class="@(Model.HasServiceBook ? "fa fa-check-circle" : "")"></i> <label asp-for="HasServiceBook"></label></li>
+                                                <li><i class="@(Model.HasWarranty ? "fa fa-check-circle" : "")"></i> <label asp-for="HasWarranty"></label></li>
+                                                <li><i class="@(Model.HasTuning ? "fa fa-check-circle" : "")"></i> <label asp-for="HasTuning"></label></li>
+                                                <li>
+                                                    <i class=" @(Model.IsTaxi ? "fa fa-check-circle" : "")"></i> <label asp-for="IsTaxi"></label>
+                                                </li>
+                                                <li><i class="@(Model.IsRetro ? "fa fa-check-circle" : "")"></i> <label asp-for="IsRetro"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -189,8 +200,8 @@
                                         <div class="car__details__tab__info__item">
                                             <h5>Vehicle Location</h5>
                                             <ul>
-                                                <li><i class="fa fa-map-marker"></i>@Html.DisplayNameFor(model => model.Location): @Html.DisplayFor(model => model.Location)</li>
-                                                <li><i class="fa fa-location-crosshairs"></i>@Html.DisplayNameFor(model => model.SpecificLocation): @Html.DisplayFor(model => model.SpecificLocation)</li>
+                                                <li><i class="fa fa-map-marker"></i><label asp-for="Location"></label>: @Model.Location</li>
+                                                <li><i class="fa fa-location-crosshairs"></i><label asp-for="SpecificLocation"></label>: @Model.SpecificLocation</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -198,8 +209,8 @@
                                         <div class="car__details__tab__info__item">
                                             <h5>Owner Contacts</h5>
                                             <ul>
-                                                <li><i class="fa fa-user"></i> @Html.DisplayNameFor(model => model.OwnerName): @Html.DisplayFor(model => model.OwnerName)</li>
-                                                <li><i class="fa fa-mobile"></i> @Html.DisplayNameFor(model => model.Mobile): @Html.DisplayFor(model => model.Mobile)</li>
+                                                <li><i class="fa fa-user"></i> <label asp-for="OwnerName"></label>: @Model.OwnerName</li>
+                                                <li><i class="fa fa-mobile"></i> <label asp-for="Mobile"></label>: @Model.Mobile</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -211,24 +222,76 @@
             </div>
             <div class="col-lg-3">
                 <div class="car__details__sidebar">
-                    @if (!string.IsNullOrEmpty(Model.Vin))
-                    {
-                        <div class="car__details__sidebar__model">
-                            <ul>
-                                <li>@Html.DisplayNameFor(model => model.Vin) <span>@Html.DisplayFor(model => model.Vin)</span></li>
-                            </ul>
-                        </div>
-                    }
+
+                    <div class="car__details__sidebar__model">
+                        <ul>
+                            <li><label asp-for="ViewsCount"></label>: @Model.ViewsCount</li>
+                            @if (!string.IsNullOrEmpty(Model.Vin))
+                            {
+                                <li><label asp-for="Vin"></label> <span>@Model.Vin</span></li>
+                            }
+                        </ul>
+                    </div>
                     <div class="car__details__sidebar__payment">
                         <ul>
-                            <li>@Html.DisplayNameFor(model => model.Price) <span>@Html.DisplayFor(model => model.Price) lv</span></li>
+                            <li><label asp-for="Price"></label> <span>@Model.Price lv</span></li>
                         </ul>
 
-                        <a href="#" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
-                        <a href="#" class="primary-btn c-white"><i class="fa fa-heart"></i> Add To Favourite</a>
+                        @if(loggedUser != null)
+                        {
+                            <a href="#" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                            <a href="#" class="primary-btn c-white fav-icon @(Model.IsFavourite ? "selected" : "")"><i class="fa fa-heart"></i><span>@(Model.IsFavourite ? "Remove From Favourite" : "Add To Favourite")</span></a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+
+    $(document).ready(function () {
+        $(".fav-icon").on("click", function () {
+            addFavourite(this);
+        });
+
+        $(".fav-icon.selected").on("click", function () {
+            removeFavourite(this);
+        });
+    });
+
+    function addFavourite(self) {
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("Create", "UserCarsApi"))),
+            type: 'GET',
+            data: { carId: @Model.Id, userCarTypeId: @Db.UserCarTypes.FavouriteId },
+            success: function (response, status, xhr) {
+                if (response) {
+                    $(self).addClass("selected");
+                    $(self).find("span").text("Remove From Favourite");
+                    $(self).off("click").on("click", function () {
+                        removeFavourite(self);
+                    });
+                }
+            }
+        });
+    }
+
+    function removeFavourite(self) {
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("Delete", "UserCarsApi"))),
+            type: 'GET',
+            data: { carId: @Model.Id, userCarTypeId: @Db.UserCarTypes.FavouriteId },
+            success: function (response, status, xhr) {
+                if (response) {
+                    $(self).removeClass("selected");
+                    $(self).find("span").text("Add To Favourite");
+                    $(self).off("click").on("click", function () {
+                        addFavourite(self);
+                    });
+                }
+            }
+        });
+    }
+</script>

@@ -751,7 +751,20 @@ namespace BraAuto.ViewModels
         public bool HasRefrigerator { get; set; }
     }
 
-    public class CarDetailsModel : CarSpecifications { }
+    public class CarDetailsModel : CarSpecifications 
+    {
+        [DisplayName("Views")]
+        public int ViewsCount { get; set; }
+
+        public bool IsFavourite { get; set; }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Cars"), ("Details", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
+    }
 
     public class CarCompareModel
     {

@@ -34,32 +34,6 @@
 <!-- Offcanvas Menu End -->
 <!-- Header Section Begin -->
 <header class="header">
-    <div class="header__top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <ul class="header__top__widget">
-                        <li><i class="fa fa-clock-o"></i> Week day: 08:00 am to 18:00 pm</li>
-                        <li><i class="fa fa-envelope-o"></i> Info.colorlib@gmail.com</li>
-                    </ul>
-                </div>
-                <div class="col-lg-5">
-                    <div class="header__top__right">
-                        <div class="header__top__phone">
-                            <i class="fa fa-phone"></i>
-                            <span>(+12) 345 678 910</span>
-                        </div>
-                        <div class="header__top__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-google"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-2">
@@ -87,9 +61,9 @@
                     <div class="header__nav__widget">
                         @if (loggedUser != null)
                         {
-                            <div class="header__nav__widget__btn">
+@*                            <div class="header__nav__widget__btn">
                                 <a href="#"><i class="fa fa-cart-plus"></i></a>
-                            </div>
+                            </div>*@
                             <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
                             @if(loggedUser.IsAdmin() || loggedUser.IsBlogger())
                             {

@@ -6,6 +6,16 @@ namespace BraAutoDb.Dal
     {
         public UserCars() : base("user_car", "id", "id") { }
 
+        public UserCar Get(uint userId, uint carId, uint userCarTypeId)
+        {
+            string sql = @"
+                SELECT * 
+                FROM `user_car`
+                WHERE user_id = @userId AND car_id = @carId AND user_car_type_id = @userCarTypeId";
+
+            return Db.Mapper.Query<UserCar>(sql, param: new { userId = userId, carId = carId, userCarTypeId = userCarTypeId }).FirstOrDefault();
+        }
+
         public IEnumerable<UserCar> GetByUserId(uint userId, uint? userCarTypeId = null)
         {
             string sql = $@"
@@ -51,7 +61,7 @@ namespace BraAutoDb.Dal
 
             userCar.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
-    
+
         public void Delete(uint userId, uint carId, uint userCarTypeId)
         {
             string sql = $@"

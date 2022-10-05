@@ -28,8 +28,8 @@ namespace BraAuto.Controllers
                 Makes = Db.Makes.GetAll(),
                 Years = Db.Years.GetAll(),
                 NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", RowCount = 10 }).Records,
-                MostViewedCars = Db.Cars.GetMostViewed(10),
-                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsActive = true, SortColumn = "created_at", RowCount = 6}).Records
+                MostViewedCars = Db.Cars.GetMostViewed(10, true),
+                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsActive = true, SortColumn = "created_at", RowCount = 6 }).Records
             };
 
             this.LoadCarProperties(model.NewestCars);
@@ -100,7 +100,7 @@ namespace BraAuto.Controllers
 
             this.LoadCarModel(model);
 
-            model.ProductionDate = new DateTime(2000, 1,1);
+            model.ProductionDate = new DateTime(2000, 1, 1);
 
             return this.View(model);
         }
@@ -207,7 +207,7 @@ namespace BraAuto.Controllers
             if (car == null) { return this.NotFound(); }
 
             car.LoadModel();
-            
+
             var model = new CarEditModel
             {
                 Id = car.Id,
@@ -414,6 +414,7 @@ namespace BraAuto.Controllers
 
             var model = new CarDetailsModel
             {
+                Id = car.Id,
                 Description = car.Description,
                 VehicleType = Db.VehicleTypes.GetById(car.VehicleTypeId).Name,
                 Condition = Db.Conditions.GetById(car.ConditionId).Name,
@@ -476,8 +477,22 @@ namespace BraAuto.Controllers
                 IsRetro = car.IsRetro,
                 HasTow = car.HasTow,
                 HasMoreSeats = car.HasMoreSeats,
-                HasRefrigerator = car.HasRefrigerator,
+                HasRefrigerator = car.HasRefrigerator
             };
+
+            var ip = this.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            if (Db.CarViews.Get(car.Id, ip) == null)
+            {
+                Db.CarViews.Insert(new CarView { CarId = car.Id, UserIp = ip });
+            }
+
+            model.ViewsCount = Db.CarViews.GetCountByCarId(car.Id);
+
+            if (this.LoggedUser != null)
+            {
+                model.IsFavourite = Db.UserCars.Get(this.LoggedUser.Id, car.Id, Db.UserCarTypes.FavouriteId) != null;
+            }
 
             return this.View(model);
         }
@@ -489,7 +504,7 @@ namespace BraAuto.Controllers
 
             if (cars.IsNullOrEmpty()) { return this.NotFound(); }
 
-            var model = new CarCompareModel 
+            var model = new CarCompareModel
             {
                 Cars = new List<CarSpecifications>()
             };
@@ -639,7 +654,7 @@ namespace BraAuto.Controllers
                 if (img.IsValidImg() && !string.IsNullOrEmpty(oldUrl)) { urlsForDelete.Add(oldUrl); }
             }
 
-            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeleteImgs(urlsForDelete); } 
+            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeleteImgs(urlsForDelete); }
         }
 
         protected async Task DeleteImgs(IEnumerable<string> urls)

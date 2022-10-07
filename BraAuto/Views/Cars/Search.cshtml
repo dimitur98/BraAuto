@@ -228,9 +228,9 @@
                         <div class="col-lg-4 col-md-4">
                             <div class="car__item">
                                 <div class="car__item__pic__slider owl-carousel">
-                                    @foreach (var imgUrl in car.ImgUrls)
+                                    @foreach (var photoUrl in car.PhotoUrls)
                                     {
-                                        <img src="@(cloudinaryUrl + imgUrl)" alt="">
+                                        <img src="@(cloudinaryUrl + photoUrl)" alt="">
                                     }
                                 </div>
                                 <div class="car__item__text">
@@ -428,9 +428,9 @@
 
                         response.forEach(function (c) {
                             var $comparedCar = $("<div class='col-md-3 compared-car me-1'></div>")
-                            var $carPreview = $("<div class='compared-car-preview'><i id='" + c.id + "' class='fas fa-times delete-img'></i></div>");
+                            var $carPreview = $("<div class='compared-car-preview'><i id='" + c.id + "' class='fas fa-times delete-photo'></i></div>");
                             
-                            $carPreview.find(".delete-img").on("click", function(){
+                            $carPreview.find(".delete-photo").on("click", function(){
                                 var self = this;
                                 var carId = $(this).attr("id");
 
@@ -452,7 +452,7 @@
                                 });
                             });
 
-                            $carPreview.css("background-image", "url(@cloudinaryUrl" + c.imgUrl + ")");
+                            $carPreview.css("background-image", "url(@cloudinaryUrl" + c.photoUrl + ")");
                             $comparedCar.append($carPreview);
                             $comparedCar.append($("<span>" + c.makeModel + "</span>"))
                             

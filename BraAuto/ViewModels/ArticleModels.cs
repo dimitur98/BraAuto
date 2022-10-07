@@ -8,11 +8,17 @@ namespace BraAuto.ViewModels
 {
     public abstract class ArticleSearchBaseModel : BaseSearchModel<Response, Article>
     {
+        public ArticleSearchBaseModel()
+        {
+            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "a.created_at", true, false), ("Oldest First", "a.created_at", false, false), ("Approved First", "a.is_approved", true, true), ("Not Approved First", "a.is_approved", false, true) };
+        }
+
         public string Keywords { get; set; }
 
         public uint? CategoryId { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }
+
 
         public bool? IsApproved { get; set; }
 
@@ -85,7 +91,7 @@ namespace BraAuto.ViewModels
     {
 
         [Required]
-        public IFormFile Img { get; set; }
+        public IFormFile Photo { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {
@@ -102,9 +108,9 @@ namespace BraAuto.ViewModels
         [HiddenInput]
         public uint Id { get; set; }
 
-        public IFormFile Img { get; set; }
+        public IFormFile Photo { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string PhotoUrl { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {
@@ -125,7 +131,7 @@ namespace BraAuto.ViewModels
         [DisplayName("Category")]
         public Category Category { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string PhotoUrl { get; set; }
 
         [DisplayName("Creator")]
         public User Creator { get; set; }

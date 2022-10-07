@@ -80,7 +80,7 @@ namespace BraAuto.Controllers
             model.Makes = Db.Makes.GetAll();
             model.Years = Db.Years.GetAll();
             model.IsApproved = true;
-            model.ShowAllSortFields = false;
+            model.ShowSpecificSortFields = false;
 
             this.ExecuteSearch(model);
 
@@ -183,7 +183,7 @@ namespace BraAuto.Controllers
 
                     Db.Cars.Insert(car);
 
-                    await this.UploadImgs(model.Imgs, car.Id);
+                    await this.UploadPhotos(model.Photos, car.Id);
 
                     return this.RedirectToAction(actionName: nameof(Home));
                 }
@@ -274,7 +274,7 @@ namespace BraAuto.Controllers
                 HasRefrigerator = car.HasRefrigerator
             };
 
-            model.Imgs.LoadImgUrls(car.Id);
+            model.Photos.LoadPhotoUrls(car.Id);
 
             this.LoadCarModel(model);
 
@@ -357,8 +357,8 @@ namespace BraAuto.Controllers
 
                     Db.Cars.Update(car);
 
-                    Db.CarImgs.DeleteByCarId(car.Id);
-                    await this.UploadImgs(model.Imgs, car.Id);
+                    Db.CarPhotos.DeleteByCarId(car.Id);
+                    await this.UploadPhotos(model.Photos, car.Id);
 
                     return this.RedirectToAction(nameof(My));
                 }
@@ -387,7 +387,7 @@ namespace BraAuto.Controllers
 
                 Db.Cars.Delete(car.Id);
 
-                await this.DeleteImgs(Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url));
+                await this.DeletePhotos(Db.CarPhotos.GetByCarId(car.Id).Select(ci => ci.Url));
 
                 this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info);
             }
@@ -436,7 +436,7 @@ namespace BraAuto.Controllers
                 DoorNumber = Db.DoorNumbers.GetById(car.DoorNumberId).Name,
                 OwnerName = car.Creator.Name,
                 Mobile = car.Creator.Mobile,
-                ImgUrls = Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url),
+                PhotoUrls = Db.CarPhotos.GetByCarId(car.Id).Select(ci => ci.Url),
                 HasAirConditioning = car.HasAirConditioning,
                 HasClimatronic = car.HasClimatronic,
                 HasLetherInterior = car.HasLetherInterior,
@@ -491,7 +491,7 @@ namespace BraAuto.Controllers
 
             if (this.LoggedUser != null)
             {
-                model.IsFavourite = Db.UserCars.Get(this.LoggedUser.Id, car.Id, Db.UserCarTypes.FavouriteId) != null;
+                model.IsFavourite = Db.UserCars.Get(new uint[] { Db.UserCarTypes.FavouriteId },carId: car.Id, userId: this.LoggedUser.Id).FirstOrDefault() != null;
             }
 
             return this.View(model);
@@ -540,7 +540,7 @@ namespace BraAuto.Controllers
                     DoorNumber = Db.DoorNumbers.GetById(car.DoorNumberId).Name,
                     OwnerName = car.Creator.Name,
                     Mobile = car.Creator.Mobile,
-                    ImgUrls = Db.CarImgs.GetByCarId(car.Id).Select(ci => ci.Url),
+                    PhotoUrls = Db.CarPhotos.GetByCarId(car.Id).Select(ci => ci.Url),
                     HasAirConditioning = car.HasAirConditioning,
                     HasClimatronic = car.HasClimatronic,
                     HasLetherInterior = car.HasLetherInterior,
@@ -609,7 +609,7 @@ namespace BraAuto.Controllers
             Db.Cars.LoadModels(cars);
             Db.Models.LoadMakes(cars.Select(r => r.Model));
             Db.Cars.LoadGearboxTypes(cars);
-            Db.Cars.LoadImgUrls(cars);
+            Db.Cars.LoadPhotoUrls(cars);
         }
 
         protected void LoadCarModel(CarBaseModel model)
@@ -626,22 +626,22 @@ namespace BraAuto.Controllers
             model.DoorNumbers = Db.DoorNumbers.GetAll();
         }
 
-        protected async Task UploadImgs(Imgs imgs, uint carId)
+        protected async Task UploadPhotos(Photos photos, uint carId)
         {
-            var imgProps = imgs.GetType().GetProperties().Where(p => p.PropertyType == typeof(IFormFile)).ToList();
-            var urlProps = imgs.GetType().GetProperties().Where(p => p.PropertyType == typeof(string)).ToList();
+            var photoProps = photos.GetType().GetProperties().Where(p => p.PropertyType == typeof(IFormFile)).ToList();
+            var urlProps = photos.GetType().GetProperties().Where(p => p.PropertyType == typeof(string)).ToList();
             var urlsForDelete = new List<string>();
             var index = 1;
 
-            for (int i = 0; i < imgProps.Count(); i++)
+            for (int i = 0; i < photoProps.Count(); i++)
             {
-                var img = (IFormFile)imgProps[i].GetValue(imgs);
-                var oldUrl = (string)urlProps[i].GetValue(imgs);
-                var url = img.IsValidImg() ? await img.UploadImgAsync() : oldUrl;
+                var photo = (IFormFile)photoProps[i].GetValue(photos);
+                var oldUrl = (string)urlProps[i].GetValue(photos);
+                var url = photo.IsValidPhoto() ? await photo.UploadPhotoAsync() : oldUrl;
 
                 if (!string.IsNullOrEmpty(url))
                 {
-                    Db.CarImgs.Insert(new CarImg
+                    Db.CarPhotos.Insert(new CarPhoto
                     {
                         Url = url,
                         CarId = carId,
@@ -651,13 +651,13 @@ namespace BraAuto.Controllers
                     index++;
                 }
 
-                if (img.IsValidImg() && !string.IsNullOrEmpty(oldUrl)) { urlsForDelete.Add(oldUrl); }
+                if (photo.IsValidPhoto() && !string.IsNullOrEmpty(oldUrl)) { urlsForDelete.Add(oldUrl); }
             }
 
-            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeleteImgs(urlsForDelete); }
+            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeletePhotos(urlsForDelete); }
         }
 
-        protected async Task DeleteImgs(IEnumerable<string> urls)
+        protected async Task DeletePhotos(IEnumerable<string> urls)
         {
             foreach (var url in urls)
             {

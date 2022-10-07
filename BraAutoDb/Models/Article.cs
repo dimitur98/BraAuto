@@ -15,8 +15,8 @@ namespace BraAutoDb.Models
         [Column(Name = "category_id")]
         public uint CategoryId { get; set; }
 
-        [Column(Name = "img_url")]
-        public string ImgUrl { get; set; }
+        [Column(Name = "photo_url")]
+        public string PhotoUrl { get; set; }
 
         public Category Category { get; set; }
 

@@ -2117,29 +2117,29 @@ ol {
     padding-top: 20px;
 }
 
-.car__details__tab__info {
+.list-info {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
 }
 
-.car__details__tab__info__item {
+.list-info-item {
     margin-bottom: 30px;
 }
 
-    .car__details__tab__info__item h5 {
+    .list-info-item h5 {
         color: #353535;
         font-weight: 700;
         margin-bottom: 6px;
     }
 
-    .car__details__tab__info__item ul li {
+    .list-info-item ul li {
         list-style: none;
         font-size: 15px;
         color: #707070;
         line-height: 36px;
     }
 
-        .car__details__tab__info__item ul li i {
+        .list-info-item ul li i {
             color: #db2d2e;
             margin-right: 8px;
         }
@@ -2645,7 +2645,7 @@ ol {
   Blog Hero
 -----------------------*/
 
-.blog-details-hero {
+.details-hero {
     padding-top: 80px;
     padding-bottom: 400px;
 }
@@ -2717,7 +2717,7 @@ ol {
   Blog Details
 -----------------------*/
 
-.blog-details {
+.details {
     margin-top: -360px;
     padding-top: 0;
     overflow: hidden;
@@ -3427,11 +3427,11 @@ ol {
             color: #353535;
         }
 
-    .blog-details-hero {
+    .details-hero {
         padding-bottom: 150px;
     }
 
-    .blog-details {
+    .details {
         margin-top: -100px;
     }
 }
@@ -3524,11 +3524,11 @@ ol {
         display: none;
     }
 
-    .blog-details-hero {
+    .details-hero {
         padding-bottom: 150px;
     }
 
-    .blog-details {
+    .details {
         margin-top: -100px;
     }
 

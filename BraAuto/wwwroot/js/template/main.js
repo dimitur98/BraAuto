@@ -190,11 +190,11 @@
 	--------------------*/
     $('.car-thumbs-track .ct').on('click', function () {
         $('.car-thumbs-track .ct').removeClass('active');
-        var imgurl = $(this).data('imgbigurl');
-        var bigImg = $('.car-big-img').attr('src');
-        if (imgurl != bigImg) {
-            $('.car-big-img').attr({
-                src: imgurl
+        var photoUrl = $(this).data('photo-big-url');
+        var bigPhoto = $('.car-big-photo').attr('src');
+        if (photoUrl != bigPhoto) {
+            $('.car-big-photo').attr({
+                src: photoUrl
             });
         }
     });

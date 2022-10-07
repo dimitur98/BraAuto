@@ -16,11 +16,9 @@ namespace BraAutoDb.Dal
 
         public static Articles Articles = new Articles();
         public static BodyTypes BodyTypes = new BodyTypes();
-        public static CarInCarServices CarInCarServices = new CarInCarServices();
         public static Cars Cars = new Cars();
-        public static CarImgs CarImgs = new CarImgs();
+        public static CarPhotos CarPhotos = new CarPhotos();
         public static CarViews CarViews = new CarViews();
-        public static CarServices CarServices = new CarServices();
         public static Categories Categories = new Categories();
         public static Colors Colors = new Colors();
         public static Conditions Conditions = new Conditions();

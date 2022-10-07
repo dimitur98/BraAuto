@@ -9,6 +9,8 @@ namespace BraAutoDb.Dal
     {
         public Cars() : base("car", "id", "created_at", sortDesc: true) { }
 
+        public List<Car> GetByUserId(uint userId) => this.GetByFieldValues("creator_id", new uint[] { userId });
+
         public List<Car> GetMostViewed(int limit, bool weekly)
         {
             var query = new Query
@@ -538,9 +540,9 @@ namespace BraAutoDb.Dal
             Db.LoadEntities(cars, c => c.CreatorId, creatorIds => Db.Users.GetByIds(creatorIds), (car, creators) => car.Creator = creators.FirstOrDefault(c => c.Id == car.CreatorId));
         }
 
-        public void LoadImgUrls(IEnumerable<Car> cars)
+        public void LoadPhotoUrls(IEnumerable<Car> cars)
         {
-            Db.LoadEntities(cars, c => c.Id, ids => Db.CarImgs.GetByCarIds(ids), (car, carImgs) => car.ImgUrls = carImgs.Where(ci => ci.CarId == car.Id).Select(ci => ci.Url));
+            Db.LoadEntities(cars, c => c.Id, ids => Db.CarPhotos.GetByCarIds(ids), (car, carPhotos) => car.PhotoUrls = carPhotos.Where(ci => ci.CarId == car.Id).Select(ci => ci.Url));
         }
     }
 }

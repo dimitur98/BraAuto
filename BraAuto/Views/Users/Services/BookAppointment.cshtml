@@ -1,0 +1,87 @@
+﻿@model BraAuto.ViewModels.UserServiceBookAppointmentModel
+
+@{
+    ViewBag.Title = "Book Appointment";
+
+    ViewBag.RegisterFlatPickr = true;
+}
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<partial name="_AlertPartial" />
+
+<section class="spad">
+    <div class="container login">
+        <form asp-action="BookAppointment" asp-controller="Users" method="post">
+            <div class="form-group">
+                <label asp-for="CarId" class="form-label"></label>
+                <select class="form-select" asp-for="CarId" asp-items="@(new SelectList(Model.Cars.Select(c => new { Fullname = c.Name, Id = c.Id}), "Id", "Fullname"))">
+                    <option value="">Select Car</option>
+                </select>
+                <span asp-validation-for="CarId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceId" class="form-label"></label>
+                <select class="form-select" asp-for="ServiceId" asp-items="@(new SelectList(Model.Services.Select(s => new { Fullname = s.Name, Id = s.Id}), "Id", "Fullname"))">
+                    <option value="">Select Service</option>
+                </select>
+                <span asp-validation-for="ServiceId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="form-label"></label>
+                <flatpickr asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hour" class="form-label"></label>
+                <select class="form-select" asp-for="Hour">
+                    <option value="">Select Service And Date First</option>
+                </select>
+                <span asp-validation-for="Hour"></span>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="site-btn">Book</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#ServiceId").on("change", function () {
+            loadFreeHours();
+        });
+
+        $("#Date").on("change", function () {
+            loadFreeHours();
+        });
+
+        function loadFreeHours() {
+            var date = $("#Date").val();
+            var serviceId = $("#ServiceId").val();
+            var $hour = $("#Hour");
+
+            if (date == "" || serviceId == "") {
+                $hour.empty();
+                $hour.append("<option value=''>Select Service And Date First</option>");
+
+                return;
+            }
+
+            $.ajax({
+                url: @Html.Raw(Json.Serialize(Url.Action("GetFreeHours", "UsersApi"))),
+                type: 'GET',
+                data: { id: serviceId, date },
+                success: function (response, status, xhr) {
+                    if (response && response.length > 0) {
+                        $hour.empty();
+                        $hour.append("<option value=''>Select Hour</option>");
+
+                        response.forEach(function (h) {
+                            $hour.append("<option value='" + h + "'>" + h + "</option>");
+                        });
+                    }
+                }
+            });
+        }
+    });
+</script>

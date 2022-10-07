@@ -103,9 +103,9 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mix most-viewed">
                     <div class="car__item">
                         <div class="car__item__pic__slider owl-carousel">
-                            @foreach (var imgUrl in car.ImgUrls)
+                            @foreach (var photoUrl in car.PhotoUrls)
                             {
-                                <img src="@(cloudinaryUrl + imgUrl)" alt="">
+                                <img src="@(cloudinaryUrl + photoUrl)" alt="">
 
                             }
                         </div>
@@ -132,9 +132,9 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mix newest">
                     <div class="car__item">
                         <div class="car__item__pic__slider owl-carousel">
-                            @foreach (var imgUrl in car.ImgUrls)
+                            @foreach (var photoUrl in car.PhotoUrls)
                             {
-                                <img src="@(cloudinaryUrl + imgUrl)" alt="">
+                                <img src="@(cloudinaryUrl + photoUrl)" alt="">
 
                             }
                         </div>
@@ -179,7 +179,7 @@
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="latest__blog__item">
-                        <div class="latest__blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.ImgUrl)">
+                        <div class="latest__blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.PhotoUrl)">
                             <ul>
                                 <li>By @article.Creator.Name</li>
                                 <li>@article.CreatedAt.ToWebDateFormat()</li>

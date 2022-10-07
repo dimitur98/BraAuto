@@ -9,6 +9,11 @@ namespace BraAuto.ViewModels
 {
     public abstract class CarSearchBaseModel : BaseSearchModel<Response, Car>
     {
+        public CarSearchBaseModel()
+        {
+            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "c.created_at", true, false), ("Oldest First", "c.created_at", false, false), ("Price High-Low", "c.price", true, false), ("Price Low-High", "c.price", false, false), ("Approved First", "c.is_approved", true, true), ("Not Approved First", "c.is_approved", false, true) };
+        }
+
         [DisplayName("Vehicle Type")]
         public uint? VehicleTypeId { get; set; }
         public IEnumerable<VehicleType> VehicleTypes { get; set; }
@@ -397,7 +402,7 @@ namespace BraAuto.ViewModels
         [DisplayName("Description")]
         public string Description { get; set; }
 
-        public Imgs Imgs { get; set; }
+        public Photos Photos { get; set; }
 
         [DisplayName("Air Conditioning")]
         public bool HasAirConditioning { get; set; }
@@ -537,7 +542,7 @@ namespace BraAuto.ViewModels
     {
         public CarEditModel()
         {
-            Imgs = new Imgs();
+            Photos = new Photos();
         }
 
         [Key]
@@ -545,7 +550,7 @@ namespace BraAuto.ViewModels
         [HiddenInput]
         public uint Id { get; set; }
 
-        public IEnumerable<string> ImgUrls { get; set; }
+        public IEnumerable<string> PhotoUrls { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {
@@ -625,7 +630,7 @@ namespace BraAuto.ViewModels
         [DisplayName("Mobile")]
         public string Mobile { get; set; }
 
-        public IEnumerable<string> ImgUrls { get; set; }
+        public IEnumerable<string> PhotoUrls { get; set; }
 
         [DisplayName("Air Conditioning")]
         public bool HasAirConditioning { get; set; }
@@ -777,56 +782,56 @@ namespace BraAuto.ViewModels
 
         public string MakeModel { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string PhotoUrl { get; set; }
     }
 
-    public class Imgs
+    public class Photos
     {
         [DisplayName("Images")]
-        public IFormFile Img1 { get; set; }
-        public string Img1Url { get; set; }
+        public IFormFile Photo1 { get; set; }
+        public string Photo1Url { get; set; }
 
-        public IFormFile? Img2 { get; set; }
-        public string Img2Url { get; set; }
+        public IFormFile? Photo2 { get; set; }
+        public string Photo2Url { get; set; }
 
-        public IFormFile? Img3 { get; set; }
-        public string Img3Url { get; set; }
+        public IFormFile? Photo3 { get; set; }
+        public string Photo3Url { get; set; }
 
-        public IFormFile? Img4 { get; set; }
-        public string Img4Url { get; set; }
+        public IFormFile? Photo4 { get; set; }
+        public string Photo4Url { get; set; }
 
-        public IFormFile? Img5 { get; set; }
-        public string Img5Url { get; set; }
+        public IFormFile? Photo5 { get; set; }
+        public string Photo5Url { get; set; }
 
-        public IFormFile? Img6 { get; set; }
-        public string Img6Url { get; set; }
+        public IFormFile? Photo6 { get; set; }
+        public string Photo6Url { get; set; }
 
-        public IFormFile? Img7 { get; set; }
-        public string Img7Url { get; set; }
+        public IFormFile? Photo7 { get; set; }
+        public string Photo7Url { get; set; }
 
-        public IFormFile? Img8 { get; set; }
-        public string Img8Url { get; set; }
+        public IFormFile? Photo8 { get; set; }
+        public string Photo8Url { get; set; }
 
-        public IFormFile? Img9 { get; set; }
-        public string Img9Url { get; set; }
+        public IFormFile? Photo9 { get; set; }
+        public string Photo9Url { get; set; }
 
-        public IFormFile? Img10 { get; set; }
-        public string Img10Url { get; set; }
+        public IFormFile? Photo10 { get; set; }
+        public string Photo10Url { get; set; }
 
-        public IFormFile? Img11 { get; set; }
-        public string Img11Url { get; set; }
+        public IFormFile? Photo11 { get; set; }
+        public string Photo11Url { get; set; }
 
-        public IFormFile? Img12 { get; set; }
-        public string Img12Url { get; set; }
+        public IFormFile? Photo12 { get; set; }
+        public string Photo12Url { get; set; }
 
-        public void LoadImgUrls(uint carId)
+        public void LoadPhotoUrls(uint carId)
         {
-            var carImgs = Db.CarImgs.GetByCarId(carId);
+            var carPhotos = Db.CarPhotos.GetByCarId(carId);
             var props = this.GetType().GetProperties().Where(p => p.PropertyType == typeof(string)).ToList();
 
-            for (int i = 0; i < carImgs.Count(); i++)
+            for (int i = 0; i < carPhotos.Count(); i++)
             {
-                props[i].SetValue(this, carImgs[i].Url);
+                props[i].SetValue(this, carPhotos[i].Url);
             }
         }
     }

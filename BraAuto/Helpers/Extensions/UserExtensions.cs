@@ -1,5 +1,6 @@
 ﻿using BraAutoDb.Dal;
 using BraAutoDb.Models;
+using System.Runtime.CompilerServices;
 
 namespace BraAuto.Helpers.Extensions
 {
@@ -28,6 +29,30 @@ namespace BraAuto.Helpers.Extensions
             if (user.Roles != null && user.Roles.Any(uir => uir.UserRole.Name.Replace(" ", "-").ToLower() == role)) { return true; }
 
             return false;
+        }
+    
+        public static List<uint> GetFreeHours(this User user, DateTime date)
+        {
+            var hours = new List<uint>();
+
+            if (user.UserTypeId != Db.UserTypes.ServiceId) { return hours; }
+
+            var serviceCars = Db.UserCars.Get(new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, userId: user.Id, date: date);
+
+            for (uint i = user.StartWorkingTime; i < user.EndWorkingTime; i += user.BookingIntervalHours)
+            {
+                hours.Add(i);
+            }
+
+            if (!serviceCars.IsNullOrEmpty())
+            {
+                foreach (var serviceCar in serviceCars)
+                {
+                    hours.Remove((uint)serviceCar.Date.Value.Hour);
+                }
+            }
+
+            return hours;
         }
     }
 }

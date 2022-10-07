@@ -1,4 +1,5 @@
-﻿using BraAutoDb.Dal;
+﻿using BraAuto.Helpers.Extensions;
+using BraAutoDb.Dal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,16 @@ namespace BraAuto.Controllers.Api
             Db.Users.Update(user);
 
             return this.Ok(new { });
+        }
+
+        [HttpGet]
+        public List<uint> GetFreeHours(uint id, DateTime date)
+        {
+            var service = Db.Users.GetById(id);
+           
+            if(service == null) { return new List<uint>(); }
+
+            return service.GetFreeHours(date);
         }
     }
 }

@@ -29,13 +29,17 @@
                         Sort By: @Model.SortBy.ToSortByText(Model.SortDesc) <span class="caret"></span>
                     </button>
                     <div class="dropdown-menu mb-2">
-                        @if (Model.ShowAllSortFields)
+                        @if (Model.ShowSpecificSortFields)
                         {
-                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.is_approved", ignoreCase: true).AddOrSet("sortDesc", "true", ignoreCase: true))">Approved First</a>
-                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.is_approved", ignoreCase: true).AddOrSet("sortDesc", "false", ignoreCase: true))">Approved Last</a>
+                            foreach (var sortField in Model.SortFields.Where(sf => sf.Specific))
+                            {
+                                <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", sortField.SortColumn, ignoreCase: true).AddOrSet("sortDesc", sortField.SortDesc.ToString(), ignoreCase: true))">@sortField.Name</a>
+                            }
                         }
-                        <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.created_at", ignoreCase: true).AddOrSet("sortDesc", "true", ignoreCase: true))">Newest First</a>
-                        <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", "a.created_at", ignoreCase: true).AddOrSet("sortDesc", "false", ignoreCase: true))">Oldest First</a>
+                        @foreach (var sortField in Model.SortFields.Where(sf => !sf.Specific))
+                        {
+                            <a class="dropdown-item" href="@Url.Action(Url.CurrentAction(), null, queryString: this.Context.Request.Query.ToNameValueCollection().RemoveIfExists("page", ignoreCase: true).AddOrSet("sortBy", sortField.SortColumn, ignoreCase: true).AddOrSet("sortDesc", sortField.SortDesc.ToString(), ignoreCase: true))">@sortField.Name</a>
+                        }
                     </div>
                 </div>
             </div>

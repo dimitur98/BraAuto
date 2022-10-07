@@ -23,12 +23,12 @@ namespace BraAuto.Controllers.Api
 
                 foreach (var car in cars)
                 {
-                    var carImg = Db.CarImgs.GetByCarId(car.Id).FirstOrDefault();
+                    var carPhoto = Db.CarPhotos.GetByCarId(car.Id).FirstOrDefault();
                     result.Add( new SimpleCarModel
                     {
                         Id = car.Id,
                         MakeModel = car.Model.Make.Name + " " + car.Model.Name,
-                        ImgUrl = carImg?.Url
+                        PhotoUrl = carPhoto?.Url
                     });
                 }
             }

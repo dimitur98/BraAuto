@@ -1,15 +1,28 @@
 ﻿@model BraAuto.ViewModels.UserBaseModel
 @using BraAuto.ViewModels;
 @using BraAutoDb.Models;
+@inject IConfiguration Configuration
 
 @{
     var isRegisterPage = Model is UserRegisterModel;
     var loggedUser = (User)ViewBag.Loggeduser;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
+<style>
+    .user-photo{
+        width: 55%;
+    }
+
+    .user-photo input{
+        width: 0px;
+        height: 0px;
+        overflow: hidden;
+    }
+</style>
+
 <section class="contact spad">
-    <form asp-action="@(isRegisterPage ? "Register" : "Edit")" asp-controller="Users" method="post">
-        <div asp-validation-summary="ModelOnly"></div>
+    <form asp-action="@(isRegisterPage ? "Register" : "Edit")" asp-controller="Users" method="post" enctype="multipart/form-data">
 
         @if (!isRegisterPage)
         {
@@ -22,8 +35,9 @@
                 {
                     <partial name="_UserSettingsPartial" />
                 }
-                @*<div class="@(!isRegisterPage ? "col-lg-1 col-md-1" : "" )"></div>*@
                 <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
+                    <div asp-validation-summary="ModelOnly"></div>
+
                     <div class="contact__form">
                         @if (isRegisterPage)
                         {
@@ -60,6 +74,12 @@
                             </div>
                         }
 
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+
                         @if (loggedUser != null && loggedUser.IsAdmin())
                         {
                             <div class="form-group">
@@ -73,15 +93,19 @@
                                 <span asp-validation-for="@(((UserEditModel)Model).IsActive)"></span>
                             </div>
                         }
+
+                        <div class="form-group mt-3 service-field d-none user-photo">
+                            <div class="photo-preview"></div>
+                            <label class="btn btn-primary">
+                                Upload
+                                <input type="file" class="upload-file photo" asp-for="Photo" value="Upload Photo" />
+                            </label>
+                            <span asp-validation-for="Photo"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
                     <div class="contact__form">
-                        <div class="form-group">
-                            <label asp-for="Name" class="form-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name"></span>
-                        </div>
                         <div class="form-group">
                             <label asp-for="Birthday" class="form-label"></label>
                             <flatpickr asp-for="Birthday" class="form-control" />
@@ -100,14 +124,45 @@
                             <span asp-validation-for="UserTypeId"></span>
                         </div>
                         <div class="form-group service-field d-none">
-                            <label asp-for="Description" class="form-label"></label>
-                            <input asp-for="Description" class="form-control" />
-                            <span asp-validation-for="Description"></span>
+                            <label asp-for="LocationId" class="form-label"></label>
+                            <select class="form-select" asp-for="LocationId" asp-items="@(new SelectList(Model.Locations.Select(l => new { Fullname = l.Name, Id = l.Id}), "Id", "Fullname"))">
+                                <option value="">Select Location</option>
+                            </select>
+                            <span asp-validation-for="LocationId"></span>
                         </div>
                         <div class="form-group service-field d-none">
-                            <label asp-for="Location" class="form-label"></label>
-                            <input asp-for="Location" class="form-control" />
-                            <span asp-validation-for="Location"></span>
+                            <label asp-for="SpecificLocation" class="form-label"></label>
+                            <input asp-for="SpecificLocation" class="form-control" />
+                            <span asp-validation-for="SpecificLocation"></span>
+                        </div>
+                        <div class="form-group service-field d-none">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label asp-for="BookingIntervalHours" class="form-label"></label>
+                                    <input type="number" asp-for="BookingIntervalHours" class="form-control" min="0" />
+                                    <span asp-validation-for="BookingIntervalHours"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="MaxBookingsPerDay" class="form-label"></label>
+                                    <input type="number" asp-for="MaxBookingsPerDay" class="form-control" min="0" />
+                                    <span asp-validation-for="MaxBookingsPerDay"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group service-field d-none">
+                            <label asp-for="StartWorkingTime" class="form-label"></label>
+                            <div class="input-group">
+                                <input type="number" asp-for="StartWorkingTime" class="form-control" min="0" max="23">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">To</span>
+                                </div>
+                                <input type="number" asp-for="EndWorkingTime" class="form-control" min="0" max="23">
+                            </div>
+                        </div>
+                        <div class="form-group service-field d-none">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description"></span>
                         </div>
                     </div>
                 </div>
@@ -123,8 +178,29 @@
     $(document).ready(function () {
         var $serviseFields = $(".service-field");
 
+        $(".upload-file").on("change", function () {
+            var $uploadFile = $(this);
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) { return; }
+
+            if (/^image/.test(files[0].type)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(files[0]);
+
+                reader.onloadend = function () {
+                    $('.photo-preview').css("background-image", "url(" + this.result + ")");
+                }
+            }
+        });
+
         $("#UserTypeId").on("change", function () {
-            var value = $(this).val();
+            loadUserFields();
+        });
+
+        loadUserFields();
+
+        function loadUserFields() {
+            var value = $("#UserTypeId").val();
 
             if (value == @BraAutoDb.Dal.Db.UserTypes.ServiceId) {
                 $serviseFields.each(function () {
@@ -134,11 +210,19 @@
                 $serviseFields.each(function () {
                     var $field = $(this);
 
-                    $field.find("input").val("");
+                    $field.find("input, textarea, select").val("");
                     $field.addClass("d-none");
                 });
             }
-        });
+        }
     });
-
 </script>
+
+@if (!isRegisterPage)
+{
+    <script>
+        $(document).ready(function () {
+            $('.photo-preview').css("background-image", "url(@(cloudinaryUrl + ((UserEditModel)Model).PhotoUrl))");
+        });
+    </script>
+}

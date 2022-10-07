@@ -6,13 +6,13 @@ namespace BraAuto.Helpers.Extensions
 {
     public static class IFormFileExtensions
     {
-        private const int ImgMaxLength = 10 * 1024 * 1024;
+        private const int PhotoMaxLength = 10 * 1024 * 1024;
         private static IConfiguration _config;
         private static IConfiguration Config => _config ??= new HttpContextAccessor().HttpContext.RequestServices.GetService<IConfiguration>();
 
         private static readonly Cloudinary Cloudinary = new(new Account(Config.GetValue<string>("Cloudinary:AppName"), Config.GetValue<string>("Cloudinary:AppKey"), Config.GetValue<string>("Cloudinary:AppSecret")));
 
-        public static bool IsValidImg(this IFormFile file)
+        public static bool IsValidPhoto(this IFormFile file)
         {
             if(file == null) { return false; }
 
@@ -36,7 +36,7 @@ namespace BraAuto.Helpers.Extensions
                 return false;
             }
 
-            if (size >= ImgMaxLength)
+            if (size >= PhotoMaxLength)
             {
                 return false;
             }
@@ -44,25 +44,25 @@ namespace BraAuto.Helpers.Extensions
             return true;
         }
 
-        public static async Task<List<string>> UploadImgsAsync(this IEnumerable<IFormFile> imgs)
+        public static async Task<List<string>> UploadPhotosAsync(this IEnumerable<IFormFile> photos)
         {
-            var imgUrls = new List<string>();
+            var photoUrls = new List<string>();
 
-            foreach (var img in imgs)
+            foreach (var photo in photos)
             {
-                imgUrls.Add(await img.UploadImgAsync());
+                photoUrls.Add(await photo.UploadPhotoAsync());
             }
 
-            return imgUrls;
+            return photoUrls;
         }
 
-        public static async Task<string> UploadImgAsync(this IFormFile img)
+        public static async Task<string> UploadPhotoAsync(this IFormFile photo)
         {
             byte[] destinationImage;
 
             using (var memoryStream = new MemoryStream())
             {
-                await img.CopyToAsync(memoryStream);
+                await photo.CopyToAsync(memoryStream);
                 destinationImage = memoryStream.ToArray();
             }
 
@@ -72,7 +72,7 @@ namespace BraAuto.Helpers.Extensions
             {
                 var uploadParams = new ImageUploadParams()
                 {
-                    File = new FileDescription(img.FileName, destinationStream),
+                    File = new FileDescription(photo.FileName, destinationStream),
                 };
 
                 var res = await Cloudinary.UploadAsync(uploadParams);

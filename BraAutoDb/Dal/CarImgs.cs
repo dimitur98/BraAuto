@@ -2,17 +2,17 @@
 
 namespace BraAutoDb.Dal
 {
-    public class CarImgs : BaseDal<CarImg>
+    public class CarPhotos : BaseDal<CarPhoto>
     {
-        public CarImgs() : base("car_img", "id", "sort_order") { }
+        public CarPhotos() : base("car_photo", "id", "sort_order") { }
 
-        public List<CarImg> GetByCarId(uint carId) => this.GetByFieldValues("car_id", new uint[] { carId });
+        public List<CarPhoto> GetByCarId(uint carId) => this.GetByFieldValues("car_id", new uint[] { carId });
 
-        public List<CarImg> GetByCarIds(IEnumerable<uint> carIds) => this.GetByFieldValues("car_id", carIds);
+        public List<CarPhoto> GetByCarIds(IEnumerable<uint> carIds) => this.GetByFieldValues("car_id", carIds);
 
-        public void Insert(CarImg carImg)
+        public void Insert(CarPhoto carPhoto)
         {
-            var sql = @"INSERT INTO `car_img`
+            var sql = @"INSERT INTO `car_photo`
                         (
                             `url`,
                             `car_id`,
@@ -27,12 +27,12 @@ namespace BraAutoDb.Dal
 
             var queryParams = new
             {
-                url = carImg.Url,
-                carId = carImg.CarId,
-                sortOrder = carImg.SortOrder
+                url = carPhoto.Url,
+                carId = carPhoto.CarId,
+                sortOrder = carPhoto.SortOrder
             };
 
-            carImg.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
+            carPhoto.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
 
         public void DeleteByCarId(uint carId) => this.DeleteByField("car_id", new uint[] { carId });

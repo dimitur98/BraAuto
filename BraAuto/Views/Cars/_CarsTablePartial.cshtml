@@ -50,7 +50,7 @@
                             @foreach (var car in Model.Response.Records)
                             {
                                 <tr>
-                                    <td><img class="table-img" src="@(cloudinaryUrl + car.ImgUrls.FirstOrDefault())"/></td>
+                                    <td><img class="table-photo" src="@(cloudinaryUrl + car.PhotoUrls.FirstOrDefault())" /></td>
                                     <td class="align-middle"><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
                                     @if (!isFavouritePage)
                                     {

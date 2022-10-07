@@ -132,11 +132,17 @@
   <data name="IncorrectPassword" xml:space="preserve">
     <value>Provided password is incorrect</value>
   </data>
-  <data name="InvalidImg" xml:space="preserve">
-    <value>Image is invalid format or too big</value>
+  <data name="InvalidPhoto" xml:space="preserve">
+    <value>Photo is invalid format or too big</value>
   </data>
   <data name="ItemDeleted" xml:space="preserve">
     <value>Successfully deleted.</value>
+  </data>
+  <data name="MaxBookingAppointmentsReached" xml:space="preserve">
+    <value>Service is full for the selected day.</value>
+  </data>
+  <data name="SelectedTimeNotFree" xml:space="preserve">
+    <value>The selected time is not free</value>
   </data>
   <data name="WebsiteTitle" xml:space="preserve">
     <value>BraAuto</value>

@@ -13,5 +13,8 @@ namespace BraAutoDb.Models
 
         [Column(Name = "user_car_type_id")]
         public uint UserCarTypeId { get; set; }
+
+        [Column(Name = "date")]
+        public DateTime? Date { get; set; }
     }
 }

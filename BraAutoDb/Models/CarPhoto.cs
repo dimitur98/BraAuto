@@ -2,8 +2,8 @@
 
 namespace BraAutoDb.Models
 {
-    [Table(Name = "car_img")]
-    public class CarImg : BaseModel<uint>
+    [Table(Name = "car_photo")]
+    public class CarPhoto : BaseModel<uint>
     {
         [Column(Name = "url")]
         public string Url { get; set; }

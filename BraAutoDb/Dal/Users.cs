@@ -12,10 +12,18 @@ namespace BraAutoDb.Dal
             return this.Search<Response>(request,
                 (query) =>
                 {
+                    if (!string.IsNullOrEmpty(request.Keywords)) { query.Where.Add("AND (u.name LIKE @keywords)"); }
+                    if (request.UserTypeId.HasValue) { query.Where.Add(" AND user_type_id = @userTypeId"); }
+                    if (request.LocationId.HasValue) { query.Where.Add(" AND location_id = @locationId"); }
                 },
                 () =>
                 {
-                    return new { };
+                    return new 
+                    {
+                        keywords = string.Format("%{0}%", request.Keywords),
+                        userTypeId = request.UserTypeId,
+                        locationId = request.LocationId
+                    };
                 },
                 "u");
         }
@@ -34,6 +42,8 @@ namespace BraAutoDb.Dal
             return Db.Mapper.Query<User>(sql, new { username, password }).FirstOrDefault();
         }
 
+        public List<User> GetByTypeId(uint userTypeId) => this.GetByFieldValues("user_type_id", new uint[] { userTypeId });
+
         public void Insert(User user)
         {
             var sql = @"INSERT INTO `user`
@@ -45,9 +55,15 @@ namespace BraAutoDb.Dal
                             `birthday`,
                             `mobile`,
                             `description`,
-                            `location`,
+                            `location_id`,
+                            `specific_location`,
                             `is_active`,
                             `user_type_id`,
+                            `photo_url`,
+                            `booking_interval_hours`,
+                            `start_working_time`,
+                            `end_working_time`,
+                            `max_bookings_per_day`,
                             `created_at`,
                             `edited_at`
                         )VALUES(
@@ -58,9 +74,15 @@ namespace BraAutoDb.Dal
                             @birthday,
                             @mobile,
                             @description,
-                            @location,
+                            @locationId,
+                            @specificLocation,
                             @isActive,
                             @userTypeId,
+                            @photoUrl,
+                            @bookingIntervalHours,
+                            @startWorkingTime,
+                            @endWorkingTime,
+                            @maxBookingsPerDay,
                             NOW(),
                             NOW()
                         );
@@ -75,10 +97,16 @@ namespace BraAutoDb.Dal
                 email = user.Email,
                 birthday = user.Birthday,
                 mobile = user.Mobile,
-                description = user.Descripton,
-                location = user.Location,
+                description = user.Description,
+                locationId = user.LocationId,
+                specificLocation = user.SpecificLocation,
                 isActive = user.IsActive,
                 userTypeId = user.UserTypeId,
+                photoUrl = user.PhotoUrl,
+                bookingIntervalHours = user.BookingIntervalHours,
+                startWorkingTime = user.StartWorkingTime,
+                endWorkingTime = user.EndWorkingTime,
+                maxBookingsPerDay = user.MaxBookingsPerDay
             };
 
             user.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
@@ -93,9 +121,15 @@ namespace BraAutoDb.Dal
                          birthday = @birthday,
                          mobile = @mobile,
                          description = @description,
-                         location = @location,
+                         location_id = @locationId,
+                         specific_location = @specificLocation,
                          is_active = @isActive,
                          user_type_id = @userTypeId,
+                         photo_url = @photoUrl,
+                         booking_interval_hours = @bookingIntervalHours,
+                         start_working_time = @startWorkingTime,
+                         end_working_time = @endWorkingTime,
+                         max_bookings_per_day = @maxBookingsPerDay,
                          editor_id = @editorId,
                          edited_at = NOW()
                 WHERE id = @id";
@@ -107,10 +141,16 @@ namespace BraAutoDb.Dal
                 email = user.Email,
                 birthday = user.Birthday,
                 mobile = user.Mobile,
-                description = user.Descripton,
-                location = user.Location,
+                description = user.Description,
+                locationId = user.LocationId,
+                specificLocation = user.SpecificLocation,
                 isActive = user.IsActive,
                 userTypeId = user.UserTypeId,
+                photoUrl = user.PhotoUrl,
+                bookingIntervalHours = user.BookingIntervalHours,
+                startWorkingTime = user.StartWorkingTime,
+                endWorkingTime = user.EndWorkingTime,
+                maxBookingsPerDay = user.MaxBookingsPerDay,
                 editorId = user.EditorId
             };
 
@@ -126,6 +166,7 @@ namespace BraAutoDb.Dal
 
             Db.Mapper.Execute(sql, new { id, password });
         }
+
 
         public void LoadEditors(IEnumerable<User> users)
         {

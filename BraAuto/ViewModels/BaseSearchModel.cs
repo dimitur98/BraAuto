@@ -8,7 +8,9 @@ namespace BraAuto.ViewModels
     {
         public string SortBy { get; set; } 
         public bool? SortDesc { get; set; }
-        public bool ShowAllSortFields { get; set; } = true;
+        public bool ShowSpecificSortFields { get; set; } = true;
+
+        public IEnumerable<(string Name, string SortColumn, bool SortDesc, bool Specific)> SortFields { get; set; }
 
         public int? Page { get; set; }
 
@@ -45,7 +47,7 @@ namespace BraAuto.ViewModels
 
         public virtual Pager ToPager(object createButtonRouteValues = null)
         {
-            return new Pager(this.Page ?? 1, this.RowCount ?? 15, this.RowCounts, this.SortBy, this.SortDesc ?? false, this.ShowAllSortFields, this.Response.TotalRecords, createButtonRouteValues: createButtonRouteValues);
+            return new Pager(this.Page ?? 1, this.RowCount ?? 15, this.RowCounts, this.SortBy, this.SortDesc ?? false, this.ShowSpecificSortFields, this.SortFields, this.Response.TotalRecords, createButtonRouteValues: createButtonRouteValues);
         }
     }
 }

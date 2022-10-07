@@ -48,6 +48,8 @@
                             <li class="@(actionName == "Home" ? "active" : "")"><a asp-action="Home" asp-controller="Cars">Home</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Cars" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Articles" ? "active" : "")"><a asp-action="Search" asp-controller="Articles">Blog</a></li>
+                            <li class="@(actionName == "Search" && controllerName == "Users" ? "active" : "")"><a asp-action="Search" asp-controller="Users">Services</a></li>
+
                             @if(loggedUser == null)
                             {
                                 <li><a asp-action="Login" asp-controller="Users">Login</a></li>

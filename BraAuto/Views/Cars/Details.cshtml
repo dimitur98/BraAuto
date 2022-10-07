@@ -16,13 +16,13 @@
             <div class="col-lg-9">
                 <div class="car__details__pic">
                     <div class="car__details__pic__large">
-                        <img class="car-big-img" src="@(cloudinaryUrl + Model.ImgUrls.FirstOrDefault())" alt="">
+                        <img class="car-big-photo" src="@(cloudinaryUrl + Model.PhotoUrls.FirstOrDefault())" alt="">
                     </div>
                     <div class="car-thumbs">
                         <div class="car-thumbs-track car__thumb__slider owl-carousel">
-                            @foreach (var url in Model.ImgUrls)
+                            @foreach (var url in Model.PhotoUrls)
                             {
-                                <div class="ct" data-imgbigurl="@(cloudinaryUrl + url)">
+                                <div class="ct" data-photo-big-url="@(cloudinaryUrl + url)">
                                     <img src="@(cloudinaryUrl + url)" alt="">
                                 </div>
                             }
@@ -49,17 +49,17 @@
                     </ul>
                     <div class="tab-content" id="details-car-tab-content">
                         <div class="tab-pane fade show active" id="vehicle-overview-pane" role="tabpanel" aria-labelledby="vehicle-overview" tabindex="0">
-                            <div class="car__details__tab__info__item">
+                            <div class="list-info-item">
                                 <h5><label asp-for="Description"></label></h5>
                                 <br />
                                 @Model.Description
                             </div>
                         </div>
                         <div class="tab-pane fade" id="technical-pane" role="tabpanel" aria-labelledby="technical" tabindex="0">
-                            <div class="car__details__tab__info">
+                            <div class="list-info">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <h5>General Information</h5>
                                             <ul>
                                                 <li>
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <ul>
                                                 <li>
                                                     <i class="fa fa-gear"></i> <label asp-for="GearboxType"></label>: @Model.GearboxType
@@ -194,10 +194,10 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="contacts-pane" role="tabpanel" aria-labelledby="contacts" tabindex="0">
-                            <div class="car__details__tab__info">
+                            <div class="list-info">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <h5>Vehicle Location</h5>
                                             <ul>
                                                 <li><i class="fa fa-map-marker"></i><label asp-for="Location"></label>: @Model.Location</li>
@@ -206,7 +206,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <h5>Owner Contacts</h5>
                                             <ul>
                                                 <li><i class="fa fa-user"></i> <label asp-for="OwnerName"></label>: @Model.OwnerName</li>

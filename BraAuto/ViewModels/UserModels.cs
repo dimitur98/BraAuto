@@ -1,4 +1,5 @@
-﻿using BraAutoDb.Models;
+﻿using BraAuto.ViewModels.Common;
+using BraAutoDb.Models;
 using BraAutoDb.Models.UsersSearch;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -8,6 +9,14 @@ namespace BraAuto.ViewModels
 {
     public abstract class UserSearchBaseModel : BaseSearchModel<Response, User>
     {
+        public UserSearchBaseModel()
+        {
+            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "u.created_at", true, false), ("Oldest First", "u.created_at", false, false), ("Active First", "u.is_active", true, true), ("Not Active First", "u.is_active", false, true) };
+        }
+    }
+
+    public class UserAdminSearchModel : UserSearchBaseModel
+    {
         public Request ToSearchRequest()
         {
             var request = new Request();
@@ -16,10 +25,35 @@ namespace BraAuto.ViewModels
 
             return request;
         }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Admin", "Users") };
+
+            return new Breadcrumb(paths);
+        }
     }
 
-    public class UserAdminModel : UserSearchBaseModel
+    public class UserServiceSearchModel : UserSearchBaseModel
     {
+        public string Keywords { get; set; }
+
+        public uint? LocationId { get; set; }
+        public IEnumerable<Location> Locations { get; set; }
+
+        public Request ToSearchRequest()
+        {
+            var request = new Request()
+            {
+                Keywords = this.Keywords,
+                LocationId = this.LocationId
+            };
+
+            this.SetSearchRequest(request);
+
+            return request;
+        }
+
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Admin", "Users") };
@@ -45,14 +79,30 @@ namespace BraAuto.ViewModels
         public string? Description { get; set; }
 
         [DisplayName("Location")]
-        public string? Location { get; set; }
+        public uint LocationId { get; set; }
+        public IEnumerable<Location> Locations { get; set; }
+
+        [DisplayName("Specific Location")]
+        public string SpecificLocation { get; set; }
 
         [DisplayName("User Type")]
         public uint UserTypeId { get; set; }
 
+        public IFormFile Photo { get; set; }
+
+        [DisplayName("Booking Interval Hours")]
+        public uint BookingIntervalHours { get; set; }
+
+        public uint EndWorkingTime { get; set; }
+
+        [DisplayName("Working Time From (0-24h)")]
+        public uint StartWorkingTime { get; set; }
+
+        [DisplayName("Max Bookings Per Day")]
+        public uint MaxBookingsPerDay { get; set; }
+
         public IEnumerable<UserType>? UserTypes { get; set; }
     }
-
 
     public class UserRegisterModel : UserBaseModel
     {
@@ -103,6 +153,7 @@ namespace BraAuto.ViewModels
         [DisplayName("Is Active")]
         public bool IsActive { get; set; }
 
+        public string PhotoUrl { get; set; }
 
         [DisplayName("Roles")]
         public IEnumerable<uint> UserRoleIds { get; set; }
@@ -157,6 +208,55 @@ namespace BraAuto.ViewModels
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("ChangePassword", "Users") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class UserServiceDetailsModel
+    {
+        public uint Id { get; set; }
+
+        [DisplayName("Owner Name")]
+        public string Name { get; set; }
+
+        [DisplayName("Email")]
+        public string Email { get; set; }
+
+        [DisplayName("Mobile")]
+        public string Mobile { get; set; }
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
+
+        [DisplayName("Location")]
+        public string Location { get; set; }
+
+        public string SpecificLocation { get; set; }
+
+        public string PhotoUrl { get; set; }
+    }
+
+    public class UserServiceBookAppointmentModel
+    {
+        [DisplayName("Car")]
+        public uint CarId { get; set; }
+
+        public IEnumerable<SimpleModel> Cars { get; set; }
+
+        [DisplayName("Service")]
+        public uint ServiceId { get; set; }
+
+        public IEnumerable<SimpleModel> Services { get; set; }
+
+        public uint Hour { get; set; }
+
+        [DisplayName("Date")]
+        public DateTime Date { get; set; }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Search", "Users"), ("BookAppointment", "Users") };
 
             return new Breadcrumb(paths);
         }

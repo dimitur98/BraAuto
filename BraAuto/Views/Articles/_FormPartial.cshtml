@@ -29,21 +29,21 @@
                 <span asp-validation-for="Body"></span>
             </div>
 
-            <div class="mt-3 col-sm-2 img-up">
+            <div class="mt-3 col-sm-2 photo-up">
                 <div class="image-preview"></div>
                 <label class="btn btn-primary">
                     Upload
                     @if (isEdit)
                     {
-                        <input type="file" class="upload-file img" asp-for="@(((ArticleEditModel)Model).Img)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        <input type="file" class="upload-file photo" asp-for="@(((ArticleEditModel)Model).Photo)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     }else
                     {
-                        <input type="file" class="upload-file img" asp-for="@(((ArticleCreateModel)Model).Img)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        <input type="file" class="upload-file photo" asp-for="@(((ArticleCreateModel)Model).Photo)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
                     }
                 </label>
                 @if (!isEdit)
                 {
-                    <span asp-validation-for="@(((ArticleEditModel)Model).Img)"></span>
+                    <span asp-validation-for="@(((ArticleEditModel)Model).Photo)"></span>
                 }
             </div>
             <div class="text-center">
@@ -76,7 +76,7 @@
 {
     <script>
         $(document).ready(function(){
-            $('.imagePreview').css("background-image", "url(@(cloudinaryUrl + ((ArticleEditModel)Model).ImgUrl))");
+            $('.imagePreview').css("background-image", "url(@(cloudinaryUrl + ((ArticleEditModel)Model).PhotoUrl))");
         });
     </script>
 }

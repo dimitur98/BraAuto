@@ -125,13 +125,13 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Image is invalid format or too big..
+        ///   Looks up a localized string similar to Photo is invalid format or too big..
         /// </summary>
-        internal static string InvalidImg
+        internal static string InvalidPhoto
         {
             get
             {
-                return ResourceManager.GetString("InvalidImg", resourceCulture);
+                return ResourceManager.GetString("InvalidPhoto", resourceCulture);
             }
         }
 
@@ -146,6 +146,31 @@ namespace BraAuto.Resources
 
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Service is full for the selected day.
+        /// </summary>
+        internal static string MaxBookingAppointmentsReached
+        {
+            get
+            {
+                return ResourceManager.GetString("MaxBookingAppointmentsReached", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The selected time is not free.
+        /// </summary>
+        internal static string SelectedTimeNotFree
+        {
+            get
+            {
+                return ResourceManager.GetString("SelectedTimeNotFree", resourceCulture);
+
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to BraAuto..
         /// </summary>

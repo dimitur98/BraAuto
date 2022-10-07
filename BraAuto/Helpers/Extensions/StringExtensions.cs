@@ -12,7 +12,8 @@ namespace BraAuto.Helpers.Extensions
         public static string ToSortByText(this string sortBy, bool sortDesc)
         {
             var text = string.Empty;
-            switch (sortBy)
+
+            switch (sortBy.Split('.').Last())
             {
                 case "is_approved": 
                     text = $"Approved {(sortDesc ? "First" : "Last")}";

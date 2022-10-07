@@ -43,7 +43,7 @@
                             @foreach (var article in Model.Response.Records)
                             {
                                 <tr>
-                                    <td><img class="table-img" src="@(cloudinaryUrl + article.ImgUrl)"/></td>
+                                    <td><img class="table-photo" src="@(cloudinaryUrl + article.PhotoUrl)" /></td>
                                     <td class="align-middle"><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></td>
                                     <td class="align-middle">
                                         @if (article.IsApproved)

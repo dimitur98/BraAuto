@@ -65,7 +65,7 @@ namespace BraAutoDb.Models
         [Column(Name = "door_number_id")]
         public uint DoorNumberId { get; set; }
 
-        public IEnumerable<string> ImgUrls { get; set; }
+        public IEnumerable<string> PhotoUrls { get; set; }
 
         [Column(Name = "has_air_conditioning")]
         public bool HasAirConditioning { get; set; }

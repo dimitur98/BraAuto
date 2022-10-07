@@ -50,7 +50,7 @@ namespace BraAutoDb.Dal
                 Limit = new Limit(offset, size),
                 OrderBys = new List<OrderBy> { new OrderBy(_sortField, descending: _sortDesc) }
             };
-            var a = query.ToString();
+
             return Db.Mapper.Query<T>(query.ToString()).ToList();
         }
 

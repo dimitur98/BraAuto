@@ -6,7 +6,7 @@
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
-<section class="blog-details-hero spad set-bg" data-setbg="/img/blog/details/details-hero-bg.jpg">
+<section class="details-hero spad set-bg" data-setbg="/img/blog/details/details-hero-bg.jpg">
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-lg-10">
@@ -24,12 +24,12 @@
     </div>
 </section>
 
-<section class="blog-details spad">
+<section class="details spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="blog__details__pic">
-                    <img src="@(cloudinaryUrl + Model.ImgUrl)" alt="">
+                    <img src="@(cloudinaryUrl + Model.PhotoUrl)" alt="">
                 </div>
             </div>
         </div>

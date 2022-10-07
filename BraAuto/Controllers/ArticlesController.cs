@@ -45,7 +45,7 @@ namespace BraAuto.Controllers
         {
             model.Categories = Db.Categories.GetAll();
             model.IsApproved = true;
-            model.ShowAllSortFields = false;
+            model.ShowSpecificSortFields = false;
 
             this.ExecuteSearch(model);
 
@@ -79,22 +79,22 @@ namespace BraAuto.Controllers
                         return this.View(model);
                     }
 
-                    if (!model.Img.IsValidImg())
+                    if (!model.Photo.IsValidPhoto())
                     {
                         model.Categories = Db.Categories.GetAll();
-                        this.ModelState.AddModelError(string.Empty, Global.InvalidImg);
+                        this.ModelState.AddModelError(string.Empty, Global.InvalidPhoto);
 
                         return this.View(model);
                     }
 
-                    var imgUrl = await model.Img.UploadImgAsync();
+                    var photoUrl = await model.Photo.UploadPhotoAsync();
 
                     article = new Article
                     {
                         Title = model.Title,
                         Body = model.Body,
                         CategoryId = model.CategoryId,
-                        ImgUrl = imgUrl,
+                        PhotoUrl = photoUrl,
                         IsApproved = false,
                         CreatorId = this.LoggedUser.Id,
                         EditorId = this.LoggedUser.Id
@@ -128,7 +128,7 @@ namespace BraAuto.Controllers
                 Title = article.Title,
                 Body = article.Body,
                 CategoryId = article.CategoryId,
-                ImgUrl = article.ImgUrl,
+                PhotoUrl = article.PhotoUrl,
                 Categories = Db.Categories.GetAll()
                 
             };
@@ -147,25 +147,23 @@ namespace BraAuto.Controllers
 
                     if (article == null) { return this.NotFound(); }
 
-                    if(model.Img != null)
+                    if(model.Photo != null)
                     {
-                        var publicId = System.IO.Path.ChangeExtension(article.ImgUrl.Split("/").Last(), null);
+                        var publicId = System.IO.Path.ChangeExtension(article.PhotoUrl.Split("/").Last(), null);
 
                         DeletionParams deletionParams = new DeletionParams(publicId);
 
                         await this._cloudinary.DestroyAsync(deletionParams);
 
-                        if (!model.Img.IsValidImg())
+                        if (!model.Photo.IsValidPhoto())
                         {
                             model.Categories = Db.Categories.GetAll();
-                            this.ModelState.AddModelError(string.Empty, Global.InvalidImg);
+                            this.ModelState.AddModelError(string.Empty, Global.InvalidPhoto);
 
                             return this.View(model);
                         }
 
-                        var imgUrl = await model.Img.UploadImgAsync();
-
-                        article.ImgUrl = imgUrl;
+                        article.PhotoUrl = await model.Photo.UploadPhotoAsync();
                     }
 
                     article.Title = model.Title;
@@ -226,7 +224,7 @@ namespace BraAuto.Controllers
                 Title = article.Title,
                 Body = article.Body,
                 Category = article.Category,
-                ImgUrl = article.ImgUrl,
+                PhotoUrl = article.PhotoUrl,
                 Creator = article.Creator,
                 CreatedAt = article.CreatedAt
             };
@@ -250,39 +248,6 @@ namespace BraAuto.Controllers
             }
 
             model.Response = response;
-        }
-    
-        protected async Task<string> UploadImg(IFormFile file)
-        {
-            if (!file.IsValidImg() || file == null)
-            {
-                return string.Empty;
-            }
-
-            byte[] destinationImage;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                destinationImage = memoryStream.ToArray();
-            }
-
-            var result = string.Empty;
-
-            using (var destinationStream = new MemoryStream(destinationImage))
-            {
-                var uploadParams = new ImageUploadParams()
-                {
-                    File = new FileDescription(file.FileName, destinationStream),
-                };
-
-                var res = await _cloudinary.UploadAsync(uploadParams);
-                var url = res.Url.AbsoluteUri.Split("/", StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                result = url[url.Count - 2] + "/" + url[url.Count - 1];
-            }
-
-            return result;
-        }
+        }   
     }
 }

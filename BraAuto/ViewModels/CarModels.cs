@@ -2,6 +2,7 @@
 using BraAutoDb.Models;
 using BraAutoDb.Models.CarsSearch;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +14,10 @@ namespace BraAuto.ViewModels
         {
             this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "c.created_at", true, false), ("Oldest First", "c.created_at", false, false), ("Price High-Low", "c.price", true, false), ("Price Low-High", "c.price", false, false), ("Approved First", "c.is_approved", true, true), ("Not Approved First", "c.is_approved", false, true) };
         }
+
+        public IEnumerable<uint> Ids { get; set; }
+
+        public IEnumerable<uint> UserCarTypeIds { get; set; }
 
         [DisplayName("Vehicle Type")]
         public uint? VehicleTypeId { get; set; }
@@ -200,6 +205,8 @@ namespace BraAuto.ViewModels
         {
             var request = new Request
             {
+                Ids = this.Ids,
+                UserCarTypeIds = this.UserCarTypeIds,
                 VehicleTypeId = this.VehicleTypeId,
                 BodyTypeIds = this.BodyTypeIds,
                 MakeId = this.MakeId,
@@ -305,6 +312,22 @@ namespace BraAuto.ViewModels
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+
+    public class MyServiceModel : CarSearchBaseModel
+    {
+        public MyServiceModel()
+        {
+            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "c.created_at", true, false) };
+        }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("MyService", "Cars") };
 
             return new Breadcrumb(paths);
         }

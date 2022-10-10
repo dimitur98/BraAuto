@@ -9,6 +9,19 @@ namespace BraAutoDb.Dal
     {
         public Cars() : base("car", "id", "created_at", sortDesc: true) { }
 
+        public List<Car> GetAll(bool? isApproved = null, bool? isAdvert = null)
+        {
+            var sql = @"
+                SELECT *
+                FROM car
+                WHERE 1=1";
+
+            if (isApproved != null) { sql += " AND is_approved = @isApproved"; }
+            if (isAdvert != null) { sql += " AND is_advert = @isAdvert"; }
+
+            return Db.Mapper.Query<Car>(sql, new { isApproved, isAdvert }).ToList();
+        }
+
         public List<Car> GetByUserId(uint userId) => this.GetByFieldValues("creator_id", new uint[] { userId });
 
         public List<Car> GetMostViewed(int limit, bool weekly)
@@ -39,6 +52,8 @@ namespace BraAutoDb.Dal
             return this.Search<Response>(request,
                 (query) =>
                 {
+                    if (!request.Ids.IsNullOrEmpty()) { query.Where.Add(" AND c.id IN @ids"); }
+                    if (!request.UserCarTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND EXISTS(SELECT uc.car_id, uc.user_car_type_id FROM user_car uc WHERE uc.car_id = c.id AND uc.user_car_type_id IN @userCarTypeIds)"); }
                     if (request.VehicleTypeId != null) { query.Where.Add(" AND c.vehicle_type_id = @vehicleTypeId"); }
                     if (!request.ConditionIds.IsNullOrEmpty()) { query.Where.Add(" AND c.condition_id IN @conditionIds"); }
                     if (request.MakeId != null) { query.Where.Add(" AND EXISTS (SELECT * FROM `model` m WHERE m.id = c.model_id AND m.make_id = @makeId)"); }
@@ -100,13 +115,16 @@ namespace BraAutoDb.Dal
                     if (request.HasRefrigerator.HasValue) { query.Where.Add(" AND c.has_refrigerator = @hasRefrigerator"); }
                     if (request.IsApproved.HasValue) { query.Where.Add(" AND c.is_approved = @isApproved"); }
                     if (request.IsAdvert.HasValue) { query.Where.Add(" AND c.is_advert = @isAdvert"); }
-                    
+
+                    query.AddJoinIf("LEFT JOIN user_car uc ON uc.car_id = c.id AND uc.date IS NOT NULL", orderByColumnStartsWith: "uc.");
                     //if (request.IsActive != null) { query.Where.Add(" AND c.is_active = @isActive"); }
                 },
                 () =>
                 {
                     return new
                     {
+                        ids = request.Ids,
+                        userCarTypeIds = request.UserCarTypeIds,
                         vehicleTypeId = request.VehicleTypeId,
                         conditionIds = request.ConditionIds,
                         makeId = request.MakeId,
@@ -543,6 +561,11 @@ namespace BraAutoDb.Dal
         public void LoadPhotoUrls(IEnumerable<Car> cars)
         {
             Db.LoadEntities(cars, c => c.Id, ids => Db.CarPhotos.GetByCarIds(ids), (car, carPhotos) => car.PhotoUrls = carPhotos.Where(ci => ci.CarId == car.Id).Select(ci => ci.Url));
+        }
+
+        public void LoadUserCars(IEnumerable<Car> cars, bool loadServiceOnly = true)
+        {
+            Db.LoadEntities(cars, c => c.Id, ids => Db.UserCars.Get(loadServiceOnly ? new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId, Db.UserCarTypes.InspectionId, Db.UserCarTypes.RepairingId, Db.UserCarTypes.FinishedId } : null, carIds:ids), (car, userCars) => car.UserCars = userCars.Where(uc => uc.CarId == car.Id));
         }
     }
 }

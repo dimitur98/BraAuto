@@ -8,16 +8,19 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace BraAuto.Controllers
 {
     public class CarsController : BaseController
     {
         private Cloudinary _cloudinary;
+        private uint[] _userCarServiceIds;
 
-        public CarsController(Cloudinary cloudinary)
+        public CarsController(IConfiguration config, Cloudinary cloudinary)
         {
             _cloudinary = cloudinary;
+            _userCarServiceIds = config.GetSection("UserCar.Service.Ids").Get<uint[]>();
         }
 
         [AllowAnonymous]
@@ -43,10 +46,30 @@ namespace BraAuto.Controllers
         [Authorize]
         public IActionResult My(MyCarModel model)
         {
-            model.UserIds = new List<uint>() { this.LoggedUser.Id };
+            model.UserIds = new uint[] { this.LoggedUser.Id };
             model.FavouriteCount = Db.UserCars.GetCount(Db.UserCarTypes.FavouriteId);
 
             this.ExecuteSearch(model);
+
+            return this.View(model);
+        }
+
+        public IActionResult MyService(MyServiceModel model)
+        {
+            if (this.LoggedUser.IsService())
+            {
+                model.Ids = Db.UserCars.Get(_userCarServiceIds, userId: this.LoggedUser.Id).Select(uc => uc.CarId);
+            }
+            else 
+            {
+                model.UserIds = new uint[] { this.LoggedUser.Id };
+            }
+
+            model.UserCarTypeIds = _userCarServiceIds;
+
+            this.ExecuteSearch(model);
+
+            Db.Cars.LoadUserCars(model.Response.Records);
 
             return this.View(model);
         }
@@ -491,7 +514,7 @@ namespace BraAuto.Controllers
 
             if (this.LoggedUser != null)
             {
-                model.IsFavourite = Db.UserCars.Get(new uint[] { Db.UserCarTypes.FavouriteId },carId: car.Id, userId: this.LoggedUser.Id).FirstOrDefault() != null;
+                model.IsFavourite = Db.UserCars.Get(new uint[] { Db.UserCarTypes.FavouriteId }, carIds: new uint[] { car.Id }, userId: this.LoggedUser.Id).FirstOrDefault() != null;
             }
 
             return this.View(model);
@@ -594,9 +617,12 @@ namespace BraAuto.Controllers
 
             var request = model.ToSearchRequest();
 
-            request.IsAdvert = true;
-            request.ReturnTotalRecords = true;
-
+            if (model is not MyServiceModel)
+            {
+                request.IsAdvert = true;
+                request.ReturnTotalRecords = true;
+            }
+            
             var response = Db.Cars.Search(request);
 
             LoadCarProperties(response.Records);

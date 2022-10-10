@@ -135,17 +135,17 @@ namespace BraAuto.Controllers
             {
                 var user = Db.Users.GetByUsernameAndPassword(model.Username, model.Password);
 
-                if (user == null) 
-                { 
+                if (user == null)
+                {
                     this.ModelState.AddModelError(string.Empty, Global.IncorrectCredentials);
 
                     return this.View(model);
                 }
 
                 var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Username)
-                    };
+                {
+                    new Claim(ClaimTypes.Name, user.Username)
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
@@ -155,7 +155,7 @@ namespace BraAuto.Controllers
 
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return this.RedirectToAction(actionName: "Home",controllerName: "Cars");
+                return this.RedirectToAction(actionName: "Home", controllerName: "Cars");
             }
 
             return this.View(model);
@@ -192,7 +192,7 @@ namespace BraAuto.Controllers
                 UserTypes = Db.UserTypes.GetAll()
             };
 
-            if(this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(user.Id).Select(uir => uir.UserRoleId); }
+            if (this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(user.Id).Select(uir => uir.UserRoleId); }
 
             return this.View(model);
         }
@@ -297,7 +297,7 @@ namespace BraAuto.Controllers
                 {
                     var user = Db.Users.GetByUsernameAndPassword(this.LoggedUser.Username, model.OldPassword);
 
-                    if(user == null)
+                    if (user == null)
                     {
                         this.ModelState.AddModelError(string.Empty, Global.IncorrectPassword);
 
@@ -365,7 +365,7 @@ namespace BraAuto.Controllers
 
             model.Date = DateTime.Now;
 
-            if(carId != null) { model.CarId = carId.Value; }
+            if (carId != null) { model.CarId = carId.Value; }
 
             return this.View("~/Views/Users/Services/BookAppointment.cshtml", model);
         }
@@ -378,7 +378,7 @@ namespace BraAuto.Controllers
                 if (this.ModelState.IsValid)
                 {
                     var service = Db.Users.GetById(model.ServiceId);
-                    var serviceTotalBookings = Db.UserCars.Get(new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, carId: model.CarId, date: model.Date).Count;
+                    var serviceTotalBookings = Db.UserCars.Get(new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, carIds: new uint[] { model.CarId }, date: model.Date).Count;
 
                     if (service.MaxBookingsPerDay <= serviceTotalBookings)
                     {
@@ -398,7 +398,7 @@ namespace BraAuto.Controllers
                         return this.View(model);
                     }
 
-                    var time = new TimeSpan((int)model.Hour, 0,0);
+                    var time = new TimeSpan((int)model.Hour, 0, 0);
 
                     var appointment = new UserCar
                     {
@@ -411,7 +411,7 @@ namespace BraAuto.Controllers
                     Db.UserCars.Insert(appointment);
 
                     //TODO Replace with search page of my booking appointmnets services 
-                    return this.View("~/Views/Users/Services/BookAppointment.cshtml",model);
+                    return this.View("~/Views/Users/Services/BookAppointment.cshtml", model);
                 }
             }
             catch (Exception ex)
@@ -451,11 +451,12 @@ namespace BraAuto.Controllers
 
             model.Response = response;
         }
-    
-    
+
+
         protected void LoadBookAppoitmentModel(UserServiceBookAppointmentModel model)
         {
             var cars = Db.Cars.GetByUserId(this.LoggedUser.Id);
+            cars.AddRange(Db.Cars.GetAll(isApproved: true, isAdvert: true ));
 
             Db.Cars.LoadModels(cars);
             Db.Models.LoadMakes(cars.Select(c => c.Model));

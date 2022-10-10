@@ -9,7 +9,7 @@ namespace BraAutoDb.Dal
     {
         public UserCars() : base("user_car", "id", "id") { }
 
-        public List<UserCar> Get(IEnumerable<uint> userCarTypeIds, uint ? carId = null, uint? userId = null, DateTime? date = null)
+        public List<UserCar> Get(IEnumerable<uint> userCarTypeIds, IEnumerable<uint> carIds = null, uint? userId = null, DateTime? date = null)
         {
             var query = new Query()
             {
@@ -18,12 +18,12 @@ namespace BraAutoDb.Dal
                 Where = new List<string>() { "1=1" }
             };
 
-            if (carId != null) { query.Where.Add(" AND car_id = @carId"); }
+            if (!carIds.IsNullOrEmpty()) { query.Where.Add(" AND car_id IN @carIds"); }
             if (!userCarTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND user_car_type_id IN @userCarTypeIds"); }
             if (userId != null) { query.Where.Add(" AND user_id = @userId"); }
             if (date != null) { query.Where.Add(" AND DATE(@date) = DATE(date)"); }
 
-            return Db.Mapper.Query<UserCar>(query.ToString(), param: new { userCarTypeIds, carId, userId, date}).ToList();
+            return Db.Mapper.Query<UserCar>(query.ToString(), param: new { userCarTypeIds, carIds, userId, date}).ToList();
         }
 
         public IEnumerable<UserCar> GetByUserId(uint userId, uint? userCarTypeId = null)
@@ -73,6 +73,20 @@ namespace BraAutoDb.Dal
             };
 
             userCar.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
+        }
+
+        public void Update(UserCar userCar)
+        {
+            var sql = @"UPDATE `user_car`
+                            SET user_car_type_id = @userCarTypeId
+                        WHERE id = @id";
+            var queryParams = new
+            {
+                id = userCar.Id,
+                userCarTypeId = userCar.UserCarTypeId
+            };
+
+            Db.Mapper.Execute(sql, queryParams);
         }
 
         public void Delete(uint userId, uint carId, uint userCarTypeId)

@@ -196,6 +196,8 @@ namespace BraAutoDb.Models
         [Column(Name = "is_advert")]
         public bool IsAdvert { get; set; }
 
+        public IEnumerable<UserCar> UserCars { get; set; }
+
         public void LoadModel()
         {
             this.Model = Db.Models.GetById(this.ModelId);

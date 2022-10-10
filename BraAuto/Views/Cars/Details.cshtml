@@ -239,8 +239,8 @@
 
                         @if(loggedUser != null)
                         {
-                            <a href="#" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
-                            <a href="#" class="primary-btn c-white fav-icon @(Model.IsFavourite ? "selected" : "")"><i class="fa fa-heart"></i><span>@(Model.IsFavourite ? "Remove From Favourite" : "Add To Favourite")</span></a>
+                            <a asp-action="BookAppointment" asp-controller="Users" asp-route-carId="@Model.Id" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                            <a  class="primary-btn c-white fav-icon @(Model.IsFavourite ? "selected" : "")"><i class="fa fa-heart"></i><span>@(Model.IsFavourite ? "Remove From Favourite" : "Add To Favourite")</span></a>
                         }
                     </div>
                 </div>

@@ -4,6 +4,10 @@ namespace BraAutoDb.Models.CarsSearch
 {
     public class Request : BaseRequest
     {
+        public IEnumerable<uint> Ids { get; set; }
+
+        public IEnumerable<uint> UserCarTypeIds { get; set; }
+
         public uint? VehicleTypeId { get; set; }
 
         public IEnumerable<uint> ConditionIds { get; set; }

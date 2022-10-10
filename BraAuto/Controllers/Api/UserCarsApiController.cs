@@ -21,6 +21,20 @@ namespace BraAuto.Controllers.Api
             return this.Ok(new { });
         }
 
+        [HttpGet]
+        public IActionResult Edit(uint id, uint userCarTypeId)
+        {
+            var userCar = Db.UserCars.GetById(id);
+
+            if (userCar == null) { return this.NotFound(); }
+
+            userCar.UserCarTypeId = userCarTypeId;
+
+            Db.UserCars.Update(userCar);
+
+            return this.Ok(new { });
+        }
+
         public IActionResult Delete(uint carId, uint userCarTypeId)
         {
             Db.UserCars.Delete(this.LoggedUser.Id, carId, userCarTypeId);

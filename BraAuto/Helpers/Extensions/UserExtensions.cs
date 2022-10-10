@@ -10,6 +10,8 @@ namespace BraAuto.Helpers.Extensions
 
         public static bool IsBlogger(this User user) => user.IsInRole("blogger");
 
+        public static bool IsService(this User user) => user.IsOfType(Db.UserTypes.ServiceId);
+
         public static bool IsInRole(this User user, string role)
         {
             var principal = new HttpContextAccessor()?.HttpContext?.User;
@@ -31,6 +33,11 @@ namespace BraAuto.Helpers.Extensions
             return false;
         }
     
+        public static bool IsOfType(this User user, uint userTypeId)
+        {
+            return user.UserTypeId == userTypeId;
+        }
+
         public static List<uint> GetFreeHours(this User user, DateTime date)
         {
             var hours = new List<uint>();

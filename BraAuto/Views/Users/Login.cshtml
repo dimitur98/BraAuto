@@ -1,14 +1,29 @@
 ﻿@model BraAuto.ViewModels.LoginUserModel
+@inject IConfiguration Configuration
 
 @{
     ViewBag.Title = "Login";
 }
-
+<style>
+    .fa-facebook{
+        color:#3b5998;
+    }
+    .fa-google {
+        background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+        hr.style1{
+        border-top: 1px solid #8c8b8b;
+    }
+</style>
 <partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
-
 <section class="spad">
     <div class="container login">
         <form asp-action="Login" asp-controller="Users" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
             <div class="form-group">
                 <label asp-for="Username" class="form-label"></label>
                 <input asp-for="Username" class="form-control" />
@@ -24,9 +39,14 @@
                 <input type="checkbox" asp-for="RememberMe" class="form-check-input" />
                 <span asp-validation-for="RememberMe"></span>
             </div>
-            <div class="text-center">
+            <div class="text-center mb-2">
                 <button type="submit" class="site-btn">Login</button>
             </div>
-        </form>
+            <hr class="style1">
+            <div class="text-center mt-3">
+                <a asp-action="ExternalLogin" asp-route-externalLoginType="facebook" title="Login with Facebbok"><i class="fa-brands fa-facebook fa-2x me-2"></i></a>
+                <a asp-action="ExternalLogin" asp-route-externalLoginType="google" title="Login with Google"><i class="fa-brands fa-google fa-2x"></i></a>
+            </div>
+        </form> 
     </div>
 </section>

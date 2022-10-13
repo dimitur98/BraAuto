@@ -1,0 +1,24 @@
+﻿@model BraAuto.ViewModels.UserSetUsernameModel
+@inject IConfiguration Configuration
+
+@{
+    ViewBag.Title = "Set Username";
+}
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<partial name="_AlertPartial" />
+
+<section class="spad">
+    <div class="container login">
+        <form asp-action="SetUsername" asp-controller="Users" method="post">
+            <div class="form-group">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username"></span>
+            </div>
+            <div class="text-center mb-2">
+                <button type="submit" class="site-btn">Set Username</button>
+            </div>
+        </form>
+    </div>
+</section>

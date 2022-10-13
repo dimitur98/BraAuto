@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using BraAuto.Helpers.Extensions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using CloudinaryDotNet.Actions;
 
 namespace BraAuto.AspNetCore.Authentication.Cookies
 {
@@ -10,7 +11,30 @@ namespace BraAuto.AspNetCore.Authentication.Cookies
     {
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
         {
+            var authType = context.Principal.Identity.AuthenticationType;
+            var email = context.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var claims = context.Principal.Claims.ToList();
             var username = context.Principal.Identity.Name;
+
+            if ((authType.ToLower() == "google" || authType.ToLower() == "facebook") && !string.IsNullOrEmpty(email))
+            {
+                var user = Db.Users.GetByEmail(email, isPasswordRequired: false);
+
+                if (user == null)
+                {
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(user.Username)) 
+                { 
+                    username = user.Username;
+                    claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name, username)
+                    };
+                }
+            }
+
 
             if (!string.IsNullOrWhiteSpace(username))
             {
@@ -31,8 +55,6 @@ namespace BraAuto.AspNetCore.Authentication.Cookies
                         Db.UserInRoles.LoadUserRoles(user.Roles);
 
                         var roles = user.Roles.Select(uir => uir.UserRole.Name.Replace(" ", "-").ToLower());
-
-                        var claims = context.Principal.Claims.ToList();
 
                         foreach (var role in roles)
                         {

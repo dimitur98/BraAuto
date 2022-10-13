@@ -12,35 +12,37 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
-                @if(Model.Response.Records.IsNullOrEmpty())
+                @if (Model.Response.Records.IsNullOrEmpty())
                 {
                     <span>There are no articles</span>
-                    return;
                 }
-                <partial name="_OrderListPartial" model="Model.ToPager()" />
-                <div class="row">
-                    @foreach(var article in Model.Response.Records)
-                    {
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="blog__item">
-                                <div class="blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.PhotoUrl)">
-                                    <ul>
-                                        <li>By @article.Creator.Name</li>
-                                        <li>@article.CreatedAt.ToWebDateFormat()</li>
-                                        <li>8 Comment</li>
-                                    </ul>
-                                </div>
-                                <div class="blog__item__text">
-                                    <h5><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></h5>
-                                    <p>
-                                        @(article.Body.Length > 200 ? article.Body.Substring(0,200) + " ..." : article.Body)
-                                    </p>
+                else
+                {
+                    <partial name="_OrderListPartial" model="Model.ToPager()" />
+                    <div class="row">
+                        @foreach (var article in Model.Response.Records)
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__item">
+                                    <div class="blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.PhotoUrl)">
+                                        <ul>
+                                            <li>By @article.Creator.Name</li>
+                                            <li>@article.CreatedAt.ToWebDateFormat()</li>
+                                            <li>8 Comment</li>
+                                        </ul>
+                                    </div>
+                                    <div class="blog__item__text">
+                                        <h5><a asp-action="Details" asp-route-id="@article.Id">@article.Title</a></h5>
+                                        <p>
+                                            @(article.Body.Length > 200 ? article.Body.Substring(0, 200) + " ..." : article.Body)
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
-                <partial name="_PagedListPartial" model="Model.ToPager()" />
+                        }
+                    </div>
+                    <partial name="_PagedListPartial" model="Model.ToPager()" />
+                }
             </div>
             <div class="col-lg-3 col-md-6 col-sm-9">
                 <div class="blog__sidebar">
@@ -51,9 +53,9 @@
                     <div class="blog__sidebar__categories">
                         <h4>Categories</h4>
                         <ul>
-                            @foreach(var category in Model.Categories)
+                            @foreach (var category in Model.Categories)
                             {
-                            <li><a asp-action="Search" asp-route-categoryId="@category.Id">@category.Name</a></li>
+                                <li><a asp-action="Search" asp-route-categoryId="@category.Id">@category.Name</a></li>
                             }
                         </ul>
                     </div>

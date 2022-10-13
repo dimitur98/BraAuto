@@ -79,7 +79,7 @@ namespace BraAuto.ViewModels
         public string? Description { get; set; }
 
         [DisplayName("Location")]
-        public uint LocationId { get; set; }
+        public uint? LocationId { get; set; }
         public IEnumerable<Location> Locations { get; set; }
 
         [DisplayName("Specific Location")]
@@ -208,6 +208,22 @@ namespace BraAuto.ViewModels
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("ChangePassword", "Users") };
+
+            return new Breadcrumb(paths);
+        }
+    }
+
+    public class UserSetUsernameModel
+    {
+
+        [Required]
+        [DisplayName("Username")]
+        [RegularExpression(@"^[^\s]+$", ErrorMessage = "The {0} cannot contain empty spaces.")]
+        public string Username { get; set; }
+
+        public Breadcrumb ToBreadcrumb()
+        {
+            var paths = new List<(string Action, string Controller)>() { ("Login", "Users"), ("SetUsername", "Users") };
 
             return new Breadcrumb(paths);
         }

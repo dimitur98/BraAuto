@@ -1,24 +1,27 @@
-﻿using BraAuto.ViewModels;
+﻿using BraAuto.Helpers.Extensions;
+using BraAuto.Resources;
+using BraAuto.ViewModels;
+using BraAuto.ViewModels.Common;
+using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using BraAuto.Resources;
-using BraAuto.Helpers.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using CloudinaryDotNet.Actions;
-using CloudinaryDotNet;
-using BraAuto.ViewModels.Common;
-using System.Linq;
-using BraAuto.ViewModels.Helpers;
 
 namespace BraAuto.Controllers
 {
     public class UsersController : BaseController
     {
         private Cloudinary _cloudinary;
+        private readonly string _googleExternalLoginType = "google";
+        private readonly string _facebookExternalLoginType = "facebook";
 
         public UsersController(Cloudinary cloudinary)
         {
@@ -53,9 +56,22 @@ namespace BraAuto.Controllers
                 if (this.ModelState.IsValid)
                 {
                     var user = Db.Users.GetByEmail(model.Email);
+
+                    if (user != null)
+                    {
+                        this.TempData[Global.AlertKey] = new Alert(Global.EmailAlreadyExists, AlertTypes.Danger).SerializeAlert();
+
+                        return this.View(model);
+                    }
+
                     user = Db.Users.GetByUsername(model.Username);
 
-                    if (user != null) { return this.View(model); }
+                    if (user != null)
+                    {
+                        this.TempData[Global.AlertKey] = new Alert(Global.UsernameAlreadyExists, AlertTypes.Danger).SerializeAlert();
+
+                        return this.View(model);
+                    }
 
                     if (model.Photo != null)
                     {
@@ -96,7 +112,7 @@ namespace BraAuto.Controllers
                     var userInRole = new UserInRole()
                     {
                         UserId = user.Id,
-                        UserRoleId = Db.UserRoles.UserRoleId
+                        UserRoleId = Db.UserRoles.UserId
                     };
 
                     Db.UserInRoles.Insert(userInRole);
@@ -106,8 +122,8 @@ namespace BraAuto.Controllers
             }
             catch (Exception ex)
             {
-
                 ex.SaveToLog();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
             model.UserTypes = Db.UserTypes.GetAll();
@@ -133,7 +149,7 @@ namespace BraAuto.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var user = Db.Users.GetByUsernameAndPassword(model.Username, model.Password);
+                var user = Db.Users.GetByUsernameAndPassword(model.Username, model.Password, isPasswordRequired: true);
 
                 if (user == null)
                 {
@@ -156,6 +172,105 @@ namespace BraAuto.Controllers
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
                 return this.RedirectToAction(actionName: "Home", controllerName: "Cars");
+            }
+
+            return this.View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string externalLoginType)
+        {
+            externalLoginType = externalLoginType.ToLower();
+
+            var properties = new AuthenticationProperties()
+            {
+                RedirectUri = Url.Action("ExternalLoginResponse", "Users")
+            };
+
+            if (externalLoginType == _googleExternalLoginType)
+            {
+                return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+            }
+            else if(externalLoginType == _facebookExternalLoginType)
+            {
+                return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+            }
+
+            return this.NotFound();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginResponse()
+        {
+            if(this.LoggedUser != null)
+            {
+                return this.RedirectToAction(nameof(CarsController.Home), "Cars");
+            }
+
+            return this.RedirectToAction(nameof(SetUsername));
+        }
+
+        public IActionResult SetUsername()
+        {
+            var model = new UserSetUsernameModel();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetUsername(UserSetUsernameModel model)
+        {
+            try
+            {
+                if (this.ModelState.IsValid)
+                {
+                    var email = this.User?.FindFirst(x => x.Type == ClaimTypes.Email)?.Value;
+
+                    var user = Db.Users.GetByEmail(email);
+
+                    if (user != null)
+                    {
+                        this.TempData[Global.AlertKey] = new Alert(Global.EmailAlreadyExists, AlertTypes.Danger).SerializeAlert();
+
+                        return this.View(model);
+                    }
+
+                    user = new User
+                    {
+                        Name = this.User?.FindFirst(x => x.Type == ClaimTypes.Name)?.Value,
+                        Username = model.Username,
+                        Email = email,
+                        UserTypeId = Db.UserTypes.UserId,
+                        IsActive = true,
+                        IsPasswordRequired = false
+                    };
+                    
+                    Db.Users.Insert(user);
+
+                    var userInRole = new UserInRole()
+                    {
+                        UserId = user.Id,
+                        UserRoleId = Db.UserRoles.UserId
+                    };
+
+                    Db.UserInRoles.Insert(userInRole);
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Username)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                    return this.RedirectToAction(nameof(CarsController.Home), "Cars");
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SaveToLog();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
             return this.View(model);
@@ -232,7 +347,7 @@ namespace BraAuto.Controllers
 
                         user.PhotoUrl = await model.Photo.UploadPhotoAsync();
                     }
-
+                    // to do check service fields required
                     user.Name = model.Name;
                     user.Birthday = model.Birthday;
                     user.Mobile = model.Mobile;
@@ -250,7 +365,7 @@ namespace BraAuto.Controllers
                     Db.Users.Update(user);
                     Db.UserInRoles.DeleteByUserId(user.Id);
 
-                    if (model.UserRoleIds.IsNullOrEmpty()) { model.UserRoleIds = new uint[] { Db.UserRoles.UserRoleId }; }
+                    if (model.UserRoleIds.IsNullOrEmpty()) { model.UserRoleIds = new uint[] { Db.UserRoles.UserId }; }
 
                     foreach (var userRoleId in model.UserRoleIds)
                     {
@@ -262,7 +377,7 @@ namespace BraAuto.Controllers
 
                         Db.UserInRoles.Insert(userInRole);
                     }
-                    return this.RedirectToAction(actionName: "My", controllerName: "Cars");
+                    return this.RedirectToAction("My", "Cars");
                 }
             }
             catch (Exception ex)
@@ -295,7 +410,7 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
-                    var user = Db.Users.GetByUsernameAndPassword(this.LoggedUser.Username, model.OldPassword);
+                    var user = Db.Users.GetByUsernameAndPassword(this.LoggedUser.Username, model.OldPassword, true);
 
                     if (user == null)
                     {
@@ -306,7 +421,7 @@ namespace BraAuto.Controllers
 
                     Db.Users.SetPassword(user.Id, model.Password);
 
-                    return this.RedirectToAction(actionName: "My", controllerName: "Cars");
+                    return this.RedirectToAction("My", "Cars");
                 }
             }
             catch (Exception ex)
@@ -349,7 +464,7 @@ namespace BraAuto.Controllers
                 Email = service.Email,
                 Mobile = service.Mobile,
                 Description = service.Description,
-                Location = Db.Locations.GetById(service.LocationId).Name,
+                Location = Db.Locations.GetById(service.LocationId.Value).Name,
                 SpecificLocation = service.SpecificLocation,
                 PhotoUrl = service.PhotoUrl
             };
@@ -456,7 +571,7 @@ namespace BraAuto.Controllers
         protected void LoadBookAppoitmentModel(UserServiceBookAppointmentModel model)
         {
             var cars = Db.Cars.GetByUserId(this.LoggedUser.Id);
-            cars.AddRange(Db.Cars.GetAll(isApproved: true, isAdvert: true ));
+            cars.AddRange(Db.Cars.GetAll(isApproved: true, isAdvert: true));
 
             Db.Cars.LoadModels(cars);
             Db.Models.LoadMakes(cars.Select(c => c.Model));

@@ -28,7 +28,7 @@ namespace BraAutoDb.Models
         public string Description { get; set; }
 
         [Column(Name = "location_id")]
-        public uint LocationId { get; set; }
+        public uint? LocationId { get; set; }
 
         [Column(Name = "specific_location")]
         public string SpecificLocation { get; set; }
@@ -53,6 +53,9 @@ namespace BraAutoDb.Models
 
         [Column(Name = "max_bookings_per_day")]
         public uint MaxBookingsPerDay { get; set; }
+
+        [Column(Name = "is_password_required")]
+        public bool IsPasswordRequired { get; set; }
 
         public virtual IEnumerable<UserInRole> Roles { get; set; }
 

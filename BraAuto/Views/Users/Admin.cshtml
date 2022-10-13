@@ -13,60 +13,61 @@
                 @if (Model.Response.Records.IsNullOrEmpty())
                 {
                     <div class="col-lg-9">There are no users yet.</div>
-
-                    return;
                 }
-                <div class="col-lg-9">
-                    <partial name="_OrderListPartial" model="Model.ToPager()" />
-                    <partial name="_AlertPartial" />
+                else
+                {
+                    <div class="col-lg-9">
+                        <partial name="_OrderListPartial" model="Model.ToPager()" />
+                        <partial name="_AlertPartial" />
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="my-car-settings-thead">
-                                <th scope="col"></th>
-                                <th scope="col">Useranme</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Mobile</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Editor</th>
-                                <th scope="col">Edited At</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model.Response.Records)
-                            {
-                                <tr>
-                                    <td>img</td>
-                                    <td>@user.Username</td>
-                                    <td>@user.Name</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.Mobile</td>
-                                    <td>
-                                        @if (user.IsActive)
-                                        {
-                                            <a id="@user.Id" class="not-active"><i class="fa fa-check-circle"></i></a>
-                                        }
-                                        else
-                                        {
-                                            <a id="@user.Id" class="active"><i class="fa-regular fa-circle"></i></a>
-                                        }
-                                    </td>
-                                    <td>@user.CreatedAt.ToWebDateFormat(showTime: true)</td>
-                                    <td>@user.Editor?.Name</td>
-                                    <td>@user.EditedAt.ToWebDateFormat(showTime:true)</td>
-                                    <td class="text-nowrap ms-3">
-                                        <a asp-action="Edit" asp-route-id="@user.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@user.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete '@user.Username'?"><i class="far fa-trash-alt"></i></a>
-                                    </td>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="my-car-settings-thead">
+                                    <th scope="col"></th>
+                                    <th scope="col">Useranme</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Active</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Editor</th>
+                                    <th scope="col">Edited At</th>
+                                    <th scope="col"></th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <partial name="_PagedListPartial" model="Model.ToPager()" />
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.Response.Records)
+                                {
+                                    <tr>
+                                        <td>img</td>
+                                        <td>@user.Username</td>
+                                        <td>@user.Name</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.Mobile</td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <a id="@user.Id" class="not-active"><i class="fa fa-check-circle"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a id="@user.Id" class="active"><i class="fa-regular fa-circle"></i></a>
+                                            }
+                                        </td>
+                                        <td>@user.CreatedAt.ToWebDateFormat(showTime: true)</td>
+                                        <td>@user.Editor?.Name</td>
+                                        <td>@user.EditedAt.ToWebDateFormat(showTime:true)</td>
+                                        <td class="text-nowrap ms-3">
+                                            <a asp-action="Edit" asp-route-id="@user.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                            <a asp-action="Delete" asp-route-id="@user.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete '@user.Username'?"><i class="far fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <partial name="_PagedListPartial" model="Model.ToPager()" />
+                    </div>
+                }
         </div>
     </div>
 </section>

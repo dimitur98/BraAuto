@@ -15,31 +15,33 @@
                 @if (Model.Response.Records.IsNullOrEmpty())
                 {
                     <span>There are no services</span>
-                    return;
                 }
-                <partial name="_OrderListPartial" model="Model.ToPager()" />
-                <div class="row">
-                    @foreach (var service in Model.Response.Records)
-                    {
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="blog__item">
-                                <div class="blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + service.PhotoUrl)">
-                                    <ul>
-                                        <li>@service.CreatedAt.ToWebDateFormat()</li>
-                                        <li>Location: @Model.Locations.First(l => l.Id == service.LocationId).Name (@service.SpecificLocation)</li>
-                                    </ul>
-                                </div>
-                                <div class="blog__item__text">
-                                    <h5><a asp-action="Details" asp-route-id="@service.Id">@service.Name</a></h5>
-                                    <p>
-                                        @(service.Description.Length > 200 ? service.Description.Substring(0, 200) + " ..." : service.Description)
-                                    </p>
+                else
+                {
+                    <partial name="_OrderListPartial" model="Model.ToPager()" />
+                    <div class="row">
+                        @foreach (var service in Model.Response.Records)
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__item">
+                                    <div class="blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + service.PhotoUrl)">
+                                        <ul>
+                                            <li>@service.CreatedAt.ToWebDateFormat()</li>
+                                            <li>Location: @Model.Locations.First(l => l.Id == service.LocationId).Name (@service.SpecificLocation)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="blog__item__text">
+                                        <h5><a asp-action="Details" asp-route-id="@service.Id">@service.Name</a></h5>
+                                        <p>
+                                            @(service.Description.Length > 200 ? service.Description.Substring(0, 200) + " ..." : service.Description)
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>  
-                    }
-                </div>
-                <partial name="_PagedListPartial" model="Model.ToPager()" />
+                        }
+                    </div>
+                    <partial name="_PagedListPartial" model="Model.ToPager()" />
+                }
             </div>
             <div class="col-lg-3 col-md-6 col-sm-9">
                 <div class="blog__sidebar">

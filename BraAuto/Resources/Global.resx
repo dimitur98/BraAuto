@@ -123,6 +123,9 @@
   <data name="ArticleTitleExists" xml:space="preserve">
     <value>Article with same title already exists</value>
   </data>
+  <data name="EmailAlreadyExists" xml:space="preserve">
+    <value>Email already exists</value>
+  </data>
   <data name="GeneralError" xml:space="preserve">
     <value>Sorry, it seems that an error occurred</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="SelectedTimeNotFree" xml:space="preserve">
     <value>The selected time is not free</value>
+  </data>
+  <data name="UsernameAlreadyExists" xml:space="preserve">
+    <value>Username already exists</value>
   </data>
   <data name="WebsiteTitle" xml:space="preserve">
     <value>BraAuto</value>

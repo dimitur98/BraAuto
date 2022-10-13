@@ -1,7 +1,11 @@
 using BraAuto.AspNetCore.Authentication.Cookies;
 using BraAuto.Helpers.Log;
+using BraAutoDb.Models;
 using CloudinaryDotNet;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
@@ -15,7 +19,6 @@ logger.Debug("Starting app");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-
 
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
@@ -42,7 +45,18 @@ try
            options.AccessDeniedPath = new PathString("/Errors/NoAccess");
            options.Cookie.Name = "bra_auto_auth";
            options.EventsType = typeof(BraAutoCookieAuthenticationEvents);
+       })
+       .AddFacebook(facebookOptions =>
+       {
+           facebookOptions.AppId = builder.Configuration["Facebook:AppId"];
+           facebookOptions.AppSecret = builder.Configuration["Facebook:AppSecret"];
+       })
+       .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+       {
+           options.ClientId = builder.Configuration["Google:AppId"];
+           options.ClientSecret = builder.Configuration["Google:AppSecret"];
        });
+
     builder.Services.AddScoped<BraAutoCookieAuthenticationEvents>();
     builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
     builder.Services.AddSingleton<ILogHelper, LogHelper>();

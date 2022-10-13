@@ -12,46 +12,54 @@
 }
 
 <style>
-    .fav-selected{
+    .fav-selected {
         color: #db2d2e;
     }
-    .compare-selected{
+
+    .compare-selected {
         color: #4971FF;
     }
-    .compare-box{
+
+    .compare-box {
         border-style: outset;
         height: 180px;
         margin-bottom: 20px;
     }
-    .compare-btn{
+
+    .compare-btn {
         float: right;
         transform: rotate(90deg) translateY(-29px) translateX(53px);
     }
-    .compared-car-preview{
+
+    .compared-car-preview {
         width: 150px;
         height: 110px;
         background-size: 100% 100%;
     }
-    .compare-list{
-        overflow-x:auto;
+
+    .compare-list {
+        overflow-x: auto;
         white-space: nowrap;
     }
 
-    .compare-list .compared-car{
-        display:inline-block;
-    }
-    .compare-list::-webkit-scrollbar {
-        width: 2px;
-        height: 7px;
-    }
-    .compare-list::-webkit-scrollbar-track {
-        background-color:#f1f1f1;
-    }
-    .compare-list::-webkit-scrollbar-thumb {
-        width: 10px;
-        border-radius: 5px;
-        background-color: #c1c1c1;
-    }
+        .compare-list .compared-car {
+            display: inline-block;
+        }
+
+        .compare-list::-webkit-scrollbar {
+            width: 2px;
+            height: 7px;
+        }
+
+        .compare-list::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        .compare-list::-webkit-scrollbar-thumb {
+            width: 10px;
+            border-radius: 5px;
+            background-color: #c1c1c1;
+        }
 </style>
 
 <div class="extras-model">
@@ -117,10 +125,10 @@
         <div class="row">
             <div class="col-lg-3 compare d-none"></div>
             <div class="col-lg-9 compare compare-box d-flex justify-content-between d-none border-outset">
-                        <div class="col-lg-10 compare-list d-flex-root pt-1"></div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn site-btn compare-btn">Compare</button>
-                        </div>
+                <div class="col-lg-10 compare-list d-flex-root pt-1"></div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn site-btn compare-btn">Compare</button>
+                </div>
             </div>
             <div class="col-lg-3">
                 <div class="car__sidebar">
@@ -216,53 +224,54 @@
             @if (Model.Response.Records.IsNullOrEmpty())
             {
                 <div class="col-lg-9">There are no cars yet.</div>
-
-                return;
             }
-            <div class="col-lg-9">
-                <partial name="_OrderListPartial" model="Model.ToPager()" />
+            else
+            {
+                <div class="col-lg-9">
+                    <partial name="_OrderListPartial" model="Model.ToPager()" />
 
-                <div class="row">
-                    @foreach (var car in Model.Response.Records)
-                    {
-                        <div class="col-lg-4 col-md-4">
-                            <div class="car__item">
-                                <div class="car__item__pic__slider owl-carousel">
-                                    @foreach (var photoUrl in car.PhotoUrls)
-                                    {
-                                        <img src="@(cloudinaryUrl + photoUrl)" alt="">
-                                    }
-                                </div>
-                                <div class="car__item__text">
-                                    <div class="car__item__text__inner">
-                                        <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
-                                            @if (loggedUser != null)
-                                            {
-                                                <div class="me-2">
-                                                    <a><i id="@car.Id" class="fa-heart car-icon fav-icon me-1 @(Model.UserFavourableCarIds.Contains(car.Id) ? "fa-solid fav-selected" : "fa-regular")"></i></a>
-                                                    <a><i id="@car.Id" class="fa-copy car-icon compare-icon @(Model.UserCompareCarIds.Contains(car.Id) ? "fa-solid compare-selected" : "fa-regular")"></i></a>
-                                                </div>
-                                            }
-                                        </div>
-                                        <ul>
-                                            <li><span>@car.Mileage</span> km</li>
-                                            <li>@car.GearboxType.Name</li>
-                                            <li><span>@car.HorsePower</span> hp</li>
-                                        </ul>
+                    <div class="row">
+                        @foreach (var car in Model.Response.Records)
+                        {
+                            <div class="col-lg-4 col-md-4">
+                                <div class="car__item">
+                                    <div class="car__item__pic__slider owl-carousel">
+                                        @foreach (var photoUrl in car.PhotoUrls)
+                                        {
+                                            <img src="@(cloudinaryUrl + photoUrl)" alt="">
+                                        }
                                     </div>
-                                    <div class="car__item__price">
-                                        <span class="car-option">Price</span>
-                                        <h6>@car.Price</h6>
+                                    <div class="car__item__text">
+                                        <div class="car__item__text__inner">
+                                            <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
+                                            <div class="d-flex justify-content-between">
+                                                <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
+                                                @if (loggedUser != null)
+                                                {
+                                                    <div class="me-2">
+                                                        <a><i id="@car.Id" class="fa-heart car-icon fav-icon me-1 @(Model.UserFavourableCarIds.Contains(car.Id) ? "fa-solid fav-selected" : "fa-regular")"></i></a>
+                                                        <a><i id="@car.Id" class="fa-copy car-icon compare-icon @(Model.UserCompareCarIds.Contains(car.Id) ? "fa-solid compare-selected" : "fa-regular")"></i></a>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <ul>
+                                                <li><span>@car.Mileage</span> km</li>
+                                                <li>@car.GearboxType.Name</li>
+                                                <li><span>@car.HorsePower</span> hp</li>
+                                            </ul>
+                                        </div>
+                                        <div class="car__item__price">
+                                            <span class="car-option">Price</span>
+                                            <h6>@car.Price</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
+                    <partial name="_PagedListPartial" model="Model.ToPager()" />
                 </div>
-                <partial name="_PagedListPartial" model="Model.ToPager()" />
-            </div>
+            }
         </div>
     </div>
 </section>
@@ -308,20 +317,20 @@
                 var value = null;
 
                 if ($filter.is("select")) {
-                    if(Array.isArray($filter.val())) { 
-                        value = $filter.val(); 
+                    if (Array.isArray($filter.val())) {
+                        value = $filter.val();
                     } else if ($filter.val() != "") {
-                        value = parseInt($filter.val()); 
+                        value = parseInt($filter.val());
                     }
-                } else if ($filter.is("input[type='number']")) { 
-                    value = parseInt($filter.val()) || null; 
-                }else if($filter.is("input[type='button']")){
+                } else if ($filter.is("input[type='number']")) {
+                    value = parseInt($filter.val()) || null;
+                } else if ($filter.is("input[type='button']")) {
                     value = true;
                 }
 
                 data[propertyName] = value;
             });
-            
+
             braAuto.submitJson({
                 url: @(Html.Raw(Json.Serialize(Url.Action("Search", "Cars")))),
                 method: "GET",
@@ -353,7 +362,7 @@
                     type: 'GET',
                     data: { carId: $(self).attr("id"), userCarTypeId: @Db.UserCarTypes.CompareId },
                     success: function (response, status, xhr) {
-                        if (response) {                            
+                        if (response) {
                             loadComparedCars();
 
                             $(self).addClass("compare-selected");
@@ -370,8 +379,8 @@
                 $(this).addClass("fa-regular");
             });
 
-            $(".compare-btn").on("click", function(){
-                
+            $(".compare-btn").on("click", function () {
+
                 braAuto.submitJson({
                     url: @(Html.Raw(Json.Serialize(Url.Action("Compare", "Cars")))),
                     method: "GET"
@@ -429,8 +438,8 @@
                         response.forEach(function (c) {
                             var $comparedCar = $("<div class='col-md-3 compared-car me-1'></div>")
                             var $carPreview = $("<div class='compared-car-preview'><i id='" + c.id + "' class='fas fa-times delete-photo'></i></div>");
-                            
-                            $carPreview.find(".delete-photo").on("click", function(){
+
+                            $carPreview.find(".delete-photo").on("click", function () {
                                 var self = this;
                                 var carId = $(this).attr("id");
 
@@ -447,7 +456,7 @@
                                         $("#" + carId + ".compare-icon").removeClass("fa-solid");
                                         $("#" + carId + ".compare-icon").addClass("fa-regular");
 
-                                        if($(".compared-car").length == 0) { $(".compare").addClass("d-none"); }
+                                        if ($(".compared-car").length == 0) { $(".compare").addClass("d-none"); }
                                     }
                                 });
                             });
@@ -455,7 +464,7 @@
                             $carPreview.css("background-image", "url(@cloudinaryUrl" + c.photoUrl + ")");
                             $comparedCar.append($carPreview);
                             $comparedCar.append($("<span>" + c.makeModel + "</span>"))
-                            
+
                             $(".compare-list").append($comparedCar);
                         });
                     }

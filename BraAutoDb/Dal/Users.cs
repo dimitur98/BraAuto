@@ -28,18 +28,47 @@ namespace BraAutoDb.Dal
                 "u");
         }
 
-        public User GetByUsername(string username) => this.GetByFieldValues<string>("username", new string[] { username }).FirstOrDefault();
-
-        public User GetByEmail(string email) => this.GetByFieldValues<string>("email", new string[] { email }).FirstOrDefault();
-
-        public User GetByUsernameAndPassword(string username, string password)
+        public User GetByUsername(string username, bool? isPasswordRequired = null) 
         {
             var sql = @"
                 SELECT *
                 FROM user
-                WHERE username = @username AND password = fn_password(@password)";
+                WHERE username = @username";
 
-            return Db.Mapper.Query<User>(sql, new { username, password }).FirstOrDefault();
+            if (isPasswordRequired != null) { sql += "  AND is_password_required = @isPasswordRequired"; }
+
+            return Db.Mapper.Query<User>(sql, new { username, isPasswordRequired }).FirstOrDefault();
+        }
+
+        public User GetByEmail(string email, bool? isPasswordRequired = null)
+        {
+            var sql = @"
+                SELECT *
+                FROM user
+                WHERE email = @email";
+
+            if (isPasswordRequired != null) { sql += "  AND is_password_required = @isPasswordRequired"; }
+
+            return Db.Mapper.Query<User>(sql, new { email, isPasswordRequired }).FirstOrDefault();
+        }
+        public User GetByUsernameAndPassword(string username, string password, bool isPasswordRequired)
+        {
+            var sql = @"
+                SELECT *
+                FROM user
+                WHERE username = @username AND password = fn_password(@password) AND is_password_required = @isPasswordRequired";
+
+            return Db.Mapper.Query<User>(sql, new { username, password, isPasswordRequired }).FirstOrDefault();
+        }
+
+        public User GetByEmailAndPassword(string email, string password, bool isPasswordRequired)
+        {
+            var sql = @"
+                SELECT *
+                FROM user
+                WHERE email = @email AND password = fn_password(@password) AND is_password_required = @isPasswordRequired";
+
+            return Db.Mapper.Query<User>(sql, new { email, password, isPasswordRequired }).FirstOrDefault();
         }
 
         public List<User> GetByTypeId(uint userTypeId) => this.GetByFieldValues("user_type_id", new uint[] { userTypeId });
@@ -64,6 +93,7 @@ namespace BraAutoDb.Dal
                             `start_working_time`,
                             `end_working_time`,
                             `max_bookings_per_day`,
+                            `is_password_required`,
                             `created_at`,
                             `edited_at`
                         )VALUES(
@@ -83,6 +113,7 @@ namespace BraAutoDb.Dal
                             @startWorkingTime,
                             @endWorkingTime,
                             @maxBookingsPerDay,
+                            @isPasswordRequired,
                             NOW(),
                             NOW()
                         );
@@ -106,7 +137,8 @@ namespace BraAutoDb.Dal
                 bookingIntervalHours = user.BookingIntervalHours,
                 startWorkingTime = user.StartWorkingTime,
                 endWorkingTime = user.EndWorkingTime,
-                maxBookingsPerDay = user.MaxBookingsPerDay
+                maxBookingsPerDay = user.MaxBookingsPerDay,
+                isPasswordRequired = user.IsPasswordRequired
             };
 
             user.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
@@ -166,7 +198,6 @@ namespace BraAutoDb.Dal
 
             Db.Mapper.Execute(sql, new { id, password });
         }
-
 
         public void LoadEditors(IEnumerable<User> users)
         {

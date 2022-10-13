@@ -92,6 +92,18 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Email already exists.
+        /// </summary>
+        internal static string EmailAlreadyExists
+        {
+            get
+            {
+                return ResourceManager.GetString("EmailAlreadyExists", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, it seems that an error occurred..
         /// </summary>
         internal static string GeneralError
@@ -167,6 +179,18 @@ namespace BraAuto.Resources
             get
             {
                 return ResourceManager.GetString("SelectedTimeNotFree", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Username already exists.
+        /// </summary>
+        internal static string UsernameAlreadyExists
+        {
+            get
+            {
+                return ResourceManager.GetString("UsernameAlreadyExists", resourceCulture);
 
             }
         }

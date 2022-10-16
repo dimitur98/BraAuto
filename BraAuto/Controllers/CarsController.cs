@@ -9,8 +9,6 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
 
 namespace BraAuto.Controllers
 {
@@ -30,7 +28,7 @@ namespace BraAuto.Controllers
             {
                 Makes = Db.Makes.GetAll(),
                 Years = Db.Years.GetAll(),
-                NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", RowCount = 10 }).Records,
+                NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", SortDesc = true, RowCount = 10 }).Records,
                 MostViewedCars = Db.Cars.GetMostViewed(10, true),
                 NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsApproved = true, SortColumn = "created_at", RowCount = 6 }).Records
             };
@@ -43,7 +41,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         public IActionResult My(MyCarModel model)
         {
             model.UserIds = new uint[] { this.LoggedUser.Id };
@@ -86,7 +83,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         public IActionResult Create()
         {
             var model = new CarCreateModel();
@@ -98,7 +94,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CarCreateModel model)
         {
@@ -192,7 +187,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         public IActionResult Edit(uint id)
         {
             var car = Db.Cars.GetById(id);
@@ -275,7 +269,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(CarEditModel model)
         {

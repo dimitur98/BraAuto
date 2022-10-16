@@ -109,6 +109,21 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        public IActionResult Delete(uint id)
+        {
+            var userCar = Db.UserCars.GetById(id);
+
+            if(userCar == null) { return this.NotFound(); }
+
+            userCar.LoadUser();
+            
+            if (!userCar.User.IsService()) { return this.RedirectToHttpForbidden(); }
+
+            Db.UserCars.Delete(id);
+
+            return RedirectToAction(nameof(MyService));
+        }
+
         protected void ExecuteSearch(UserCarSearchBaseModel model)
         {
             model.SetDefaultSort("uc.id", sortDesc: true);
@@ -140,5 +155,3 @@ namespace BraAuto.Controllers
         }
     }
 }
-
-//todo favourite and compare actions here, 404, 401 page

@@ -10,5 +10,11 @@ namespace BraAuto.Controllers
         {
             return View(code);
         }
+
+        [AllowAnonymous]
+        public IActionResult NoAccess()
+        {
+            return View();
+        }
     }
 }

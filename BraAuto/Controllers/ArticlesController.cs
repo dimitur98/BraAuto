@@ -4,12 +4,10 @@ using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
-using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace BraAuto.Controllers
 {
@@ -41,6 +39,8 @@ namespace BraAuto.Controllers
 
             return this.View(model);
         }
+
+        [AllowAnonymous]
         public IActionResult Search(ArticleSearchModel model)
         {
             model.Categories = Db.Categories.GetAll();
@@ -210,6 +210,7 @@ namespace BraAuto.Controllers
             return this.RedirectToAction(nameof(My));
         }
 
+        [AllowAnonymous]
         public IActionResult Details(uint id)
         {
             var article = Db.Articles.GetById(id);

@@ -27,37 +27,37 @@
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\bootstrap.min.css">
+    <Content Update="wwwroot\css\bootstrap.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\elegant-icons.css">
+    <Content Update="wwwroot\css\elegant-icons.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\font-awesome.min.css">
+    <Content Update="wwwroot\css\font-awesome.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\images\ui-icons_444444_256x240.png">
+    <Content Update="wwwroot\css\images\ui-icons_444444_256x240.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\images\ui-icons_555555_256x240.png">
+    <Content Update="wwwroot\css\images\ui-icons_555555_256x240.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\jquery-ui.min.css">
+    <Content Update="wwwroot\css\jquery-ui.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\magnific-popup.css">
+    <Content Update="wwwroot\css\magnific-popup.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\nice-select.css">
+    <Content Update="wwwroot\css\nice-select.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\owl.carousel.min.css">
+    <Content Update="wwwroot\css\owl.carousel.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\slicknav.min.css">
+    <Content Update="wwwroot\css\slicknav.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\template\style.css">
+    <Content Update="wwwroot\css\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\fonts\ElegantIcons.eot">
@@ -216,25 +216,25 @@
     <Content Update="wwwroot\js\lazy-multiselect\lazy-multiselect.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\jquery-ui.min.js">
+    <Content Update="wwwroot\js\jquery-ui.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\jquery.magnific-popup.min.js">
+    <Content Update="wwwroot\js\jquery.magnific-popup.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\jquery.nice-select.min.js">
+    <Content Update="wwwroot\js\jquery.nice-select.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\jquery.slicknav.js">
+    <Content Update="wwwroot\js\jquery.slicknav.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\main.js">
+    <Content Update="wwwroot\js\main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\mixitup.min.js">
+    <Content Update="wwwroot\js\mixitup.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\template\owl.carousel.min.js">
+    <Content Update="wwwroot\js\owl.carousel.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\utils.js">

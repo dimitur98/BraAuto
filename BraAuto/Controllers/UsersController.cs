@@ -29,6 +29,8 @@ namespace BraAuto.Controllers
 
         public IActionResult Admin(UserAdminSearchModel model)
         {
+            if (!this.LoggedUser.IsAdmin()) { return this.RedirectToHttpForbidden(); }
+
             this.ExecuteSearch(model);
 
             Db.Users.LoadEditors(model.Response.Records);
@@ -38,6 +40,11 @@ namespace BraAuto.Controllers
 
         public IActionResult Register()
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(string.Empty, string.Empty);
+            }
+
             var model = new UserRegisterModel
             {
                 UserTypes = Db.UserTypes.GetAll(),
@@ -50,6 +57,11 @@ namespace BraAuto.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(string.Empty, string.Empty);
+            }
+
             try
             {
                 if (this.ModelState.IsValid)
@@ -149,6 +161,11 @@ namespace BraAuto.Controllers
 
         public IActionResult Login()
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(string.Empty, string.Empty);
+            }
+
             var model = new LoginUserModel();
 
             return this.View(model);
@@ -195,6 +212,11 @@ namespace BraAuto.Controllers
         [AllowAnonymous]
         public IActionResult ExternalLogin(string externalLoginType)
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(string.Empty, string.Empty);
+            }
+
             externalLoginType = externalLoginType.ToLower();
 
             var properties = new AuthenticationProperties()
@@ -217,9 +239,9 @@ namespace BraAuto.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginResponse()
         {
-            if(this.LoggedUser != null)
+            if (this.LoggedUser != null)
             {
-                return this.RedirectToAction(nameof(CarsController.Home), "Cars");
+                return this.RedirectToAction(string.Empty, string.Empty);
             }
 
             return this.RedirectToAction(nameof(SetUsername));
@@ -227,6 +249,11 @@ namespace BraAuto.Controllers
 
         public IActionResult SetUsername()
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(nameof(CarsController.Home), "Cars");
+            }
+
             var model = new UserSetUsernameModel();
 
             return this.View(model);
@@ -235,6 +262,11 @@ namespace BraAuto.Controllers
         [HttpPost]
         public async Task<IActionResult> SetUsername(UserSetUsernameModel model)
         {
+            if (this.LoggedUser != null)
+            {
+                return this.RedirectToAction(nameof(CarsController.Home), "Cars");
+            }
+
             try
             {
                 if (this.ModelState.IsValid)
@@ -291,7 +323,8 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult ServiceSearch(UserSearchModel model)
+        [AllowAnonymous]
+        public IActionResult ServiceSearch(UserServiceSearchModel model)
         {
             model.UserTypeId = Db.UserTypes.ServiceId;
 
@@ -301,8 +334,7 @@ namespace BraAuto.Controllers
 
             return this.View(model);
         }
-
-        [Authorize]
+        
         public IActionResult Edit(uint id)
         {
             var user = Db.Users.GetById(id);
@@ -338,7 +370,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(UserEditModel model)
         {
@@ -349,6 +380,7 @@ namespace BraAuto.Controllers
                     var user = Db.Users.GetById(model.Id);
 
                     if (user == null) { return this.NotFound(); }
+                    if (user.Id != this.LoggedUser.Id && !this.LoggedUser.IsAdmin()) { return this.RedirectToHttpForbidden(); }
 
                     if (model.UserTypeId == Db.UserTypes.ServiceId &&
                         (model.LocationId == null
@@ -438,7 +470,6 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        [Authorize]
         public IActionResult ChangePassword()
         {
             var model = new ChangePasswordUserModel();
@@ -446,7 +477,6 @@ namespace BraAuto.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordUserModel model)
         {
@@ -485,6 +515,7 @@ namespace BraAuto.Controllers
             return RedirectToAction(String.Empty, String.Empty);
         }
 
+        [AllowAnonymous]
         public IActionResult ServiceDetails(uint id)
         {
             var service = Db.Users.GetById(id);

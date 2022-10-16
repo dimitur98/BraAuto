@@ -3836,3 +3836,7 @@ ol {
         width: 100%;
     }
 }
+
+.error-view {
+    height: 475px;
+}

@@ -1,4 +1,5 @@
-﻿using DapperMySqlMapper;
+﻿using BraAutoDb.Dal;
+using DapperMySqlMapper;
 
 namespace BraAutoDb.Models
 {
@@ -7,6 +8,7 @@ namespace BraAutoDb.Models
     {
         [Column(Name = "user_id")]
         public uint? UserId { get; set; }
+        public User User { get; set; }
 
         [Column(Name = "car_id")]
         public uint CarId { get; set; }
@@ -23,8 +25,13 @@ namespace BraAutoDb.Models
         public string Description { get; set; }
 
         [Column(Name = "creator_id")]
-        public uint? CreatorId { get; set; }
+        public uint CreatorId { get; set; }
 
         public User Creator { get; set; }
+
+        public void LoadUser()
+        {
+            this.User = Db.Users.GetById(this.UserId.Value);
+        }
     }
 }

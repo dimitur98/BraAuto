@@ -33,7 +33,7 @@ namespace BraAuto.ViewModels
         }
     }
 
-    public class UserSearchModel : UserSearchBaseModel
+    public class UserServiceSearchModel : UserSearchBaseModel
     {
         public string Keywords { get; set; }
 
@@ -58,7 +58,7 @@ namespace BraAuto.ViewModels
 
         public Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Admin", "Users") };
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("ServiceSearch", "Users") };
 
             return new Breadcrumb(paths);
         }

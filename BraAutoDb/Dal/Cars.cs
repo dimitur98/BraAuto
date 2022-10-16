@@ -43,8 +43,9 @@ namespace BraAutoDb.Dal
             }
 
             var date = DateTime.Now;
+            var dayOfWeek = date.DayOfWeek == 0 ? 7 : (int)date.DayOfWeek;
 
-            return Db.Mapper.Query<Car>(query.Build(), new { limit, WeekFirstDay = date.Date.AddDays(DayOfWeek.Monday - date.DayOfWeek) }).ToList();
+            return Db.Mapper.Query<Car>(query.Build(), new { limit, WeekFirstDay = date.Date.AddDays((int)DayOfWeek.Monday - dayOfWeek) }).ToList();
         }
 
         public Response Search(Request request)

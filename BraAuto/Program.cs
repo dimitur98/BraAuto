@@ -1,5 +1,6 @@
 using BraAuto.AspNetCore.Authentication.Cookies;
 using BraAuto.Helpers.Extensions;
+using BraAuto.Helpers.Log;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -39,7 +40,7 @@ try
        .AddCookie(options =>
        {
            options.LoginPath = new PathString("/Users/Login");
-           options.AccessDeniedPath = new PathString("/Errors/Status?code=401");
+           options.AccessDeniedPath = new PathString("/Errors/NoAccess");
            options.Cookie.Name = "bra_auto_auth";
            options.EventsType = typeof(BraAutoCookieAuthenticationEvents);
        })
@@ -67,7 +68,6 @@ try
 
     builder.Services.AddSingleton(cloudinary);
 
-    //builder.Services.AddSingleton<IEmailSender, EmailSender>();
     builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
     var app = builder.Build();
@@ -94,7 +94,6 @@ try
            name: "default",
            pattern: "{controller=Cars}/{action=Home}/{id?}");
 
-    //app.MapRazorPages();
     app.Run();
 }
 catch (Exception exception)

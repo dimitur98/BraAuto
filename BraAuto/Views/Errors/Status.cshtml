@@ -9,7 +9,7 @@
         switch (Model)
         {
             case 401:
-                <div class="text-center error">
+                <div class="text-center error-view">
                     <img src="~/img/errors/@(Model.Value).gif" class="maxw-100" />
                     <h1>NOT AUTHORIZED</h1>
                 </div>
@@ -17,7 +17,7 @@
             case 403:
             case 404:
             case 504:
-                <div class="text-center error">
+                <div class="text-center error-view">
                     <img src="~/img/errors/@(Model.Value).gif" class="maxw-100 mb-3" />
                     <h1>NOT FOUND</h1>
                 </div>
@@ -32,9 +32,6 @@
 }
 
 <style>
-    .error{
-         height: 475px;
-    }
     .default-error{
         height: 505px;
     }

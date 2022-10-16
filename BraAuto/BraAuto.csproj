@@ -204,6 +204,9 @@
     <Content Update="wwwroot\img\latest-blog\lb-3.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\img\logo-144x97.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\img\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

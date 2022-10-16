@@ -54,7 +54,7 @@ namespace BraAuto.ViewModels
 
         public new Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My Articles", "Articles") };
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("MyArticles", "Articles") };
 
             return new Breadcrumb(paths);
         }
@@ -64,7 +64,7 @@ namespace BraAuto.ViewModels
     {
         public Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Admin", "Articles") };
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("Admin", "Articles") };
 
             return new Breadcrumb(paths);
         }

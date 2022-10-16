@@ -2,17 +2,18 @@
 @inject IConfiguration Configuration
 
 @{
+    ViewBag.Title = "Home";
+
     ViewBag.FullPageWidth = true;
     ViewBag.ShowHeader = true;
     ViewBag.RegisterLazyMultiselect = true;
 
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
-<!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
-<!-- Hero Section Begin -->
+
 <section class="hero spad set-bg" data-setbg="../img/hero-bg.jpg">
     <div class="container">
         <div class="row">
@@ -81,8 +82,7 @@
         </div>
     </div>
 </section>
-<!-- Hero Section End -->
-<!-- Car Section Begin -->
+
 <section class="car spad">
     <div class="container">
         <div class="row">
@@ -159,8 +159,7 @@
         </div>
     </div>
 </section>
-<!-- Car Section End -->
-<!-- Latest Blog Section Begin -->
+
 <section class="latest spad">
     <div class="container">
         <div class="row">
@@ -199,4 +198,3 @@
         </div>
     </div>
 </section>
-<!-- Latest Blog Section End -->

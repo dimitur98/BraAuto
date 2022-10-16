@@ -1,4 +1,4 @@
-﻿@*@using BraAuto.Resources;*@
+﻿@using BraAuto.Resources;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +12,8 @@
     <meta name="keywords" content="car, cars, service">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BraAuto</title>
-
+    <title>@Global.WebsiteTitle - @ViewBag.Title</title>
+    <link rel="icon" type="image/x-icon" href="~/img/logo-144x97.png">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
@@ -29,8 +29,6 @@
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
 
     @await RenderSectionAsync("BeforeMainStyles", required: false)
-
-    <link rel="stylesheet" href="~/css/site.css" type="text/css">
 
     @await RenderSectionAsync("Styles", required: false)
 

@@ -6,10 +6,12 @@
     var loggedUser = (User)ViewBag.LoggedUser;
 }
 
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+
 <section class="car spad">
     <div class="container">
         <div class="row">
-            <partial name="~/Views/Users/_UserSettingsPartial.cshtml">
+            <partial name="_UserSettingsPartial">
                 @if (Model.Response.Records.IsNullOrEmpty())
                 {
                     <div class="col-lg-9">There are no users yet.</div>

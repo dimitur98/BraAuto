@@ -138,3 +138,196 @@ $(document).ready(function () {
         return false;
     });
 });
+
+'use strict';
+
+(function ($) {
+
+    /*------------------
+        Preloader
+    --------------------*/
+    $(window).on('load', function () {
+        $(".loader").fadeOut();
+        $("#preloder").delay(200).fadeOut("slow");
+
+        /*------------------
+            Car filter
+        --------------------*/
+        $('.filter-controls li').on('click', function () {
+            $('.filter-controls li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        if ($('.car-filter').length > 0) {
+            var containerEl = document.querySelector('.car-filter');
+            var mixer = mixitup(containerEl, {
+                controls: {
+                    toggleDefault: "all"
+                }
+            });
+
+            mixer.toggleOn('.most-viewed')
+                .then(function () {
+                    // Deactivate all active toggles
+
+                    return mixer.toggleOff('.newest')
+                });
+        }
+    });
+
+    /*------------------
+        Background Set
+    --------------------*/
+    $('.set-bg').each(function () {
+        var bg = $(this).data('setbg');
+        $(this).css('background-image', 'url(' + bg + ')');
+    });
+
+    //Canvas Menu
+    $(".canvas-open").on('click', function () {
+        $(".offcanvas-menu-wrapper").addClass("active");
+        $(".offcanvas-menu-overlay").addClass("active");
+    });
+
+    $(".offcanvas-menu-overlay").on('click', function () {
+        $(".offcanvas-menu-wrapper").removeClass("active");
+        $(".offcanvas-menu-overlay").removeClass("active");
+    });
+
+    //Search Switch
+    $('.extras-switch').on('click', function () {
+        $('.extras-model').fadeIn(400);
+    });
+
+    $('.extras-close-switch').on('click', function () {
+        $('.extras-model').fadeOut(400, function () {
+        });
+    });
+
+    /*------------------
+        Navigation
+    --------------------*/
+    $(".header-menu").slicknav({
+        prependTo: '#mobile-menu-wrap',
+        allowParentLinks: true
+    });
+
+    /*--------------------------
+        Testimonial Slider
+    ----------------------------*/
+    $(".car-item-pic-slider").owlCarousel({
+        loop: false,
+        margin: 0,
+        items: 1,
+        dots: true,
+        smartSpeed: 1200,
+        autoHeight: false,
+        autoplay: false
+    });
+
+    /*--------------------------
+        Testimonial Slider
+    ----------------------------*/
+    var testimonialSlider = $(".testimonial-slider");
+    testimonialSlider.owlCarousel({
+        loop: true,
+        margin: 0,
+        items: 2,
+        dots: true,
+        nav: true,
+        navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        smartSpeed: 1200,
+        autoHeight: false,
+        autoplay: false,
+        responsive: {
+            768: {
+                items: 2
+            },
+            0: {
+                items: 1
+            }
+        }
+    });
+
+    /*-----------------------------
+        Car thumb Slider
+    -------------------------------*/
+    $(".car-thumb-slider").owlCarousel({
+        loop: false,
+        margin: 25,
+        items: 5,
+        smartSpeed: 1200,
+        autoHeight: true,
+        autoplay: false,
+        mouseDrag: false,
+        dotsEach: true,
+        responsive: {
+
+            768: {
+                items: 5
+            },
+            320: {
+                items: 3
+            },
+            0: {
+                items: 2
+            }
+        }
+    });
+
+    /*-----------------------
+        Range Slider
+    ------------------------ */
+    var rangeSlider = $(".price-range");
+    var max = 100000;
+
+    rangeSlider.slider({
+        range: true,
+        min: 1000,
+        max: max,
+        values: [10000, 80000],
+        slide: function (event, ui) {
+            $("#amount").val("$" + ui.values[0] + " lv - " + ui.values[1] + (ui.values[1] == max ? '+' : '') + " lv");
+            $("#PriceFrom").val(ui.values[0]);
+            $("#PriceTo").val(ui.values[1]);
+        }
+    });
+    $("#amount").val($(".price-range").slider("values", 0) + " lv - " + $(".price-range").slider("values", 1) + " lv");
+
+    /*------------------
+        Magnific
+    --------------------*/
+    $('.video-popup').magnificPopup({
+        type: 'iframe'
+    });
+
+    /*------------------
+        Single Product
+    --------------------*/
+    $('.car-thumbs-track .ct').on('click', function () {
+        $('.car-thumbs-track .ct').removeClass('active');
+        var photoUrl = $(this).data('photo-big-url');
+        var bigPhoto = $('.car-big-photo').attr('src');
+        if (photoUrl != bigPhoto) {
+            $('.car-big-photo').attr({
+                src: photoUrl
+            });
+        }
+    });
+
+    /*------------------
+        Counter Up
+    --------------------*/
+    $('.counter-num').each(function () {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 4000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
+
+})(jQuery);

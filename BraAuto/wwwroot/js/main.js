@@ -12,8 +12,8 @@
         /*------------------
             Car filter
         --------------------*/
-        $('.filter__controls li').on('click', function () {
-            $('.filter__controls li').removeClass('active');
+        $('.filter-controls li').on('click', function () {
+            $('.filter-controls li').removeClass('active');
             $(this).addClass('active');
         });
 
@@ -43,7 +43,7 @@
     });
 
     //Canvas Menu
-    $(".canvas__open").on('click', function () {
+    $(".canvas-open").on('click', function () {
         $(".offcanvas-menu-wrapper").addClass("active");
         $(".offcanvas-menu-overlay").addClass("active");
     });
@@ -66,7 +66,7 @@
     /*------------------
 		Navigation
 	--------------------*/
-    $(".header__menu").slicknav({
+    $(".header-menu").slicknav({
         prependTo: '#mobile-menu-wrap',
         allowParentLinks: true
     });
@@ -74,7 +74,7 @@
     /*--------------------------
         Testimonial Slider
     ----------------------------*/
-    $(".car__item__pic__slider").owlCarousel({
+    $(".car-item-pic-slider").owlCarousel({
         loop: false,
         margin: 0,
         items: 1,
@@ -87,7 +87,7 @@
     /*--------------------------
         Testimonial Slider
     ----------------------------*/
-    var testimonialSlider = $(".testimonial__slider");
+    var testimonialSlider = $(".testimonial-slider");
     testimonialSlider.owlCarousel({
         loop: true,
         margin: 0,
@@ -111,7 +111,7 @@
     /*-----------------------------
         Car thumb Slider
     -------------------------------*/
-    $(".car__thumb__slider").owlCarousel({
+    $(".car-thumb-slider").owlCarousel({
         loop: false,
         margin: 25,
         items: 5,

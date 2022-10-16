@@ -106,7 +106,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <div class="contact__form">
+                    <div class="contact-form">
                         <div class="form-group">
                             <label asp-for="VehicleTypeId" class="form-label"></label>
                             <select class="form-select car-property" asp-for="VehicleTypeId" asp-items="@(new SelectList(Model.VehicleTypes.Select(vt => new { Fullname = vt.Name, Id = vt.Id}), "Id", "Fullname"))">
@@ -176,7 +176,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <div class="contact__form">
+                    <div class="contact-form">
                         <div class="form-group">
                             <label asp-for="HorsePower" class="form-label"></label>
                             <input asp-for="HorsePower" class="form-control car-property" min="0" />

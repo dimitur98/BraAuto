@@ -20,10 +20,10 @@
             <div class="col-lg-7">
             </div>
             <div class="col-lg-5">
-                <div class="hero__tab">
+                <div class="hero-tab">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <div class="hero__tab__form">
+                            <div class="hero-tab-form">
                                 <h2>Find Your Dream Car</h2>
                                 <form asp-action="Search" asp-controller="Cars" method="GET">
                                     <div class="select-list">
@@ -91,7 +91,7 @@
                     <span>Our Car</span>
                     <h2>Best Vehicle Offers</h2>
                 </div>
-                <ul class="filter__controls">
+                <ul class="filter-controls">
                     <li class="active" data-filter=".most-viewed">Most Viewd This Week</li>
                     <li data-filter=".newest">Latest on sale</li>
                 </ul>
@@ -101,16 +101,16 @@
             @foreach (var car in Model.MostViewedCars)
             {
                 <div class="col-lg-3 col-md-4 col-sm-6 mix most-viewed">
-                    <div class="car__item">
-                        <div class="car__item__pic__slider owl-carousel">
+                    <div class="car-item">
+                        <div class="car-item-pic-slider owl-carousel">
                             @foreach (var photoUrl in car.PhotoUrls)
                             {
                                 <img src="@(cloudinaryUrl + photoUrl)" alt="">
 
                             }
                         </div>
-                        <div class="car__item__text">
-                            <div class="car__item__text__inner">
+                        <div class="car-item-text">
+                            <div class="car-item-text-inner">
                                 <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay:false)</div>
                                 <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
                                 <ul>
@@ -119,7 +119,7 @@
                                     <li><span>@car.HorsePower</span> hp</li>
                                 </ul>
                             </div>
-                            <div class="car__item__price">
+                            <div class="car-item-price">
                                 <span class="car-option">Price</span>
                                 <h6>@car.Price lv.</h6>
                             </div>
@@ -130,16 +130,16 @@
             @foreach (var car in Model.NewestCars)
             {
                 <div class="col-lg-3 col-md-4 col-sm-6 mix newest">
-                    <div class="car__item">
-                        <div class="car__item__pic__slider owl-carousel">
+                    <div class="car-item">
+                        <div class="car-item-pic-slider owl-carousel">
                             @foreach (var photoUrl in car.PhotoUrls)
                             {
                                 <img src="@(cloudinaryUrl + photoUrl)" alt="">
 
                             }
                         </div>
-                        <div class="car__item__text">
-                            <div class="car__item__text__inner">
+                        <div class="car-item-text">
+                            <div class="car-item-text-inner">
                                 <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay:false)</div>
                                 <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
                                 <ul>
@@ -148,7 +148,7 @@
                                     <li><span>@car.HorsePower</span> hp</li>
                                 </ul>
                             </div>
-                            <div class="car__item__price">
+                            <div class="car-item-price">
                                 <span class="car-option">Price</span>
                                 <h6>@car.Price lv.</h6>
                             </div>
@@ -177,15 +177,15 @@
             @foreach (var article in Model.NewestArticles)
             {
                 <div class="col-lg-4 col-md-6">
-                    <div class="latest__blog__item">
-                        <div class="latest__blog__item__pic set-bg" data-setbg="@(cloudinaryUrl + article.PhotoUrl)">
+                    <div class="latest-blog-item">
+                        <div class="latest-blog-item-pic set-bg" data-setbg="@(cloudinaryUrl + article.PhotoUrl)">
                             <ul>
                                 <li>By @article.Creator.Name</li>
                                 <li>@article.CreatedAt.ToWebDateFormat()</li>
                                 <li>Comment</li>
                             </ul>
                         </div>
-                        <div class="latest__blog__item__text">
+                        <div class="latest-blog-item-text">
                             <h5>@article.Title</h5>
                             <p>
                                 @(article.Body.Length > 200 ? article.Body.Substring(0, 200) + " ..." : article.Body)

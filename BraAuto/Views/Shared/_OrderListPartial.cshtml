@@ -5,10 +5,10 @@
     var queryString = this.Context.Request.Query.ToNameValueCollection();
 }
 
-<div class="car__filter__option">
+<div class="car-filter-option">
     <div class="row">
         <div class="col-lg-6 col-md-6">
-            <div class="car__filter__option__item">
+            <div class="car-filter-option-item">
                 <div class="dropdown">
                     <button type="button" class="btn btn-page-size btn-no-outline dropdown-toggle btn-white" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Show @Model.PageSize <span class="caret"></span>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6">
-            <div class="car__filter__option__item car__filter__option__item--right">
+            <div class="car-filter-option-item car-filter-option-item--right">
                 <div class="dropdown">
                     <button type="button" class="btn btn-page-size btn-no-outline dropdown-toggle btn-white" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Sort By: @Model.SortBy.ToSortByText(Model.SortDesc) <span class="caret"></span>

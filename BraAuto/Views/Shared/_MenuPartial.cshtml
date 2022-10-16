@@ -8,7 +8,7 @@
 
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
-    <div class="offcanvas__widget row">
+    <div class="offcanvas-widget row">
         <div class="col-6">
             <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
         </div>
@@ -19,7 +19,7 @@
             </div>
         }
     </div>
-    <div class="offcanvas__logo">
+    <div class="offcanvas-logo">
         <a asp-action="Home" asp-controller="Cars"><img src="~/img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -34,8 +34,8 @@
                 </div>
             </div>
             <div class="col-lg-10">
-                <div class="header__nav">
-                    <nav class="header__menu">
+                <div class="header-nav">
+                    <nav class="header-menu">
                         <ul>
                             <li class="@(actionName == "Home" ? "active" : "")"><a asp-action="Home" asp-controller="Cars">Home</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Cars" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
@@ -53,7 +53,7 @@
                             }
                         </ul>
                     </nav>
-                    <div class="header__nav__widget">
+                    <div class="header-nav-widget">
                         @if (loggedUser != null)
                         {
                             <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="canvas__open">
+        <div class="canvas-open">
             <span class="fa fa-bars"></span>
         </div>
     </div>

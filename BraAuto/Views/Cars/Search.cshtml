@@ -131,8 +131,8 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="car__sidebar">
-                    <div class="car__filter">
+                <div class="car-sidebar">
+                    <div class="car-filter">
                         <h5>Filters</h5>
                         <form asp-action="Search" asp-controller="Cars" method="get" id="search-form">
                             <div class="form-group">
@@ -211,7 +211,7 @@
                                     <input type="number" asp-for="PriceTo" class="form-control filter" min="0">
                                 </div>
                             </div>
-                            <div class="car__filter__btn">
+                            <div class="car-filter-btn">
                                 <button type="button" class="btn extras mb-2 extras-switch" title="Extras"><i class="fa fa-plus"></i></button>
                                 <br />
                                 <button type="submit" class="btn site-btn">Search</button>
@@ -234,15 +234,15 @@
                         @foreach (var car in Model.Response.Records)
                         {
                             <div class="col-lg-4 col-md-4">
-                                <div class="car__item">
-                                    <div class="car__item__pic__slider owl-carousel">
+                                <div class="car-item">
+                                    <div class="car-item-pic-slider owl-carousel">
                                         @foreach (var photoUrl in car.PhotoUrls)
                                         {
                                             <img src="@(cloudinaryUrl + photoUrl)" alt="">
                                         }
                                     </div>
-                                    <div class="car__item__text">
-                                        <div class="car__item__text__inner">
+                                    <div class="car-item-text">
+                                        <div class="car-item-text-inner">
                                             <div class="label-date">@car.ProductionDate.ToWebDateFormat(showDay: false)</div>
                                             <div class="d-flex justify-content-between">
                                                 <h5><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></h5>
@@ -260,7 +260,7 @@
                                                 <li><span>@car.HorsePower</span> hp</li>
                                             </ul>
                                         </div>
-                                        <div class="car__item__price">
+                                        <div class="car-item-price">
                                             <span class="car-option">Price</span>
                                             <h6>@car.Price</h6>
                                         </div>

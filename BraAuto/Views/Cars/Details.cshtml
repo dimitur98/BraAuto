@@ -14,12 +14,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
-                <div class="car__details__pic">
-                    <div class="car__details__pic__large">
+                <div class="car-details-pic">
+                    <div class="car-details-pic-large">
                         <img class="car-big-photo" src="@(cloudinaryUrl + Model.PhotoUrls.FirstOrDefault())" alt="">
                     </div>
                     <div class="car-thumbs">
-                        <div class="car-thumbs-track car__thumb__slider owl-carousel">
+                        <div class="car-thumbs-track car-thumb-slider owl-carousel">
                             @foreach (var url in Model.PhotoUrls)
                             {
                                 <div class="ct" data-photo-big-url="@(cloudinaryUrl + url)">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car__details__tab">
+                <div class="car-details-tab">
                     <ul class="nav nav-tabs" id="details-car-tab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button type="button" class="nav-link active" id="vehicle-overview" data-bs-toggle="tab" data-bs-target="#vehicle-overview-pane" role="tab" aria-controls="vehicle-overview-pane" aria-selected="true">
@@ -107,10 +107,10 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="features-and-options-pane" role="tabpanel" aria-labelledby="features-and-options" tabindex="0">
-                            <div class="car__details__tab__feature">
+                            <div class="car-details-tab-feature">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="car-details-tab-feature-item">
                                             <h5>Safety</h5>
                                             <ul>
                                                 <li><i class="@(Model.HasAbs ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAbs"></label></li>
@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="car-details-tab-feature-item">
                                             <h5>Interior</h5>
                                             <ul>
                                                 <li><i class="@(Model.HasLetherInterior ? "fa fa-check-circle" : "")"></i> <label asp-for="HasLetherInterior"></label></li>
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="car-details-tab-feature-item">
                                             <h5>Comfort</h5>
                                             <ul>
                                                 <li><i class="@(Model.HasAirConditioning ? "fa fa-check-circle" : "")"></i> <label asp-for="HasAirConditioning"></label></li>
@@ -165,7 +165,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="car-details-tab-feature-item">
                                             <h5>Protection</h5>
                                             <ul>
                                                 <li>
@@ -221,9 +221,9 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="car__details__sidebar">
+                <div class="car-details-sidebar">
 
-                    <div class="car__details__sidebar__model">
+                    <div class="car-details-sidebar-model">
                         <ul>
                             <li><label asp-for="ViewsCount"></label>: @Model.ViewsCount</li>
                             @if (!string.IsNullOrEmpty(Model.Vin))
@@ -232,7 +232,7 @@
                             }
                         </ul>
                     </div>
-                    <div class="car__details__sidebar__payment">
+                    <div class="car-details-sidebar-payment">
                         <ul>
                             <li><label asp-for="Price"></label> <span>@Model.Price lv</span></li>
                         </ul>

@@ -5,7 +5,7 @@
     var queryString = this.Context.Request.Query.ToNameValueCollection();
 }
 
-<div class="pagination__option">
+<div class="pagination-option">
         <a href="@(Model.Page > 1 ? Url.Action(Url.CurrentAction(), null, queryString: queryString.AddOrSet(pageParam, 1.ToString())) : "javascript:void(0)")" class="@(Model.Page > 1 ? "" : "disabled d-none")"><i class="fas fa-angle-double-left"></i></a>
         <a href="@(Model.Page > 1 ? Url.Action(Url.CurrentAction(), null, queryString: queryString.AddOrSet(pageParam, (Model.Page - 1).ToString())) : "javascript:void(0)")" class="@(Model.Page > 1 ? "" : "disabled d-none")"><i class="fas fa-angle-left"></i></a>
 

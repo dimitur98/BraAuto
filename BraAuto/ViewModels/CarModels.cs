@@ -2,7 +2,6 @@
 using BraAutoDb.Models;
 using BraAutoDb.Models.CarsSearch;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -327,12 +326,10 @@ namespace BraAuto.ViewModels
         [Required]
         [DisplayName("Body Type")]
         public uint BodyTypeId { get; set; }
-        public IEnumerable<BodyType> BodyTypes { get; set; }
 
         [Required]
         [DisplayName("Make")]
         public uint? MakeId { get; set; }
-        public IEnumerable<Make> Makes { get; set; }
 
         [Required]
         [DisplayName("Model")]

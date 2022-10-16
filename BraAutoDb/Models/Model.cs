@@ -13,6 +13,9 @@ namespace BraAutoDb.Models
         public uint MakeId { get; set; }
         public Make Make { get; set; }
 
+        [Column(Name = "vehicle_type_id")]
+        public uint VehicleTypeId { get; set; }
+
         [Column(Name = "sort_order")]
         public int SortOrder { get; set; }
 

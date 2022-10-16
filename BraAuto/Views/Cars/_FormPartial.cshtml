@@ -1,5 +1,6 @@
 ﻿@model BraAuto.ViewModels.CarBaseModel
-@using BraAuto.ViewModels;
+@using BraAuto.ViewModels
+@using BraAutoDb.Dal
 @inject IConfiguration Configuration
 
 @{
@@ -116,14 +117,14 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="BodyTypeId" class="form-label"></label>
-                            <select class="form-select car-property" asp-for="BodyTypeId" asp-items="@(new SelectList(Model.BodyTypes.Select(bt => new { Fullname = bt.Name, Id = bt.Id}), "Id", "Fullname"))">
+                            <select class="form-select car-property" asp-for="BodyTypeId">
                                 <option value="">Select Body Type</option>
                             </select>
                             <span asp-validation-for="BodyTypeId"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="MakeId" class="form-label"></label>
-                            <select class="form-select car-property" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(m => new { Fullname = m.Name, Id = m.Id}), "Id", "Fullname"))">
+                            <select class="form-select car-property" asp-for="MakeId">
                                 <option value="">Select Make</option>
                             </select>
                             <span asp-validation-for="MakeId"></span>
@@ -474,13 +475,23 @@
 
 <script>
     $(document).ready(function () {
-        var id = $("#MakeId").val();
+        var makeId = $("#MakeId").val();
 
-        if (id != "") {
-            loadModels(id, function () {
+        if (makeId != "") {
+            loadModels(makeId, function () {
                 $("#ModelId").val(@Model.ModelId);
             });
         }
+
+        $("#VehicleTypeId").on("change", function(){
+            loadBodyTypes();
+            loadMakes();
+            $("#ModelId").empty();
+            $("#ModelId").append(new Option("Select Make First", ""));
+        });
+
+        loadBodyTypes();
+        loadMakes();
 
         $("#MakeId").on("change", function () {
             id = $(this).val();
@@ -514,29 +525,70 @@
         });
     });
 
-    function loadModels(id, callback) {
-        var $modelList = $("#ModelId");
+    function loadBodyTypes() {
+        var vehicleTypeId = $("#VehicleTypeId").val();
+        var $bodyTypesSelect = $("#BodyTypeId");
 
-        $modelList.empty();
-        $modelList.append(new Option("Select Make First", ""));
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("GetAll", "BodyTypesApi"))),
+            type: 'GET',
+            data: { vehicleTypeId: vehicleTypeId == "" ? @Db.VehicleTypes.CarId : vehicleTypeId },
+            success: function (response, status, xhr) {
+                if (response && response.length > 0) {
+                    $bodyTypesSelect.empty();
+                    $bodyTypesSelect.append(new Option("Select Body Type", ""));
+
+                    response.forEach(function (bt) {
+                        $bodyTypesSelect.append(new Option(bt.name, bt.id));
+                    });
+                }
+            }
+        });
+    }
+
+    function loadMakes(){
+        var vehicleTypeId = $("#VehicleTypeId").val();
+        var $makesSelect = $("#MakeId");
+
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("GetAll", "MakesApi"))),
+            type: 'GET',
+            data: { vehicleTypeId: vehicleTypeId == "" ? @Db.VehicleTypes.CarId : vehicleTypeId },
+            success: function (response, status, xhr) {
+                if (response && response.length > 0) {
+                    $makesSelect.empty();
+                    $makesSelect.append(new Option("Select Make", ""));
+
+                    response.forEach(function (m) {
+                        $makesSelect.append(new Option(m.name, m.id));
+                    });
+                }
+            }
+        });
+    }
+
+    function loadModels(id, callback) {
+        var $modelSelect = $("#ModelId");
+        var vehicleTypeId = $("#VehicleTypeId").val();
+
+        $modelSelect.empty();
+        $modelSelect.append(new Option("Select Make First", ""));
 
         $.ajax({
             url: @Html.Raw(Json.Serialize(Url.Action("GetByMakeId", "ModelsApi"))),
             type: 'GET',
-            data: { makeId: id },
+            data: { makeId: id, vehicleTypeId: vehicleTypeId == "" ? @Db.VehicleTypes.CarId : vehicleTypeId },
             success: function (response, status, xhr) {
-                {
-                    if (response && response.length > 0) {
+                if (response && response.length > 0) {
 
-                        $modelList.empty();
-                        $modelList.append(new Option("Select Model", ""));
+                    $modelSelect.empty();
+                    $modelSelect.append(new Option("Select Model", ""));
 
-                        response.forEach(function (r) {
-                            $modelList.append(new Option(r.name, r.id));
-                        });
+                    response.forEach(function (r) {
+                        $modelSelect.append(new Option(r.name, r.id));
+                    });
 
-                        if (callback != undefined) { callback(); }
-                    }
+                    if (callback != undefined) { callback(); }
                 }
             }
         });

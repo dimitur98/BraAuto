@@ -143,17 +143,17 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="BodyTypeIds" class="form-label"></label>
-                                <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter'"></lazymultiselect>
+                                <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })?vehicleTypeId='+($('#VehicleTypeId').val() == '' ? 1 : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
                             </div>
                             <div class="form-group">
                                 <label asp-for="MakeId" class="form-label"></label>
-                                <select class="form-select filter" asp-for="MakeId" asp-items="@(new SelectList(Model.Makes.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                <select class="form-select filter" asp-for="MakeId">
                                     <option value="">-- All --</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ModelIds" class="form-label"></label>
-                                <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
+                                <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'&vehicleTypeId='+($('#VehicleTypeId').val() == '' ? 1 : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ConditionIds" class="form-label"></label>
@@ -304,6 +304,14 @@
             }
         });
 
+        $("#VehicleTypeId").on("change", function () {
+            loadMakes();
+            $("#BodyTypeIds").data('lazy-multiselect').clearSelection();
+            $("#ModelIds").data('lazy-multiselect').clearSelection();
+        });
+
+        loadMakes(true);
+
         $("#search-form").submit(function (e) {
             e.preventDefault();
 
@@ -339,6 +347,31 @@
             return;
         });
     });
+
+    function loadMakes(setMake) {
+        var $makeList = $("#MakeId");
+        var vehicleTypeId = $("#VehicleTypeId").val();
+
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("GetAll", "MakesApi"))),
+            type: 'GET',
+            data: { vehicleTypeId: vehicleTypeId == "" ? @Db.VehicleTypes.CarId : vehicleTypeId },
+            success: function (response, status, xhr) {
+                $makeList.empty();
+                $makeList.append(new Option("-- All --", ""));
+
+                if (response && response.length > 0) {
+                    response.forEach(function (m) {
+                        $makeList.append(new Option(m.name, m.id));
+                    });
+                }
+
+                if (setMake != undefined && setMake && @Html.Raw(Json.Serialize(Model.MakeId != null))){
+                    $makeList.val(@Model.MakeId);
+                }
+            }
+        });
+    }
 </script>
 
 @if (loggedUser != null)

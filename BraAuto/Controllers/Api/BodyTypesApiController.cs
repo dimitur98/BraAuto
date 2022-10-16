@@ -9,9 +9,9 @@ namespace BraAuto.Controllers.Api
     public class BodyTypesApiController : BaseApiController
     {
         [AllowAnonymous]
-        public List<SimpleSearchModel> GetAll()
+        public List<SimpleSearchModel> GetAll(uint vehicleTypeId = 1)
         {
-            return Db.BodyTypes.GetAll().Select(bt => new SimpleSearchModel(bt.Id, bt.Name)).ToList();
+            return Db.BodyTypes.GetAll(vehicleTypeId).Select(bt => new SimpleSearchModel(bt.Id, bt.Name)).ToList();
         }
     }
 }

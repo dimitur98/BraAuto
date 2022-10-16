@@ -26,7 +26,7 @@ namespace BraAuto.Controllers
         {
             var model = new HomeCarSearchModel
             {
-                Makes = Db.Makes.GetAll(),
+                Makes = Db.Makes.GetAll(Db.VehicleTypes.CarId),
                 Years = Db.Years.GetAll(),
                 NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", SortDesc = true, RowCount = 10 }).Records,
                 MostViewedCars = Db.Cars.GetMostViewed(10, true),
@@ -67,7 +67,6 @@ namespace BraAuto.Controllers
         public IActionResult Search(CarSearchModel model)
         {
             model.VehicleTypes = Db.VehicleTypes.GetAll();
-            model.Makes = Db.Makes.GetAll();
             model.Years = Db.Years.GetAll();
             model.IsApproved = true;
             model.ShowSpecificSortFields = false;
@@ -605,8 +604,6 @@ namespace BraAuto.Controllers
         protected void LoadCarModel(CarBaseModel model)
         {
             model.VehicleTypes = Db.VehicleTypes.GetAll();
-            model.BodyTypes = Db.BodyTypes.GetAll();
-            model.Makes = Db.Makes.GetAll();
             model.Conditions = Db.Conditions.GetAll();
             model.Colors = Db.Colors.GetAll();
             model.FuelTypes = Db.FuelTypes.GetAll();

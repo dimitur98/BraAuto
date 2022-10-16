@@ -159,9 +159,6 @@
     <Content Update="wwwroot\js\jquery.slicknav.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\main.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\js\mixitup.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

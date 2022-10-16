@@ -10,11 +10,11 @@ namespace BraAuto.Controllers.Api
     {
         [AllowAnonymous]
         [HttpGet]
-        public List<SimpleSearchModel> GetByMakeId(uint? makeId = null)
+        public List<SimpleSearchModel> GetByMakeId(uint? makeId = null, uint vehicleTypeId = 1)
         {
             if (makeId == null) { return new List<SimpleSearchModel>(); }
 
-            return Db.Models.GetByMakeId(makeId.Value).Select(m => new SimpleSearchModel(m.Id, m.Name)).ToList();
+            return Db.Models.GetByMakeId(makeId.Value, vehicleTypeId).Select(m => new SimpleSearchModel(m.Id, m.Name)).ToList();
         }
     }
 }

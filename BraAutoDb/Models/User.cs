@@ -43,16 +43,16 @@ namespace BraAutoDb.Models
         public string PhotoUrl { get; set; }
 
         [Column(Name = "booking_interval_hours")]
-        public uint BookingIntervalHours { get; set; }
+        public uint? BookingIntervalHours { get; set; }
 
         [Column(Name = "start_working_time")]
-        public uint StartWorkingTime { get; set; }
+        public uint? StartWorkingTime { get; set; }
 
         [Column(Name = "end_working_time")]
-        public uint EndWorkingTime { get; set; }
+        public uint? EndWorkingTime { get; set; }
 
         [Column(Name = "max_bookings_per_day")]
-        public uint MaxBookingsPerDay { get; set; }
+        public uint? MaxBookingsPerDay { get; set; }
 
         [Column(Name = "is_password_required")]
         public bool IsPasswordRequired { get; set; }

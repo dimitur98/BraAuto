@@ -285,7 +285,7 @@ namespace BraAuto.ViewModels
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Cars") };
 
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
     }
     public class HomeCarSearchModel : CarSearchBaseModel 
@@ -297,39 +297,13 @@ namespace BraAuto.ViewModels
         public IEnumerable<Article> NewestArticles { get; set; }
     }
 
-    public class FavouriteCarModel : CarSearchBaseModel
-    {
-        public Breadcrumb ToBreadcrumb()
-        {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Favourite", "Cars") };
-
-            return new Breadcrumb(paths);
-        }
-    }
-
     public class MyCarModel : CarSearchBaseModel
     { 
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars") };
 
-            return new Breadcrumb(paths);
-        }
-    }
-
-
-    public class MyServiceModel : CarSearchBaseModel
-    {
-        public MyServiceModel()
-        {
-            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "c.created_at", true, false) };
-        }
-
-        public Breadcrumb ToBreadcrumb()
-        {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("MyService", "Cars") };
-
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
     }
 
@@ -339,7 +313,7 @@ namespace BraAuto.ViewModels
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Admin", "Cars") };
 
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
     }
 
@@ -549,6 +523,9 @@ namespace BraAuto.ViewModels
 
         [DisplayName("Refrigerator")]
         public bool HasRefrigerator { get; set; }
+
+        [DisplayName("Is Advert")]
+        public bool IsAdvert { get; set; } = true;
     }
 
     public class CarCreateModel : CarBaseModel
@@ -587,7 +564,7 @@ namespace BraAuto.ViewModels
     {
         public uint Id { get; set; }
 
-        [DisplayName("Description d")]
+        [DisplayName("Description")]
         public string Description { get; set; }
 
         [DisplayName("Vin")]

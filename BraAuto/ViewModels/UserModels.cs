@@ -1,5 +1,4 @@
-﻿using BraAuto.ViewModels.Common;
-using BraAutoDb.Models;
+﻿using BraAutoDb.Models;
 using BraAutoDb.Models.UsersSearch;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -13,11 +12,8 @@ namespace BraAuto.ViewModels
         {
             this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Newest First", "u.created_at", true, false), ("Oldest First", "u.created_at", false, false), ("Active First", "u.is_active", true, true), ("Not Active First", "u.is_active", false, true) };
         }
-    }
 
-    public class UserAdminSearchModel : UserSearchBaseModel
-    {
-        public Request ToSearchRequest()
+        public virtual Request ToSearchRequest()
         {
             var request = new Request();
 
@@ -25,7 +21,10 @@ namespace BraAuto.ViewModels
 
             return request;
         }
+    }
 
+    public class UserAdminSearchModel : UserSearchBaseModel
+    {
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Admin", "Users") };
@@ -34,18 +33,21 @@ namespace BraAuto.ViewModels
         }
     }
 
-    public class UserServiceSearchModel : UserSearchBaseModel
+    public class UserSearchModel : UserSearchBaseModel
     {
         public string Keywords { get; set; }
+
+        public uint UserTypeId { get; set; }
 
         public uint? LocationId { get; set; }
         public IEnumerable<Location> Locations { get; set; }
 
-        public Request ToSearchRequest()
+        public override Request ToSearchRequest()
         {
             var request = new Request()
             {
                 Keywords = this.Keywords,
+                UserTypeId = this.UserTypeId,
                 LocationId = this.LocationId
             };
 
@@ -91,15 +93,15 @@ namespace BraAuto.ViewModels
         public IFormFile Photo { get; set; }
 
         [DisplayName("Booking Interval Hours")]
-        public uint BookingIntervalHours { get; set; }
+        public uint? BookingIntervalHours { get; set; }
 
-        public uint EndWorkingTime { get; set; }
+        public uint? EndWorkingTime { get; set; }
 
-        [DisplayName("Working Time From (0-24h)")]
-        public uint StartWorkingTime { get; set; }
+        [DisplayName("Working Time From (0-23h)")]
+        public uint? StartWorkingTime { get; set; }
 
         [DisplayName("Max Bookings Per Day")]
-        public uint MaxBookingsPerDay { get; set; }
+        public uint? MaxBookingsPerDay { get; set; }
 
         public IEnumerable<UserType>? UserTypes { get; set; }
     }
@@ -251,30 +253,5 @@ namespace BraAuto.ViewModels
         public string SpecificLocation { get; set; }
 
         public string PhotoUrl { get; set; }
-    }
-
-    public class UserServiceBookAppointmentModel
-    {
-        [DisplayName("Car")]
-        public uint CarId { get; set; }
-
-        public IEnumerable<SimpleModel> Cars { get; set; }
-
-        [DisplayName("Service")]
-        public uint ServiceId { get; set; }
-
-        public IEnumerable<SimpleModel> Services { get; set; }
-
-        public uint Hour { get; set; }
-
-        [DisplayName("Date")]
-        public DateTime Date { get; set; }
-
-        public Breadcrumb ToBreadcrumb()
-        {
-            var paths = new List<(string Action, string Controller)>() { ("Search", "Users"), ("BookAppointment", "Users") };
-
-            return new Breadcrumb(paths);
-        }
     }
 }

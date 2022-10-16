@@ -562,10 +562,5 @@ namespace BraAutoDb.Dal
         {
             Db.LoadEntities(cars, c => c.Id, ids => Db.CarPhotos.GetByCarIds(ids), (car, carPhotos) => car.PhotoUrls = carPhotos.Where(ci => ci.CarId == car.Id).Select(ci => ci.Url));
         }
-
-        public void LoadUserCars(IEnumerable<Car> cars, bool loadServiceOnly = true)
-        {
-            Db.LoadEntities(cars, c => c.Id, ids => Db.UserCars.Get(loadServiceOnly ? new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId, Db.UserCarTypes.InspectionId, Db.UserCarTypes.RepairingId, Db.UserCarTypes.FinishedId } : null, carIds:ids), (car, userCars) => car.UserCars = userCars.Where(uc => uc.CarId == car.Id));
-        }
     }
 }

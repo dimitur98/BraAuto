@@ -1,6 +1,7 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAuto.ViewModels;
 using BraAutoDb.Dal;
+using BraAutoDb.Models.UserCarsSearch;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace BraAuto.Controllers.Api
         [HttpGet]
         public List<SimpleCarModel> GetComparedCars()
         {
-            var carIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.CompareId).Select(uc => uc.CarId).ToList();
+            var carIds = Db.UserCars.Search( new Request { UserCarTypeIds = new uint[] { Db.UserCarTypes.CompareId }, CreatorId = this.LoggedUser.Id }).Records.Select(uc => uc.CarId).ToList();
             var result = new List<SimpleCarModel>();
 
             if (!carIds.IsNullOrEmpty())

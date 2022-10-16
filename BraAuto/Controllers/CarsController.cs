@@ -4,23 +4,23 @@ using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
+using BraAutoDb.Models.UserCarsSearch;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NLog.LayoutRenderers.Wrappers;
+using System.Net;
+using System.Net.Mail;
 
 namespace BraAuto.Controllers
 {
     public class CarsController : BaseController
     {
         private Cloudinary _cloudinary;
-        private uint[] _userCarServiceIds;
 
         public CarsController(IConfiguration config, Cloudinary cloudinary)
         {
             _cloudinary = cloudinary;
-            _userCarServiceIds = config.GetSection("UserCar.Service.Ids").Get<uint[]>();
         }
 
         [AllowAnonymous]
@@ -32,7 +32,7 @@ namespace BraAuto.Controllers
                 Years = Db.Years.GetAll(),
                 NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", RowCount = 10 }).Records,
                 MostViewedCars = Db.Cars.GetMostViewed(10, true),
-                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsActive = true, SortColumn = "created_at", RowCount = 6 }).Records
+                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsApproved = true, SortColumn = "created_at", RowCount = 6 }).Records
             };
 
             this.LoadCarProperties(model.NewestCars);
@@ -52,37 +52,7 @@ namespace BraAuto.Controllers
             this.ExecuteSearch(model);
 
             return this.View(model);
-        }
-
-        public IActionResult MyService(MyServiceModel model)
-        {
-            if (this.LoggedUser.IsService())
-            {
-                model.Ids = Db.UserCars.Get(_userCarServiceIds, userId: this.LoggedUser.Id).Select(uc => uc.CarId);
-            }
-            else 
-            {
-                model.UserIds = new uint[] { this.LoggedUser.Id };
-            }
-
-            model.UserCarTypeIds = _userCarServiceIds;
-
-            this.ExecuteSearch(model);
-
-            Db.Cars.LoadUserCars(model.Response.Records);
-
-            return this.View(model);
-        }
-
-        public IActionResult Favourite(FavouriteCarModel model)
-        {
-            model.GetFavouriteCarsOnly = true;
-            model.UserIds = new uint[] { this.LoggedUser.Id };
-
-            this.ExecuteSearch(model);
-
-            return this.View(model);
-        }
+        }        
 
         [Authorize(Roles = "administrator")]
         public IActionResult Admin(CarAdminModel model)
@@ -109,8 +79,8 @@ namespace BraAuto.Controllers
 
             if (this.LoggedUser != null)
             {
-                model.UserFavourableCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.FavouriteId).Select(ur => ur.CarId);
-                model.UserCompareCarIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, Db.UserCarTypes.CompareId).Select(ur => ur.CarId);
+                model.UserFavourableCarIds = Db.UserCars.Search(new Request { CreatorId = this.LoggedUser.Id, UserCarTypeIds = new uint[] { Db.UserCarTypes.FavouriteId } }).Records.Select(ur => ur.CarId);
+                model.UserCompareCarIds = Db.UserCars.Search(new Request { CreatorId = this.LoggedUser.Id, UserCarTypeIds = new uint[] { Db.UserCarTypes.CompareId } }).Records.Select(ur => ur.CarId);
             }
 
             return this.View(model);
@@ -199,7 +169,7 @@ namespace BraAuto.Controllers
                         HasMoreSeats = model.HasMoreSeats,
                         HasRefrigerator = model.HasRefrigerator,
                         IsApproved = false,
-                        IsAdvert = true,
+                        IsAdvert = model.IsAdvert,
                         CreatorId = this.LoggedUser.Id,
                         EditorId = this.LoggedUser.Id
                     };
@@ -294,7 +264,8 @@ namespace BraAuto.Controllers
                 IsRetro = car.IsRetro,
                 HasTow = car.HasTow,
                 HasMoreSeats = car.HasMoreSeats,
-                HasRefrigerator = car.HasRefrigerator
+                HasRefrigerator = car.HasRefrigerator,
+                IsAdvert = car.IsAdvert
             };
 
             model.Photos.LoadPhotoUrls(car.Id);
@@ -315,7 +286,6 @@ namespace BraAuto.Controllers
                     var car = Db.Cars.GetById(model.Id);
 
                     if (car == null) { return this.NotFound(); }
-
 
                     car.Description = model.Description;
                     car.Vin = model.Vin;
@@ -377,6 +347,7 @@ namespace BraAuto.Controllers
                     car.HasTow = model.HasTow;
                     car.HasMoreSeats = model.HasMoreSeats;
                     car.HasRefrigerator = model.HasRefrigerator;
+                    car.IsAdvert = model.IsAdvert;
 
                     Db.Cars.Update(car);
 
@@ -388,7 +359,6 @@ namespace BraAuto.Controllers
             }
             catch (Exception ex)
             {
-
                 ex.SaveToLog();
                 this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
@@ -514,7 +484,7 @@ namespace BraAuto.Controllers
 
             if (this.LoggedUser != null)
             {
-                model.IsFavourite = Db.UserCars.Get(new uint[] { Db.UserCarTypes.FavouriteId }, carIds: new uint[] { car.Id }, userId: this.LoggedUser.Id).FirstOrDefault() != null;
+                model.IsFavourite = Db.UserCars.Search(new Request { CarIds = new uint[] { car.Id }, UserCarTypeIds = new uint[] { Db.UserCarTypes.FavouriteId }, CreatorId = this.LoggedUser.Id }).Records.FirstOrDefault() != null;
             }
 
             return this.View(model);
@@ -522,7 +492,7 @@ namespace BraAuto.Controllers
 
         public IActionResult Compare()
         {
-            var carIds = Db.UserCars.GetByUserId(this.LoggedUser.Id, userCarTypeId: Db.UserCarTypes.CompareId)?.Select(uc => uc.CarId);
+            var carIds = Db.UserCars.Search(new Request { CreatorId = this.LoggedUser.Id, UserCarTypeIds = new uint[] { Db.UserCarTypes.CompareId } }).Records.Select(uc => uc.CarId);
             var cars = Db.Cars.GetByIds(carIds);
 
             if (cars.IsNullOrEmpty()) { return this.NotFound(); }
@@ -617,12 +587,13 @@ namespace BraAuto.Controllers
 
             var request = model.ToSearchRequest();
 
-            if (model is not MyServiceModel)
+            if (model is CarSearchModel)
             {
                 request.IsAdvert = true;
-                request.ReturnTotalRecords = true;
             }
-            
+
+            request.ReturnTotalRecords = true;
+
             var response = Db.Cars.Search(request);
 
             LoadCarProperties(response.Records);

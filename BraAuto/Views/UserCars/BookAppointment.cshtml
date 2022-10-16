@@ -11,7 +11,7 @@
 
 <section class="spad">
     <div class="container login">
-        <form asp-action="BookAppointment" asp-controller="Users" method="post">
+        <form asp-action="BookAppointment" asp-controller="UserCars" method="post">
             <div class="form-group">
                 <label asp-for="CarId" class="form-label"></label>
                 <select class="form-select" asp-for="CarId" asp-items="@(new SelectList(Model.Cars.Select(c => new { Fullname = c.Name, Id = c.Id}), "Id", "Fullname"))">
@@ -37,6 +37,11 @@
                     <option value="">Select Service And Date First</option>
                 </select>
                 <span asp-validation-for="Hour"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea class="form-control" asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
             </div>
             <div class="text-center">
                 <button type="submit" class="site-btn">Book</button>

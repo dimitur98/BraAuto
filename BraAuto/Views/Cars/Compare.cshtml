@@ -38,17 +38,17 @@
                     </ul>
                     <div class="tab-content" id="details-car-tab-content">
                         <div class="tab-pane fade show active" id="vehicle-overview-pane-@car.Id" role="tabpanel" aria-labelledby="vehicle-overview-@car.Id" tabindex="0">
-                            <div class="car__details__tab__info__item">
+                            <div class="list-info-item">
                                 <h5>@Html.Label("Description")</h5>
                                 <br />
                                 @car.Description
                             </div>
                         </div>
                         <div class="tab-pane fade" id="technical-pane-@car.Id" role="tabpanel" aria-labelledby="technical-@car.Id" tabindex="0">
-                            <div class="car__details__tab__info">
+                            <div class="list-info">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <h5>General Information</h5>
                                             <ul>
                                                 <li>
@@ -70,7 +70,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <ul>
                                                 <li>
                                                     <i class="fa fa-gear"></i> @Html.Label("Gearbox"): @car.GearboxType
@@ -96,10 +96,10 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="features-and-options-pane-@car.Id" role="tabpanel" aria-labelledby="features-and-options-@car.Id" tabindex="0">
-                            <div class="car__details__tab__feature">
+                            <div class="list-info">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="list-info-item">
                                             <h5>Safety</h5>
                                             <ul>
                                                 <li><i class="@(car.HasAbs ? "fa fa-check-circle" : "")"></i> @Html.Label("Abs")</li>
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="list-info-item">
                                             <h5>Interior</h5>
                                             <ul>
                                                 <li><i class="@(car.HasLetherInterior ? "fa fa-check-circle" : "")"></i> @Html.Label("Lether Interior")</li>
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="list-info-item">
                                             <h5>Comfort</h5>
                                             <ul>
                                                 <li><i class="@(car.HasAirConditioning ? "fa fa-check-circle" : "")"></i> @Html.Label("Air Conditioning")</li>
@@ -154,7 +154,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="car__details__tab__feature__item">
+                                        <div class="list-info-item">
                                             <h5>Protection</h5>
                                             <ul>
                                                 <li><i class="@(car.HasImmobilizer ? "fa fa-check-circle" : "")"></i> @Html.Label("Immobilizer")</li>
@@ -177,7 +177,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="contacts-pane-@car.Id" role="tabpanel" aria-labelledby="contacts-@car.Id" tabindex="0">
-                            <div class="car__details__tab__info">
+                            <div class="list-info-item">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="car__details__tab__info__item">
@@ -189,7 +189,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="car__details__tab__info__item">
+                                        <div class="list-info-item">
                                             <h5>Owner Contacts</h5>
                                             <ul>
                                                 <li><i class="fa fa-user"></i> @Html.Label("Owner Name"): @car.OwnerName)</li>

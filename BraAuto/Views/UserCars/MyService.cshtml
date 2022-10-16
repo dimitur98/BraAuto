@@ -1,0 +1,22 @@
+﻿@model BraAuto.ViewModels.MyUserCarServiceModel
+@using BraAutoDb.Models;
+@using BraAuto.ViewModels;
+@using BraAutoDb.Dal
+@inject IConfiguration Configuration
+
+@{
+    var loggedUser = (User)ViewBag.LoggedUser;
+    var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+
+    ViewBag.Title = loggedUser.IsService() ? "Service Cars" : "My Service Cars";
+}
+
+<style>
+    .status-icon {
+        color: #4971FF !important;
+        font-size: 17px;
+    }
+</style>
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+<partial name="_UserCarsTablePartial" />

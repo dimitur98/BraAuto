@@ -8,28 +8,21 @@
 
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
-    <div class="offcanvas__widget">
-        <a href="#"><i class="fa fa-cart-plus"></i></a>
-        <a href="#" class="primary-btn">Add Car</a>
+    <div class="offcanvas__widget row">
+        <div class="col-6">
+            <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
+        </div>
+        @if (loggedUser.IsAdmin() || loggedUser.IsBlogger())
+        {
+            <div class="col-6">
+                <a asp-action="Create" asp-controller="Articles" class="primary-btn">Add Article</a>
+            </div>
+        }
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
+        <a asp-action="Home" asp-controller="Cars"><img src="~/img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
-    <ul class="offcanvas__widget__add">
-        <li><i class="fa fa-clock-o"></i> Week day: 08:00 am to 18:00 pm</li>
-        <li><i class="fa fa-envelope-o"></i> Info.colorlib@gmail.com</li>
-    </ul>
-    <div class="offcanvas__phone__num">
-        <i class="fa fa-phone"></i>
-        <span>(+12) 345 678 910</span>
-    </div>
-    <div class="offcanvas__social">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-google"></i></a>
-        <a href="#"><i class="fa fa-instagram"></i></a>
-    </div>
 </div>
 <!-- Offcanvas Menu End -->
 <!-- Header Section Begin -->
@@ -37,7 +30,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-2">
-                <div class="header__logo">
+                <div class="header-logo">
                     <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
                 </div>
             </div>
@@ -48,13 +41,14 @@
                             <li class="@(actionName == "Home" ? "active" : "")"><a asp-action="Home" asp-controller="Cars">Home</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Cars" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Articles" ? "active" : "")"><a asp-action="Search" asp-controller="Articles">Blog</a></li>
-                            <li class="@(actionName == "Search" && controllerName == "Users" ? "active" : "")"><a asp-action="Search" asp-controller="Users">Services</a></li>
+                            <li class="@(actionName == "ServiceSearch" && controllerName == "Users" ? "active" : "")"><a asp-action="ServiceSearch" asp-controller="Users">Services</a></li>
 
-                            @if(loggedUser == null)
+                            @if (loggedUser == null)
                             {
                                 <li><a asp-action="Login" asp-controller="Users">Login</a></li>
                                 <li><a asp-action="Register" asp-controller="Users">Register</a></li>
-                            }else
+                            }
+                            else
                             {
                                 <li class="@(actionName == "My" ? "active" : "")"><a asp-action="My" asp-controller="Cars">Hello "@loggedUser.Username"</a></li>
                             }
@@ -63,11 +57,8 @@
                     <div class="header__nav__widget">
                         @if (loggedUser != null)
                         {
-@*                            <div class="header__nav__widget__btn">
-                                <a href="#"><i class="fa fa-cart-plus"></i></a>
-                            </div>*@
                             <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
-                            @if(loggedUser.IsAdmin() || loggedUser.IsBlogger())
+                            @if (loggedUser.IsAdmin() || loggedUser.IsBlogger())
                             {
                                 <a asp-action="Create" asp-controller="Articles" class="primary-btn">Add Article</a>
                             }

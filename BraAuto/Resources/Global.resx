@@ -147,6 +147,9 @@
   <data name="SelectedTimeNotFree" xml:space="preserve">
     <value>The selected time is not free</value>
   </data>
+  <data name="ServiceRequiredFields" xml:space="preserve">
+    <value>Fields: Location, Booking Interval Hours, Start and End Working Time and Max Bookings Per Day are required!</value>
+  </data>
   <data name="UsernameAlreadyExists" xml:space="preserve">
     <value>Username already exists</value>
   </data>

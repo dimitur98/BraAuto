@@ -393,13 +393,17 @@ ol {
     padding: 32px 0 33px;
 }
 
-.header__logo {
-    padding: 35px 0;
+.header-logo {
+    padding: 10px 0;
 }
 
-    .header__logo a {
+    .header-logo a {
         display: inline-block;
     }
+
+        .header-logo a img {
+            max-height: 90px;
+        }
 
 .header__menu {
     display: inline-block;
@@ -939,15 +943,15 @@ ol {
   Car
 -----------------------*/
 
-.car {
+.table-list-section {
     padding-bottom: 120px;
 }
 
-    .car .section-title {
+    .table-list-section .section-title {
         margin-bottom: 20px;
     }
 
-        .car .section-title h2 {
+        .table-list-section .section-title h2 {
             margin-bottom: 0;
         }
 
@@ -1434,13 +1438,17 @@ ol {
         margin-bottom: 25px;
     }
 
-.footer__logo {
+.footer-logo {
     margin-bottom: 20px;
 }
 
-    .footer__logo a {
+    .footer-logo a {
         display: inline-block;
     }
+
+        .footer-logo a img {
+            max-height: 100px;
+        }
 
 .footer__social {
     margin-bottom: 20px;

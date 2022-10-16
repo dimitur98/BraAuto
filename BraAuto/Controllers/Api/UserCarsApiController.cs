@@ -13,9 +13,9 @@ namespace BraAuto.Controllers.Api
         {
             Db.UserCars.Insert(new UserCar
             {
-                UserId = this.LoggedUser.Id,
                 CarId = carId,
-                UserCarTypeId = userCarTypeId
+                UserCarTypeId = userCarTypeId,
+                CreatorId = this.LoggedUser.Id
             });
 
             return this.Ok(new { });
@@ -37,7 +37,7 @@ namespace BraAuto.Controllers.Api
 
         public IActionResult Delete(uint carId, uint userCarTypeId)
         {
-            Db.UserCars.Delete(this.LoggedUser.Id, carId, userCarTypeId);
+            Db.UserCars.Delete(carId, userCarTypeId, this.LoggedUser.Id);
 
             return this.Ok(new { });
         }

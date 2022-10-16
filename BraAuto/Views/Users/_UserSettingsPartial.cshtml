@@ -36,10 +36,10 @@
                     </li>
                 }
                 <li class="nav-item">
-                    <a class="nav-link @(actionName == "Favourite" ? "active" : "")" data-toggle="tab" asp-action="Favourite" asp-controller="Cars" role="tab">Favourite Cars</a>
+                    <a class="nav-link @(actionName == "Favourite" ? "active" : "")" data-toggle="tab" asp-action="Favourite" asp-controller="UserCars" role="tab">Favourite Cars</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(actionName == "MyService" ? "active" : "")" data-toggle="tab" asp-action="MyService" asp-controller="Cars" role="tab">My Service Cars</a>
+                    <a class="nav-link @(actionName == "MyService" && controllerName == "UserCars" ? "active" : "")" data-toggle="tab" asp-action="MyService" asp-controller="UserCars" role="tab">@(loggedUser.IsService() ? "Service Cars": "My Service Cars")</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @(actionName == "Edit" ? "active" : "")" data-toggle="tab" asp-action="Edit" asp-controller="Users" asp-route-id="@loggedUser.Id" role="tab">Edit profile</a>

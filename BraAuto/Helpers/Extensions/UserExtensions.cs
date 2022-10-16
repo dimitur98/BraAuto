@@ -1,6 +1,6 @@
 ﻿using BraAutoDb.Dal;
 using BraAutoDb.Models;
-using System.Runtime.CompilerServices;
+using BraAutoDb.Models.UserCarsSearch;
 
 namespace BraAuto.Helpers.Extensions
 {
@@ -14,6 +14,8 @@ namespace BraAuto.Helpers.Extensions
 
         public static bool IsInRole(this User user, string role)
         {
+            if (user == null) { return false; }
+
             var principal = new HttpContextAccessor()?.HttpContext?.User;
 
             if (principal?.Identity?.Name == user.Username && principal.IsInRole(role) == true) { return true; }
@@ -44,9 +46,9 @@ namespace BraAuto.Helpers.Extensions
 
             if (user.UserTypeId != Db.UserTypes.ServiceId) { return hours; }
 
-            var serviceCars = Db.UserCars.Get(new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, userId: user.Id, date: date);
+            var serviceCars = Db.UserCars.Search(new Request { UserCarTypeIds = new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, UserId = user.Id, Date = date }).Records;
 
-            for (uint i = user.StartWorkingTime; i < user.EndWorkingTime; i += user.BookingIntervalHours)
+            for (uint i = user.StartWorkingTime.Value; i < user.EndWorkingTime.Value; i += user.BookingIntervalHours.Value)
             {
                 hours.Add(i);
             }

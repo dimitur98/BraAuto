@@ -45,7 +45,7 @@
     <div id="page">
         @if (ViewBag.ShowHeader == null || ViewBag.ShowHeader == true)
         {
-            <header id="header" class="mb-3 @(ViewBag.StikyHeader == true ? "sticky-header" : "")">
+            <header id="header" class="mb-3 @(ViewBag.StikyHeader != null && ViewBag.StikyHeader == true ? "sticky-header" : "")">
                 <partial name="_MenuPartial" />
             </header>
         }
@@ -55,13 +55,13 @@
 
     @if (ViewBag.ShowFooter == null || ViewBag.ShowFooter == true)
     {
-        <footer id="footer" class="footer set-bg" data-setbg="/img/footer-bg.jpg">
+        <footer class="footer set-bg" data-setbg="/img/footer-bg.jpg">
               <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <div class="footer__about">
-                            <div class="footer__logo">
-                                <a href="#"><img src="~/img/footer-logo.png" alt=""></a>
+                            <div class="footer-logo">
+                                <a asp-action="Home" asp-controller="Cars"><img src="~/img/logo.png" alt=""></a>
                             </div>
                             <p>Any questions? Let us know. Email: brayan.hristov99@gmail.com</p>
                         </div>
@@ -70,8 +70,8 @@
                         <div class="footer__widget">
                             <h5>Infomation</h5>
                             <ul>
-                                <li><a asp-action="Home"><i class="fa fa-angle-right"></i> Home</a></li>
-                                <li><a asp-action="Search"><i class="fa fa-angle-right"></i> Cars</a></li>
+                                <li><a asp-action="Home" asp-controller="Cars"><i class="fa fa-angle-right"></i> Home</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars"><i class="fa fa-angle-right"></i> Cars</a></li>
                                 <li><a asp-action="Search" asp-controller="Articles"><i class="fa fa-angle-right"></i> Articles</a></li>
                                 <li><a asp-action="Search" asp-controller="Services"><i class="fa fa-angle-right"></i> Services</a></li>
                             </ul>
@@ -81,8 +81,8 @@
                         <div class="footer__widget">
                             <h5>Infomation</h5>
                             <ul>
-                                <li><a asp-action="Search" asp-route-vehicleTypeId="1"><i class="fa fa-angle-right"></i> Car</a></li>
-                                <li><a asp-action="Search" asp-route-vehicleTypeId="2"><i class="fa fa-angle-right"></i> Bus</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-vehicleTypeId="1"><i class="fa fa-angle-right"></i> Car</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-vehicleTypeId="2"><i class="fa fa-angle-right"></i> Bus</a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,25 +90,23 @@
                         <div class="footer__brand">
                             <h5>Top Brand</h5>
                             <ul>
-                                <li><a asp-action="Search" asp-route-makeId="3"><i class="fa fa-angle-right"></i> BMW</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="1"><i class="fa fa-angle-right"></i> Audi</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="22"><i class="fa fa-angle-right"></i> Mercedes-Benz</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="34"><i class="fa fa-angle-right"></i> VW</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="3"><i class="fa fa-angle-right"></i> BMW</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="1"><i class="fa fa-angle-right"></i> Audi</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="22"><i class="fa fa-angle-right"></i> Mercedes-Benz</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="34"><i class="fa fa-angle-right"></i> VW</a></li>
                             </ul>
                             <ul>
-                                <li><a asp-action="Search" asp-route-makeId="8"><i class="fa fa-angle-right"></i> Dodge</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="7"><i class="fa fa-angle-right"></i> Chevrolet</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="10"><i class="fa fa-angle-right"></i> Ford</a></li>
-                                <li><a asp-action="Search" asp-route-makeId="15"><i class="fa fa-angle-right"></i> Jeep</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="8"><i class="fa fa-angle-right"></i> Dodge</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="7"><i class="fa fa-angle-right"></i> Chevrolet</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="10"><i class="fa fa-angle-right"></i> Ford</a></li>
+                                <li><a asp-action="Search" asp-controller="Cars" asp-route-makeId="15"><i class="fa fa-angle-right"></i> Jeep</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 <div class="footer__copyright__text">
                     <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This web site is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">BraAuto</a></p>
                 </div>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </div>
         </footer>
     }

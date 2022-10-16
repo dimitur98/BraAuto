@@ -1,4 +1,4 @@
-﻿@model BraAuto.ViewModels.UserServiceSearchModel
+﻿@model BraAuto.ViewModels.UserSearchModel
 @inject IConfiguration Configuration
 
 @{
@@ -31,7 +31,7 @@
                                         </ul>
                                     </div>
                                     <div class="blog__item__text">
-                                        <h5><a asp-action="Details" asp-route-id="@service.Id">@service.Name</a></h5>
+                                        <h5><a asp-action="ServiceDetails" asp-route-id="@service.Id">@service.Name</a></h5>
                                         <p>
                                             @(service.Description.Length > 200 ? service.Description.Substring(0, 200) + " ..." : service.Description)
                                         </p>
@@ -45,7 +45,7 @@
             </div>
             <div class="col-lg-3 col-md-6 col-sm-9">
                 <div class="blog__sidebar">
-                    <form asp-action="Services" method="get" class="blog__sidebar__search">
+                    <form asp-action="ServiceSearch" method="get" class="blog__sidebar__search">
                         <input type="text" asp-for="Keywords" placeholder="Search...">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -54,11 +54,11 @@
                         <ul>
                             @foreach (var location in Model.Locations)
                             {
-                                <li><a asp-action="Services" asp-route-locationId="@location.Id">@location.Name</a></li>
+                                <li><a asp-action="ServiceSearch" asp-route-locationId="@location.Id">@location.Name</a></li>
                             }
                         </ul>
                     </div>
-                    <a asp-action="BookAppointment" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                    <a asp-action="ServiceBookAppointment" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
                 </div>
             </div>
         </div>

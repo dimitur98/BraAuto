@@ -1,0 +1,41 @@
+﻿@model int?
+@using BraAuto.Resources
+
+@{
+    ViewBag.Title = "Error";
+
+    if (Model.HasValue)
+    {
+        switch (Model)
+        {
+            case 401:
+                <div class="text-center error">
+                    <img src="~/img/errors/@(Model.Value).gif" class="maxw-100" />
+                    <h1>NOT AUTHORIZED</h1>
+                </div>
+                break;
+            case 403:
+            case 404:
+            case 504:
+                <div class="text-center error">
+                    <img src="~/img/errors/@(Model.Value).gif" class="maxw-100 mb-3" />
+                    <h1>NOT FOUND</h1>
+                </div>
+                break;
+            default:
+                <div class="text-center default-error">
+                    <img src="~/img/errors/error.gif" class="maxw-100" style="max-height: 450px" />
+                </div>
+                break;
+        }
+    }
+}
+
+<style>
+    .error{
+         height: 475px;
+    }
+    .default-error{
+        height: 505px;
+    }
+</style>

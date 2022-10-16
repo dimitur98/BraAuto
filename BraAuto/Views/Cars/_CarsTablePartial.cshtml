@@ -7,19 +7,10 @@
 @{
     var loggedUser = (User)ViewBag.LoggedUser;
     var isAdminPage = Model is CarAdminModel;
-    var isFavouritePage = Model is FavouriteCarModel;
-    var isMyServicePage = Model is MyServiceModel;
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
-<style>
-    .status-icon {
-        color: #4971FF !important;
-        font-size: 17px;
-    }
-</style>
-
-<section class="car spad">
+<section class="table-list-section spad">
     <div class="container">
         <div class="row">
             <partial name="~/Views/Users/_UserSettingsPartial.cshtml">
@@ -38,76 +29,57 @@
                                 <tr class="my-car-settings-thead">
                                     <th scope="col"></th>
                                     <th scope="col">Car</th>
-                                    @if (!isFavouritePage && !isMyServicePage)
-                                    {
-                                        <th scope="col">Approved</th>
-                                        <th scope="col">Added To Favourite</th>
-                                    }
+                                    <th scope="col">Approved</th>
+                                    <th scope="col">Added To Favourite</th>
+                                    <th scope="col">Is Advert</th>
                                     @if (loggedUser.IsAdmin() && isAdminPage)
                                     {
                                         <th scope="col">Creator</th>
                                     }
-                                    @if (isMyServicePage)
-                                    {
-                                        <th scope="col">Status</th>
-                                    }
-                                    else
-                                    {
-                                        <th scope="col">Created At</th>
-                                    }
-                                    @if (!isFavouritePage && !isMyServicePage)
-                                    {
-                                        <th scope="col">Edited At</th>
-                                        <th scope="col"></th>
-                                    }
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Edited At</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var car in Model.Response.Records)
                                 {
+                                    var userCar = car.UserCars?.FirstOrDefault();
+
                                     <tr>
                                         <td><img class="table-photo" src="@(cloudinaryUrl + car.PhotoUrls.FirstOrDefault())" /></td>
                                         <td class="align-middle"><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
-                                        @if (!isFavouritePage && !isMyServicePage)
-                                        {
-                                            <td class="align-middle">
-                                                @if (car.IsApproved)
-                                                {
-                                                    <a data-id="@car.Id" class="disapprove"><i class="fa fa-check-circle"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <a data-id="@car.Id" class="approve"><i class="fa-regular fa-circle"></i></a>
-                                                }
-                                            </td>
-                                            <td class="align-middle">@(Model.FavouriteCount.FirstOrDefault(fc => fc.CarId == car.Id).Count)</td>
-                                        }
+                                        <td class="align-middle">
+                                            @if (car.IsApproved)
+                                            {
+                                                <a data-id="@car.Id" class="disapprove"><i class="fa fa-check-circle"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a data-id="@car.Id" class="approve"><i class="fa-regular fa-circle"></i></a>
+                                            }
+                                        </td>
+                                        <td class="align-middle">@(Model.FavouriteCount.FirstOrDefault(fc => fc.CarId == car.Id).Count)</td>
+                                        <td class="align-middle">
+                                            @if (car.IsAdvert)
+                                            {
+                                                <i class="fa fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa-regular fa-circle"></i>
+                                            }
+                                        </td>
                                         @if (loggedUser.IsAdmin() && isAdminPage)
                                         {
                                             <td class="align-middle">@car.Creator.Name</td>
                                         }
-                                        @if (isMyServicePage)
-                                        {
-                                            <td data-user-car-id="@car.UserCars.FirstOrDefault()?.Id" data-user-car-type-id="@car.UserCars.FirstOrDefault()?.UserCarTypeId" class="align-middle status">
-                                                <i title="Not Approved" data-user-car-type-id="@Db.UserCarTypes.ServiceAppointmentId" class="fa-regular fa-circle status-icon me-1 opacity-50"></i>
-                                                <i title="Approved" data-user-car-type-id="@Db.UserCarTypes.ServiceAppointmentApprovedId" class="fa fa-check-circle status-icon me-1 opacity-50"></i>
-                                                <i title="Car Inspecting" data-user-car-type-id="@Db.UserCarTypes.InspectionId" class="fa-solid fa-magnifying-glass status-icon me-1 opacity-50"></i>
-                                                <i title="Car Repairing" data-user-car-type-id="@Db.UserCarTypes.RepairingId" class="fa-solid fa-wrench status-icon me-1 opacity-50"></i>
-                                                <i title="Car Repaired" data-user-car-type-id="@Db.UserCarTypes.FinishedId" class="fa-solid fa-clipboard-check status-icon me-1 opacity-50"></i>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td class="align-middle">@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
-                                        }
-                                        @if (!isFavouritePage && !isMyServicePage)
-                                        {
-                                            <td class="align-middle">@car.EditedAt.ToWebDateFormat(showTime:true)</td>
-                                            <td class="text-nowrap align-middle ms-3">
-                                                <a asp-action="Edit" asp-route-id="@car.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                                <a asp-action="Delete" asp-route-id="@car.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete @car.Model.Make.Name @car.Model.Name @car.Variant?"><i class="far fa-trash-alt"></i></a>
-                                            </td>
-                                        }
+                                        <td class="align-middle">@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
+                                        <td class="align-middle">@car.EditedAt.ToWebDateFormat(showTime:true)</td>
+                                        <td class="text-nowrap align-middle ms-3">
+                                            <a asp-action="Edit" asp-route-id="@car.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                            <a asp-action="Delete" asp-route-id="@car.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete @car.Model.Make.Name @car.Model.Name @car.Variant?"><i class="far fa-trash-alt"></i></a>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -149,69 +121,6 @@
                     }
                 });
             }
-        });
-    </script>
-}
-
-@if (isMyServicePage)
-{
-    <script>
-        $(document).ready(function () {
-            $(".status").each(function () {
-                var userCarTypeId = $(this).data("user-car-type-id");
-
-                $(this).find("i").each(function () {
-                    $(this).removeClass("opacity-50");
-
-                    if ($(this).data("user-car-type-id") == userCarTypeId) {
-                        return false;
-                    }
-                });
-            });
-        });
-    </script>
-}
-
-@if (isMyServicePage && loggedUser.IsService())
-{
-    <script>
-        $(document).ready(function () {
-            $(".status").find("i").css("cursor", "pointer");
-
-            $(".status").each(function () {
-                var $status = $(this);
-                var userCarTypeId = $status.data("user-car-type-id");
-                var userCarId = $status.data("user-car-id");
-
-                $(this).find("i").each(function () {
-                    var newUserCarTypeId = $(this).data("user-car-type-id");
-
-                    $(this).on("click", function () {
-                        $.ajax({
-                            url: @Html.Raw(Json.Serialize(Url.Action("Edit", "UserCarsApi"))),
-                            type: 'GET',
-                            data: { id: userCarId, userCarTypeId: newUserCarTypeId },
-                            success: function (response, status, xhr) {
-                                if (response) {
-                                    var $statusBtns = $status.find("i");
-
-                                    $statusBtns.each(function (i) {
-                                        $(this).removeClass("opacity-50");
-
-                                        if ($(this).data("user-car-type-id") == newUserCarTypeId) {
-                                            $statusBtns.slice(i + 1).each(function () {
-                                                $(this).addClass("opacity-50");
-                                            });
-
-                                            return false;
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    });
-                });
-            });
         });
     </script>
 }

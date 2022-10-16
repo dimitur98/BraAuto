@@ -1,11 +1,8 @@
 using BraAuto.AspNetCore.Authentication.Cookies;
-using BraAuto.Helpers.Log;
-using BraAutoDb.Models;
+using BraAuto.Helpers.Extensions;
 using CloudinaryDotNet;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
@@ -42,7 +39,7 @@ try
        .AddCookie(options =>
        {
            options.LoginPath = new PathString("/Users/Login");
-           options.AccessDeniedPath = new PathString("/Errors/NoAccess");
+           options.AccessDeniedPath = new PathString("/Errors/Status?code=401");
            options.Cookie.Name = "bra_auto_auth";
            options.EventsType = typeof(BraAutoCookieAuthenticationEvents);
        })
@@ -61,12 +58,13 @@ try
     builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
     builder.Services.AddSingleton<ILogHelper, LogHelper>();
     builder.Services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+
     Account account = new Account(
                                  builder.Configuration["Cloudinary:AppName"],
                                  builder.Configuration["Cloudinary:AppKey"],
                                  builder.Configuration["Cloudinary:AppSecret"]);
-
     Cloudinary cloudinary = new Cloudinary(account);
+
     builder.Services.AddSingleton(cloudinary);
 
     //builder.Services.AddSingleton<IEmailSender, EmailSender>();
@@ -82,6 +80,8 @@ try
         app.UseHsts();
     }
 
+    app.UseStatusCodePagesWithReExecute("/Errors/Status", "?code={0}");
+
     app.UseHttpsRedirection();
     app.UseStaticFiles();
 
@@ -95,7 +95,6 @@ try
            pattern: "{controller=Cars}/{action=Home}/{id?}");
 
     //app.MapRazorPages();
-
     app.Run();
 }
 catch (Exception exception)

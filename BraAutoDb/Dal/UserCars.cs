@@ -1,43 +1,42 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAutoDb.Models;
+using BraAutoDb.Models.UserCarsSearch;
 using SqlQueryBuilder.MySql;
-using System.Drawing;
 
 namespace BraAutoDb.Dal
 {
     public class UserCars : BaseDal<UserCar>
     {
         public UserCars() : base("user_car", "id", "id") { }
-
-        public List<UserCar> Get(IEnumerable<uint> userCarTypeIds, IEnumerable<uint> carIds = null, uint? userId = null, DateTime? date = null)
+        
+        public Response Search(Request request)
         {
-            var query = new Query()
-            {
-                Select = new List<string>() { "*" },
-                From = $"`{_table}`",
-                Where = new List<string>() { "1=1" }
-            };
+            return this.Search<Response>(request,
+                (query) =>
+                {
+                    if (!request.CarIds.IsNullOrEmpty()) { query.Where.Add(" AND uc.car_id IN @carIds"); }
+                    if (!request.UserCarTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND uc.user_car_type_id IN @userCarTypeIds"); }
+                    if (request.UserId != null) { query.Where.Add(" AND uc.user_id = @userId"); }
+                    if (request.Date != null) { query.Where.Add(" AND DATE(@date) = DATE(uc.date)"); }
+                    if (request.CreatorId != null) { query.Where.Add(" AND uc.creator_id = @creatorId"); }
 
-            if (!carIds.IsNullOrEmpty()) { query.Where.Add(" AND car_id IN @carIds"); }
-            if (!userCarTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND user_car_type_id IN @userCarTypeIds"); }
-            if (userId != null) { query.Where.Add(" AND user_id = @userId"); }
-            if (date != null) { query.Where.Add(" AND DATE(@date) = DATE(date)"); }
-
-            return Db.Mapper.Query<UserCar>(query.ToString(), param: new { userCarTypeIds, carIds, userId, date}).ToList();
+                    query.AddJoinIf("LEFT JOIN car c ON uc.car_id = c.id", orderByColumnStartsWith: "c.");
+                },
+                () =>
+                {
+                    return new
+                    {
+                        carIds = request.CarIds,
+                        userCarTypeIds = request.UserCarTypeIds,
+                        userId = request.UserId,
+                        date = request.Date,
+                        creatorId = request.CreatorId
+                    };
+                },
+                "uc");
         }
 
-        public IEnumerable<UserCar> GetByUserId(uint userId, uint? userCarTypeId = null)
-        {
-            string sql = $@"
-                SELECT * 
-                FROM `{_table}`
-                WHERE user_id = @userId";
-
-            if (userCarTypeId != null) { sql += " AND user_car_type_id = @userCarTypeId"; }
-
-            return Db.Mapper.Query<UserCar>(sql, param: new { userId, userCarTypeId }).ToList();
-        }
-        public IEnumerable<(uint CarId, int Count)> GetCount(uint userCarTypeId)
+        public List<(uint CarId, int Count)> GetCount(uint userCarTypeId)
         {
             var sql = @"
                     SELECT car_id, COUNT(user_id) AS 'Count' FROM user_car
@@ -54,12 +53,16 @@ namespace BraAutoDb.Dal
                             `user_id`,
                             `car_id`,
                             `user_car_type_id`,
-                            `date`
+                            `date`,
+                            `description`,
+                            `creator_id`
                         )VALUES(
                             @userId,
                             @carId,
                             @userCarTypeId,
-                            @date
+                            @date,
+                            @description,
+                            @creatorId
                         );
 
                         SELECT LAST_INSERT_ID() AS id;";
@@ -69,7 +72,9 @@ namespace BraAutoDb.Dal
                 userId = userCar.UserId,
                 carId = userCar.CarId,
                 userCarTypeId = userCar.UserCarTypeId,
-                date = userCar.Date
+                date = userCar.Date,
+                description = userCar.Description,
+                creatorId = userCar.CreatorId
             };
 
             userCar.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
@@ -89,13 +94,18 @@ namespace BraAutoDb.Dal
             Db.Mapper.Execute(sql, queryParams);
         }
 
-        public void Delete(uint userId, uint carId, uint userCarTypeId)
+        public void Delete(uint carId, uint userCarTypeId, uint creatorId)
         {
             string sql = $@"
                 DELETE FROM `{_table}` 
-                WHERE user_id = @userId AND car_id = @carId AND user_car_type_id = @userCarTypeId";
+                WHERE car_id = @carId AND user_car_type_id = @userCarTypeId AND creator_id = @creatorId ";
 
-            Db.Mapper.Execute(sql, new { userId, carId, userCarTypeId });
+            Db.Mapper.Execute(sql, new { carId, userCarTypeId, creatorId });
+        }
+
+        public void LoadCars(IEnumerable<UserCar> userCar)
+        {
+            Db.LoadEntities(userCar, uc => uc.CarId, carIds => Db.Cars.GetByIds(carIds), (userCar, cars) => userCar.Car = cars.FirstOrDefault(c => c.Id == userCar.CarId));
         }
     }
 }

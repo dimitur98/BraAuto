@@ -184,6 +184,18 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Fields: Location, Booking Interval Hours, Start and End Working Time and Max Bookings Per Day are required!.
+        /// </summary>
+        internal static string ServiceRequiredFields
+        {
+            get
+            {
+                return ResourceManager.GetString("ServiceRequiredFields", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Username already exists.
         /// </summary>
         internal static string UsernameAlreadyExists

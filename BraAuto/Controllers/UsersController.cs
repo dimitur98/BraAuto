@@ -1,7 +1,6 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAuto.Resources;
 using BraAuto.ViewModels;
-using BraAuto.ViewModels.Common;
 using BraAuto.ViewModels.Helpers;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
@@ -86,6 +85,22 @@ namespace BraAuto.Controllers
                         }
 
                         user.PhotoUrl = await model.Photo.UploadPhotoAsync();
+                    }
+
+                    if (model.UserTypeId == Db.UserTypes.ServiceId &&
+                        (model.LocationId == null
+                        || model.BookingIntervalHours == null 
+                        || model.StartWorkingTime == null 
+                        || model.EndWorkingTime == null 
+                        || model.MaxBookingsPerDay == null 
+                        || model.Photo == null))
+                    {
+                        model.UserTypes = Db.UserTypes.GetAll();
+                        model.Locations = Db.Locations.GetAll();
+
+                        this.ModelState.AddModelError(string.Empty, Global.ServiceRequiredFields);
+
+                        return this.View(model);
                     }
 
                     user = new User
@@ -276,6 +291,17 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        public IActionResult ServiceSearch(UserSearchModel model)
+        {
+            model.UserTypeId = Db.UserTypes.ServiceId;
+
+            this.ExecuteSearch(model);
+
+            model.Locations = Db.Locations.GetAll();
+
+            return this.View(model);
+        }
+
         [Authorize]
         public IActionResult Edit(uint id)
         {
@@ -323,6 +349,24 @@ namespace BraAuto.Controllers
                     var user = Db.Users.GetById(model.Id);
 
                     if (user == null) { return this.NotFound(); }
+
+                    if (model.UserTypeId == Db.UserTypes.ServiceId &&
+                        (model.LocationId == null
+                        || model.BookingIntervalHours == null
+                        || model.StartWorkingTime == null
+                        || model.EndWorkingTime == null
+                        || model.MaxBookingsPerDay == null
+                        || model.Photo == null))
+                    {
+                        if (this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(model.Id).Select(uir => uir.UserRoleId); }
+
+                        model.UserTypes = Db.UserTypes.GetAll();
+                        model.Locations = Db.Locations.GetAll();
+
+                        this.ModelState.AddModelError(string.Empty, Global.ServiceRequiredFields);
+
+                        return this.View(model);
+                    }
 
                     if (model.Photo != null)
                     {
@@ -426,7 +470,6 @@ namespace BraAuto.Controllers
             }
             catch (Exception ex)
             {
-
                 ex.SaveToLog();
                 this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
@@ -442,16 +485,7 @@ namespace BraAuto.Controllers
             return RedirectToAction(String.Empty, String.Empty);
         }
 
-        public IActionResult Search(UserServiceSearchModel model)
-        {
-            this.ExecuteServiceSearch(model);
-
-            model.Locations = Db.Locations.GetAll();
-
-            return this.View("~/Views/Users/Services/Search.cshtml", model);
-        }
-
-        public IActionResult Details(uint id)
+        public IActionResult ServiceDetails(uint id)
         {
             var service = Db.Users.GetById(id);
 
@@ -469,78 +503,10 @@ namespace BraAuto.Controllers
                 PhotoUrl = service.PhotoUrl
             };
 
-            return this.View("~/Views/Users/Services/Details.cshtml", model);
+            return this.View("~/Views/Users/Details.cshtml", model);
         }
 
-        public IActionResult BookAppointment(uint? carId)
-        {
-            var model = new UserServiceBookAppointmentModel();
-
-            this.LoadBookAppoitmentModel(model);
-
-            model.Date = DateTime.Now;
-
-            if (carId != null) { model.CarId = carId.Value; }
-
-            return this.View("~/Views/Users/Services/BookAppointment.cshtml", model);
-        }
-
-        [HttpPost]
-        public IActionResult BookAppointment(UserServiceBookAppointmentModel model)
-        {
-            try
-            {
-                if (this.ModelState.IsValid)
-                {
-                    var service = Db.Users.GetById(model.ServiceId);
-                    var serviceTotalBookings = Db.UserCars.Get(new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, carIds: new uint[] { model.CarId }, date: model.Date).Count;
-
-                    if (service.MaxBookingsPerDay <= serviceTotalBookings)
-                    {
-                        this.LoadBookAppoitmentModel(model);
-                        this.TempData[Global.AlertKey] = new Alert(Global.MaxBookingAppointmentsReached, AlertTypes.Warning).SerializeAlert();
-
-                        return this.View(model);
-                    }
-
-                    var freeHours = service.GetFreeHours(model.Date);
-
-                    if (!freeHours.Contains(model.Hour))
-                    {
-                        this.LoadBookAppoitmentModel(model);
-                        this.TempData[Global.AlertKey] = new Alert(Global.SelectedTimeNotFree, AlertTypes.Warning).SerializeAlert();
-
-                        return this.View(model);
-                    }
-
-                    var time = new TimeSpan((int)model.Hour, 0, 0);
-
-                    var appointment = new UserCar
-                    {
-                        UserId = service.Id,
-                        CarId = model.CarId,
-                        UserCarTypeId = Db.UserCarTypes.ServiceAppointmentId,
-                        Date = model.Date.Add(time)
-                    };
-
-                    Db.UserCars.Insert(appointment);
-
-                    //TODO Replace with search page of my booking appointmnets services 
-                    return this.View("~/Views/Users/Services/BookAppointment.cshtml", model);
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.SaveToLog();
-                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
-            }
-
-            this.LoadBookAppoitmentModel(model);
-
-            return this.View(model);
-        }
-
-        protected void ExecuteSearch(UserAdminSearchModel model)
+        protected void ExecuteSearch(UserSearchBaseModel model)
         {
             model.SetDefaultSort("u.created_at", sortDesc: true);
 
@@ -551,33 +517,6 @@ namespace BraAuto.Controllers
             var response = Db.Users.Search(request);
 
             model.Response = response;
-        }
-
-        protected void ExecuteServiceSearch(UserServiceSearchModel model)
-        {
-            model.SetDefaultSort("u.created_at", sortDesc: true);
-
-            var request = model.ToSearchRequest();
-
-            request.ReturnTotalRecords = true;
-            request.UserTypeId = Db.UserTypes.ServiceId;
-
-            var response = Db.Users.Search(request);
-
-            model.Response = response;
-        }
-
-
-        protected void LoadBookAppoitmentModel(UserServiceBookAppointmentModel model)
-        {
-            var cars = Db.Cars.GetByUserId(this.LoggedUser.Id);
-            cars.AddRange(Db.Cars.GetAll(isApproved: true, isAdvert: true));
-
-            Db.Cars.LoadModels(cars);
-            Db.Models.LoadMakes(cars.Select(c => c.Model));
-
-            model.Cars = cars.Select(c => new SimpleModel(c.Id, $"{c.Model.Make.Name} {c.Model.Name} {c.Variant}"));
-            model.Services = Db.Users.GetByTypeId(Db.UserTypes.ServiceId).Select(u => new SimpleModel(u.Id, u.Name));
-        }
+        }       
     }
 }

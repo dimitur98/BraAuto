@@ -77,7 +77,7 @@
                                         <td class="align-middle">@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
                                         <td class="align-middle">@car.EditedAt.ToWebDateFormat(showTime:true)</td>
                                         <td class="text-nowrap align-middle ms-3">
-                                            <a asp-action="Edit" asp-route-id="@car.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                            <a asp-action="Edit" asp-route-id="@car.Id" asp-route-isAdminCarEditPage="@isAdminPage" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                             <a asp-action="Delete" asp-route-id="@car.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete @car.Model.Make.Name @car.Model.Name @car.Variant?"><i class="far fa-trash-alt"></i></a>
                                         </td>
                                     </tr>

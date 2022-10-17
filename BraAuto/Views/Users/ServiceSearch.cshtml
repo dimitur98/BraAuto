@@ -27,7 +27,7 @@
                                     <div class="blog-item-pic set-bg" data-setbg="@(cloudinaryUrl + service.PhotoUrl)">
                                         <ul>
                                             <li>@service.CreatedAt.ToWebDateFormat()</li>
-                                            <li>Location: @Model.Locations.First(l => l.Id == service.LocationId).Name (@service.SpecificLocation)</li>
+                                            <li>Location: @Model.Locations.First(l => l.Id == service.LocationId).Name @(!string.IsNullOrEmpty(service.SpecificLocation) ? $"({service.SpecificLocation})":"")</li>
                                         </ul>
                                     </div>
                                     <div class="blog-item-text">

@@ -116,7 +116,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult Edit(uint id)
+        public IActionResult Edit(uint id, bool isAdminArticleEditPage)
         {
             var article = Db.Articles.GetById(id);
 
@@ -129,8 +129,8 @@ namespace BraAuto.Controllers
                 Body = article.Body,
                 CategoryId = article.CategoryId,
                 PhotoUrl = article.PhotoUrl,
+                IsAdminArticleEditPage = isAdminArticleEditPage,
                 Categories = Db.Categories.GetAll()
-                
             };
 
             return this.View(model);
@@ -173,7 +173,7 @@ namespace BraAuto.Controllers
 
                     Db.Articles.Update(article);
 
-                    return this.RedirectToAction(nameof(Search));
+                    return this.RedirectToAction(model.IsAdminArticleEditPage ? nameof(Admin) : nameof(My));
                 }
             }
             catch (Exception ex)

@@ -112,9 +112,11 @@ namespace BraAuto.ViewModels
 
         public string PhotoUrl { get; set; }
 
+        public bool IsAdminArticleEditPage { get; set; }
+
         public Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Search", "Articles"), ("Create", "Articles") };
+            var paths = new List<(string Action, string Controller)>() { ("Search", "Articles"), this.IsAdminArticleEditPage ? ("Admin", "Articles"): ("My","Articles"),("Edit", "Articles") };
 
             return new Breadcrumb(paths);
         }

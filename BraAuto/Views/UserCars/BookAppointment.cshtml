@@ -73,7 +73,7 @@
             }
 
             $.ajax({
-                url: @Html.Raw(Json.Serialize(Url.Action("GetFreeHours", "UsersApi"))),
+                url: @Html.Raw(Json.Serialize(Url.Action("GetFreeHours", "UserCarsApi"))),
                 type: 'GET',
                 data: { id: serviceId, date },
                 success: function (response, status, xhr) {

@@ -62,7 +62,7 @@
                                         <td class="align-middle">@article.CreatedAt.ToWebDateFormat(showTime: true)</td>
                                         <td class="align-middle">@article.EditedAt.ToWebDateFormat(showTime:true)</td>
                                         <td class="text-nowrap ms-3 align-middle">
-                                            <a asp-action="Edit" asp-route-id="@article.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                            <a asp-action="Edit" asp-route-id="@article.Id" asp-route-isAdminArticleEditPage="@isAdminPage" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                             <a asp-action="Delete" asp-route-id="@article.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete '@article.Title' article?"><i class="far fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
@@ -82,6 +82,9 @@
         $(document).ready(function () {
             $(".approve").attr("title", "Approve Article");
             $(".disapprove").attr("title", "Disapprove Article");
+
+            $(".approve").css("cursor", "pointer");
+            $(".disapprove").css("cursor", "pointer");
 
             $(".approve").on("click", function () {
                 statusChange($(this).attr("id"), true);

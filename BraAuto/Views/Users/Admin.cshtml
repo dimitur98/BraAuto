@@ -59,8 +59,8 @@
                                         <td>@user.CreatedAt.ToWebDateFormat(showTime: true)</td>
                                         <td>@user.Editor?.Name</td>
                                         <td>@user.EditedAt.ToWebDateFormat(showTime:true)</td>
-                                        <td class="text-nowrap ms-3">
-                                            <a asp-action="Edit" asp-route-id="@user.Id" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                        <td class="text-nowrap align-middle ms-3">
+                                            <a asp-action="Edit" asp-route-id="@user.Id" asp-route-isAdminUserEditPage="true" title="Edit" data-bs-toggle="tooltip" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                             <a asp-action="Delete" asp-route-id="@user.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete '@user.Username'?"><i class="far fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
@@ -78,6 +78,9 @@
     $(document).ready(function () {
         $(".active").attr("title", "Approve Advert");
         $(".not-active").attr("title", "Disapprove Advert");
+
+        $(".active").css("cursor", "pointer");
+        $(".not-active").css("cursor", "pointer");
 
         $(".active").on("click", function () {
             statusChange($(this).attr("id"), true);

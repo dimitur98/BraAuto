@@ -172,6 +172,18 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to This field is required!.
+        /// </summary>
+        internal static string RequiredField
+        {
+            get
+            {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The selected time is not free.
         /// </summary>
         internal static string SelectedTimeNotFree

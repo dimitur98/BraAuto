@@ -62,8 +62,8 @@ namespace BraAutoDb.Dal
                     if (!request.BodyTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND c.body_type_id IN @bodyTypeIds"); }
                     if (!request.ColorIds.IsNullOrEmpty()) { query.Where.Add(" AND c.color_id IN @colorIds"); }
                     if (!request.FuelTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND c.fuel_type_id IN @fuelTypeIds"); }
-                    if (request.YearFromId != null) { query.Where.Add(" AND YEAR(c.production_date) >= @productionDateFrom"); }
-                    if (request.YearToId != null) { query.Where.Add(" AND YEAR(c.production_date) <= @productionDateTo"); }
+                    if (request.YearFromId != null) { query.Where.Add(" AND EXISTS(SELECT * FROM `year` `y` WHERE y.id = @yearFromId AND YEAR(c.production_date) >= y.name)"); }
+                    if (request.YearToId != null) { query.Where.Add(" AND EXISTS(SELECT * FROM `year` `y` WHERE y.id = @yearToId AND YEAR(c.production_date) <= y.name)"); }
                     if (request.HorsePowerFrom != null) { query.Where.Add(" AND c.horse_power >= @horsePowerFrom"); }
                     if (!request.EuroStandartIds.IsNullOrEmpty()) { query.Where.Add(" AND c.euro_standart_id IN @euroStandartIds"); }
                     if (!request.GearboxTypeIds.IsNullOrEmpty()) { query.Where.Add(" AND c.gearbox_type_id IN @gearboxTypeIds"); }
@@ -118,7 +118,6 @@ namespace BraAutoDb.Dal
                     if (request.IsAdvert.HasValue) { query.Where.Add(" AND c.is_advert = @isAdvert"); }
 
                     query.AddJoinIf("LEFT JOIN user_car uc ON uc.car_id = c.id AND uc.date IS NOT NULL", orderByColumnStartsWith: "uc.");
-                    //if (request.IsActive != null) { query.Where.Add(" AND c.is_active = @isActive"); }
                 },
                 () =>
                 {

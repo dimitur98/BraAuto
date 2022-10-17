@@ -35,10 +35,10 @@ namespace BraAuto.ViewModels
         [DisplayName("Condition")]
         public IEnumerable<uint> ConditionIds { get; set; }
 
-        [DisplayName("Year")]
+        [DisplayName("Year From")]
         public uint? YearFromId { get; set; }
 
-        [DisplayName("To")]
+        [DisplayName("Year To")]
         public uint? YearToId { get; set; }
         public IEnumerable<Year> Years { get; set; }
 
@@ -51,7 +51,7 @@ namespace BraAuto.ViewModels
         [DisplayName("Gearbox")]
         public IEnumerable<uint> GearboxTypeIds { get; set; }
 
-        [DisplayName("Horse Power")]
+        [DisplayName("Horse Power From")]
         public uint? HorsePowerFrom { get; set; }
 
         [DisplayName("Euro Standart")]
@@ -547,11 +547,13 @@ namespace BraAuto.ViewModels
         [HiddenInput]
         public uint Id { get; set; }
 
+        public bool IsAdminCarEditPage { get; set; }
+
         public IEnumerable<string> PhotoUrls { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("Edit", "Cars") };
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), this.IsAdminCarEditPage ? ("Admin", "Cars") : ("My", "Cars"), ("Edit", "Cars") };
 
             return new Breadcrumb(paths);
         }

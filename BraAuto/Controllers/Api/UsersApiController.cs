@@ -22,15 +22,5 @@ namespace BraAuto.Controllers.Api
 
             return this.Ok(new { });
         }
-
-        [HttpGet]
-        public List<uint> GetFreeHours(uint id, DateTime date)
-        {
-            var service = Db.Users.GetById(id);
-           
-            if(service == null) { return new List<uint>(); }
-
-            return service.GetFreeHours(date);
-        }
     }
 }

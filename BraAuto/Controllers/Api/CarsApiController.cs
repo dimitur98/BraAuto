@@ -2,6 +2,8 @@
 using BraAuto.ViewModels;
 using BraAutoDb.Dal;
 using BraAutoDb.Models.UserCarsSearch;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,13 @@ namespace BraAuto.Controllers.Api
     [Route("/api/Cars/[action]")]
     public class CarsApiController : BaseApiController
     {
+        private Cloudinary _cloudinary;
+
+        public CarsApiController(Cloudinary cloudinary)
+        {
+            _cloudinary = cloudinary;
+        }
+
         [HttpGet]
         public List<SimpleCarModel> GetComparedCars()
         {
@@ -50,6 +59,16 @@ namespace BraAuto.Controllers.Api
             Db.Cars.Update(car);
 
             return this.Ok(new { });
+        }
+
+        [HttpGet]
+        public async Task DeletePhoto(string url)
+        {
+            var publicId = Path.ChangeExtension(url.Split("/").Last(), null);
+
+            DeletionParams deletionParams = new DeletionParams(publicId);
+
+            await this._cloudinary.DestroyAsync(deletionParams);
         }
     }
 }

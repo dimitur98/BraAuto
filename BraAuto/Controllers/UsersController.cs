@@ -45,11 +45,9 @@ namespace BraAuto.Controllers
                 return this.RedirectToAction(string.Empty, string.Empty);
             }
 
-            var model = new UserRegisterModel
-            {
-                UserTypes = Db.UserTypes.GetAll(),
-                Locations = Db.Locations.GetAll()
-            };
+            var model = new UserRegisterModel();
+
+            this.LoadUserModel(model);
 
             return View(model);
         }
@@ -70,7 +68,9 @@ namespace BraAuto.Controllers
 
                     if (user != null)
                     {
-                        this.TempData[Global.AlertKey] = new Alert(Global.EmailAlreadyExists, AlertTypes.Danger).SerializeAlert();
+                        this.LoadUserModel(model);
+
+                        this.ModelState.AddModelError(nameof(model.Email), Global.EmailAlreadyExists);
 
                         return this.View(model);
                     }
@@ -79,60 +79,58 @@ namespace BraAuto.Controllers
 
                     if (user != null)
                     {
-                        this.TempData[Global.AlertKey] = new Alert(Global.UsernameAlreadyExists, AlertTypes.Danger).SerializeAlert();
+                        this.LoadUserModel(model);
+
+                        this.ModelState.AddModelError(nameof(model.Username), Global.UsernameAlreadyExists);
 
                         return this.View(model);
                     }
 
-                    if (model.Photo != null)
+                    if (model.UserTypeId == Db.UserTypes.ServiceId && !model.Photo.IsValidPhoto())
                     {
-                        if (!model.Photo.IsValidPhoto())
-                        {
-                            model.UserTypes = Db.UserTypes.GetAll();
-                            model.Locations = Db.Locations.GetAll();
+                        this.LoadUserModel(model);
 
-                            this.ModelState.AddModelError(string.Empty, Global.InvalidPhoto);
+                        this.ModelState.AddModelError(nameof(model.Photo), model.Photo == null ? Global.RequiredField : Global.InvalidPhoto);
 
-                            return this.View(model);
-                        }
+                        return this.View(model);
+                    }
+                    user = new User();
 
+                    if (model.UserTypeId == Db.UserTypes.ServiceId)
+                    {
                         user.PhotoUrl = await model.Photo.UploadPhotoAsync();
                     }
 
                     if (model.UserTypeId == Db.UserTypes.ServiceId &&
                         (model.LocationId == null
-                        || model.BookingIntervalHours == null 
-                        || model.StartWorkingTime == null 
-                        || model.EndWorkingTime == null 
-                        || model.MaxBookingsPerDay == null 
-                        || model.Photo == null))
+                        || model.BookingIntervalHours == null
+                        || model.StartWorkingTime == null
+                        || model.EndWorkingTime == null
+                        || model.MaxBookingsPerDay == null))
                     {
-                        model.UserTypes = Db.UserTypes.GetAll();
-                        model.Locations = Db.Locations.GetAll();
+                        this.LoadUserModel(model);
 
                         this.ModelState.AddModelError(string.Empty, Global.ServiceRequiredFields);
 
                         return this.View(model);
                     }
 
-                    user = new User
-                    {
-                        Username = model.Username,
-                        Name = model.Name,
-                        Email = model.Email,
-                        Password = model.Password,
-                        Birthday = model.Birthday,
-                        Mobile = model.Mobile,
-                        Description = model.Description,
-                        LocationId = model.LocationId,
-                        SpecificLocation = model.SpecificLocation,
-                        UserTypeId = model.UserTypeId,
-                        IsActive = true,
-                        BookingIntervalHours = user.BookingIntervalHours,
-                        MaxBookingsPerDay = user.MaxBookingsPerDay,
-                        StartWorkingTime = user.StartWorkingTime,
-                        EndWorkingTime = user.EndWorkingTime
-                    };
+                    user.Username = model.Username;
+                    user.Name = model.Name;
+                    user.Email = model.Email;
+                    user.Password = model.Password;
+                    user.Birthday = model.Birthday;
+                    user.Mobile = model.Mobile;
+                    user.Description = model.Description;
+                    user.LocationId = model.LocationId;
+                    user.SpecificLocation = model.SpecificLocation;
+                    user.UserTypeId = model.UserTypeId;
+                    user.IsActive = true;
+                    user.IsPasswordRequired = true;
+                    user.BookingIntervalHours = model.BookingIntervalHours;
+                    user.MaxBookingsPerDay = model.MaxBookingsPerDay;
+                    user.StartWorkingTime = model.StartWorkingTime;
+                    user.EndWorkingTime = model.EndWorkingTime;
 
                     Db.Users.Insert(user);
 
@@ -153,8 +151,7 @@ namespace BraAuto.Controllers
                 this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
-            model.UserTypes = Db.UserTypes.GetAll();
-            model.Locations = Db.Locations.GetAll();
+            this.LoadUserModel(model);
 
             return this.View(model);
         }
@@ -228,7 +225,7 @@ namespace BraAuto.Controllers
             {
                 return Challenge(properties, GoogleDefaults.AuthenticationScheme);
             }
-            else if(externalLoginType == _facebookExternalLoginType)
+            else if (externalLoginType == _facebookExternalLoginType)
             {
                 return Challenge(properties, FacebookDefaults.AuthenticationScheme);
             }
@@ -291,7 +288,7 @@ namespace BraAuto.Controllers
                         IsActive = true,
                         IsPasswordRequired = false
                     };
-                    
+
                     Db.Users.Insert(user);
 
                     var userInRole = new UserInRole()
@@ -334,8 +331,8 @@ namespace BraAuto.Controllers
 
             return this.View(model);
         }
-        
-        public IActionResult Edit(uint id)
+
+        public IActionResult Edit(uint id, bool isAdminUserEditPage)
         {
             var user = Db.Users.GetById(id);
 
@@ -353,7 +350,6 @@ namespace BraAuto.Controllers
                 Mobile = user.Mobile,
                 Description = user.Description,
                 LocationId = user.LocationId,
-                Locations = Db.Locations.GetAll(),
                 SpecificLocation = user.SpecificLocation,
                 IsActive = user.IsActive,
                 UserTypeId = user.UserTypeId,
@@ -362,8 +358,10 @@ namespace BraAuto.Controllers
                 MaxBookingsPerDay = user.MaxBookingsPerDay,
                 StartWorkingTime = user.StartWorkingTime,
                 EndWorkingTime = user.EndWorkingTime,
-                UserTypes = Db.UserTypes.GetAll()
+                IsAdminUserEditPage = isAdminUserEditPage
             };
+
+            this.LoadUserModel(model);
 
             if (this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(user.Id).Select(uir => uir.UserRoleId); }
 
@@ -382,18 +380,18 @@ namespace BraAuto.Controllers
                     if (user == null) { return this.NotFound(); }
                     if (user.Id != this.LoggedUser.Id && !this.LoggedUser.IsAdmin()) { return this.RedirectToHttpForbidden(); }
 
+                    model.PhotoUrl = user.PhotoUrl;
+
                     if (model.UserTypeId == Db.UserTypes.ServiceId &&
                         (model.LocationId == null
                         || model.BookingIntervalHours == null
                         || model.StartWorkingTime == null
                         || model.EndWorkingTime == null
-                        || model.MaxBookingsPerDay == null
-                        || model.Photo == null))
+                        || model.MaxBookingsPerDay == null))
                     {
                         if (this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(model.Id).Select(uir => uir.UserRoleId); }
 
-                        model.UserTypes = Db.UserTypes.GetAll();
-                        model.Locations = Db.Locations.GetAll();
+                        this.LoadUserModel(model);
 
                         this.ModelState.AddModelError(string.Empty, Global.ServiceRequiredFields);
 
@@ -402,6 +400,15 @@ namespace BraAuto.Controllers
 
                     if (model.Photo != null)
                     {
+                        if (!model.Photo.IsValidPhoto())
+                        {
+                            this.LoadUserModel(model);
+
+                            this.ModelState.AddModelError(nameof(model.Photo), Global.InvalidPhoto);
+
+                            return this.View(model);
+                        }
+
                         if (user.PhotoUrl != null)
                         {
                             var publicId = System.IO.Path.ChangeExtension(user.PhotoUrl.Split("/").Last(), null);
@@ -411,19 +418,9 @@ namespace BraAuto.Controllers
                             await this._cloudinary.DestroyAsync(deletionParams);
                         }
 
-                        if (!model.Photo.IsValidPhoto())
-                        {
-                            model.UserTypes = Db.UserTypes.GetAll();
-                            model.Locations = Db.Locations.GetAll();
-
-                            this.ModelState.AddModelError(string.Empty, Global.InvalidPhoto);
-
-                            return this.View(model);
-                        }
-
                         user.PhotoUrl = await model.Photo.UploadPhotoAsync();
                     }
-                    // to do check service fields required
+
                     user.Name = model.Name;
                     user.Birthday = model.Birthday;
                     user.Mobile = model.Mobile;
@@ -447,13 +444,13 @@ namespace BraAuto.Controllers
                     {
                         var userInRole = new UserInRole()
                         {
-                            UserId = this.LoggedUser.Id,
+                            UserId = user.Id,
                             UserRoleId = userRoleId
                         };
 
                         Db.UserInRoles.Insert(userInRole);
                     }
-                    return this.RedirectToAction("My", "Cars");
+                    return this.Redirect(model.IsAdminUserEditPage ? "~/Users/Admin" : "~/Cars/My" );
                 }
             }
             catch (Exception ex)
@@ -464,8 +461,7 @@ namespace BraAuto.Controllers
 
             if (this.LoggedUser.IsAdmin()) { model.UserRoleIds = Db.UserInRoles.GetByUserId(model.Id).Select(uir => uir.UserRoleId); }
 
-            model.UserTypes = Db.UserTypes.GetAll();
-            model.Locations = Db.Locations.GetAll();
+            this.LoadUserModel(model);
 
             return this.View(model);
         }
@@ -515,6 +511,18 @@ namespace BraAuto.Controllers
             return RedirectToAction(String.Empty, String.Empty);
         }
 
+        [Authorize(Roles = "administrator")]
+        public IActionResult Delete(uint id)
+        {
+            var user = Db.Users.GetById(id);
+
+            if (user == null) { return this.NotFound(); }
+
+            Db.Users.Delete(id);
+
+            return this.RedirectToAction(nameof(Admin));
+        }
+
         [AllowAnonymous]
         public IActionResult ServiceDetails(uint id)
         {
@@ -548,6 +556,12 @@ namespace BraAuto.Controllers
             var response = Db.Users.Search(request);
 
             model.Response = response;
-        }       
+        }
+
+        private void LoadUserModel(UserBaseModel model)
+        {
+            model.UserTypes = Db.UserTypes.GetAll();
+            model.Locations = Db.Locations.GetAll();
+        }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using BraAutoDb.Dal;
 using BraAutoDb.Models;
 using BraAutoDb.Models.UserCarsSearch;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace BraAuto.Helpers.Extensions
 {
     public static class UserExtensions
     {
+        private static IConfiguration _config;
+        private static IConfiguration Config => _config ??= new HttpContextAccessor().HttpContext.RequestServices.GetService<IConfiguration>();
+
         public static bool IsAdmin(this User user) => user.IsInRole("administrator");
 
         public static bool IsBlogger(this User user) => user.IsInRole("blogger");
@@ -46,7 +50,7 @@ namespace BraAuto.Helpers.Extensions
 
             if (user.UserTypeId != Db.UserTypes.ServiceId) { return hours; }
 
-            var serviceCars = Db.UserCars.Search(new Request { UserCarTypeIds = new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, UserId = user.Id, Date = date }).Records;
+            var serviceCars = Db.UserCars.Search(new Request { UserCarTypeIds = Config.GetSection("UserCar.Service.Ids").Get<uint[]>(), UserId = user.Id, Date = date }).Records;
 
             for (uint i = user.StartWorkingTime.Value; i < user.EndWorkingTime.Value; i += user.BookingIntervalHours.Value)
             {

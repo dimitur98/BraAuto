@@ -4,16 +4,17 @@
 @inject IConfiguration Configuration
 
 @{
-    var isEdit = Model is CarEditModel;
+    var isEditPage = Model is CarEditModel;
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
 }
 
 <section class="contact spad">
-    <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="Cars" method="post" id="car-form" enctype="multipart/form-data">
+    <form asp-action="@(isEditPage ? "Edit" : "Create")" asp-controller="Cars" method="post" id="car-form" enctype="multipart/form-data">
 
-        @if (isEdit)
+        @if (isEditPage)
         {
             <input asp-for="@(((CarEditModel)Model).Id)" type="hidden" />
+            <input asp-for="@(((CarEditModel)Model).IsAdminCarEditPage)" type="hidden" />
             <input asp-for="Photos.Photo1Url" type="hidden" />
             <input asp-for="Photos.Photo2Url" type="hidden" />
             <input asp-for="Photos.Photo3Url" type="hidden" />
@@ -467,7 +468,7 @@
             </div>
 
             <div class="text-center mt-3">
-                <button type="submit" class="site-btn">@(isEdit ? "Edit" : "Create")</button>
+                <button type="submit" class="site-btn">@(isEditPage ? "Edit" : "Create")</button>
             </div>
         </div>
     </form>
@@ -475,14 +476,6 @@
 
 <script>
     $(document).ready(function () {
-        var makeId = $("#MakeId").val();
-
-        if (makeId != "") {
-            loadModels(makeId, function () {
-                $("#ModelId").val(@Model.ModelId);
-            });
-        }
-
         $("#VehicleTypeId").on("change", function(){
             loadBodyTypes();
             loadMakes();
@@ -490,8 +483,16 @@
             $("#ModelId").append(new Option("Select Make First", ""));
         });
 
-        loadBodyTypes();
-        loadMakes();
+        loadBodyTypes(true);
+        loadMakes(function(){
+            var makeId = $("#MakeId").val();
+
+            if (makeId != "") {
+                loadModels(makeId, function () {
+                    $("#ModelId").val(@Model.ModelId);
+                });
+            }
+        }, true);
 
         $("#MakeId").on("change", function () {
             id = $(this).val();
@@ -519,13 +520,24 @@
         });
 
         $("i.delete-photo").on("click", function () {
-            $(this).parent().val("");
+            var url = $(this).parent().css("background-image");
+            var $file = $(this).parent().parent().find(".upload-file");
+            var id = $file.attr("id");
+
+            if(url.includes(@Html.Raw(Json.Serialize(cloudinaryUrl)))){
+                $("#" + id + "Url").val("");
+
+                deletePhoto(url);
+            }
+
+            $file.val("");
+
             $(this).parent().css("background-image", "");
             $(this).addClass("d-none");
         });
     });
 
-    function loadBodyTypes() {
+    function loadBodyTypes(setBodyType) {
         var vehicleTypeId = $("#VehicleTypeId").val();
         var $bodyTypesSelect = $("#BodyTypeId");
 
@@ -542,11 +554,15 @@
                         $bodyTypesSelect.append(new Option(bt.name, bt.id));
                     });
                 }
+
+                if (setBodyType && @Html.Raw(Json.Serialize(isEditPage))) {
+                    $("#BodyTypeId").val(@Model.BodyTypeId);
+                }
             }
         });
     }
 
-    function loadMakes(){
+    function loadMakes(callback, setMake){
         var vehicleTypeId = $("#VehicleTypeId").val();
         var $makesSelect = $("#MakeId");
 
@@ -563,6 +579,12 @@
                         $makesSelect.append(new Option(m.name, m.id));
                     });
                 }
+
+                if(setMake && @Html.Raw(Json.Serialize(isEditPage))){
+                    $("#MakeId").val(@Model.MakeId);
+                }
+
+                if(callback != undefined) { callback(); }
             }
         });
     }
@@ -593,17 +615,30 @@
             }
         });
     }
+
+    function deletePhoto(url){
+        if(!url) { return; }
+
+        $.ajax({
+            url: @Html.Raw(Json.Serialize(Url.Action("DeletePhoto", "CarsApi"))),
+            type: 'GET',
+            data: { url },
+            success: function (response, status, xhr) {
+            }
+        });
+    }
 </script>
 
-@if (isEdit)
+@if (isEditPage)
 {
     <script>
         $(document).ready(function () {
             var urls = Object.values(@Html.Raw(Json.Serialize(((CarEditModel)Model).Photos)));
-            var $imagePreviews = $(".image-preview");
+            var $photoPreviews = $(".photo-preview");
 
             urls.forEach(function (url, i) {
-                $($imagePreviews[i]).css("background-image", "url(@cloudinaryUrl" + url + ")");
+                $($photoPreviews[i]).css("background-image", "url(@cloudinaryUrl" + url + ")");
+                $($photoPreviews[i]).find("i.delete-photo").removeClass("d-none");
             });
         });
     </script>

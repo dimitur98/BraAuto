@@ -144,6 +144,9 @@
   <data name="MaxBookingAppointmentsReached" xml:space="preserve">
     <value>Service is full for the selected day.</value>
   </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>This field is required!</value>
+  </data>
   <data name="SelectedTimeNotFree" xml:space="preserve">
     <value>The selected time is not free</value>
   </data>

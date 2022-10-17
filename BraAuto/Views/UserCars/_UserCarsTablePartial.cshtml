@@ -50,7 +50,7 @@
                                     var car = userCar.Car;
                                     <tr>
                                         <td><img class="table-photo" src="@(cloudinaryUrl + car.PhotoUrls.FirstOrDefault())" /></td>
-                                        <td class="align-middle"><a asp-action="Details" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
+                                        <td class="align-middle"><a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
                                         @if (isFavouritePage)
                                         {
                                             <td class="align-middle">@car.CreatedAt.ToWebDateFormat()</td>
@@ -76,7 +76,7 @@
                                     if (!isFavouritePage && !string.IsNullOrEmpty(userCar.Description))
                                     {
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="5">
                                                 <h4>Description</h4>
                                                 <div class="text-prewrap">@userCar.Description</div>
                                             </td>

@@ -11,7 +11,7 @@
 
 <style>
     .user-photo{
-        width: 55%;
+        width: 45%;
     }
 
     .user-photo input{
@@ -29,13 +29,18 @@
             <input asp-for="@(((UserEditModel)Model).Id)" type="hidden" />
         }
 
+        @if (!isRegisterPage)
+        {
+            <input asp-for="IsAdminUserEditPage" type="hidden" />
+        }
+
         <div class="container">
             <div class="row">
-                @if (!isRegisterPage)
+                @if (!isRegisterPage && !Model.IsAdminUserEditPage)
                 {
                     <partial name="_UserSettingsPartial" />
                 }
-                <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
+                <div class="@(isRegisterPage || Model.IsAdminUserEditPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
                     <div asp-validation-summary="ModelOnly"></div>
 
                     <div class="contact-form">
@@ -104,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="@(isRegisterPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
+                <div class="@(isRegisterPage || Model.IsAdminUserEditPage ? "col-lg-6 col-md-6" : "col-lg-4 col-md-4")">
                     <div class="contact-form">
                         <div class="form-group">
                             <label asp-for="Birthday" class="form-label"></label>
@@ -167,7 +172,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center @(isRegisterPage ? "" : "edit-profile-btn")">
+            <div class="text-center @(isRegisterPage ||  Model.IsAdminUserEditPage ? "" : "edit-profile-btn")">
                 <button type="submit" class="site-btn">@(isRegisterPage ? "Register" : "Edit")</button>
             </div>
         </div>

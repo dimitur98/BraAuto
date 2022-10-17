@@ -30,7 +30,7 @@
                                     <div class="select-list">
                                         <div class="select-list-item">
                                             <label asp-for="YearFromId" class="form-label"></label>
-                                            <select class="form-select" asp-for="MakeId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
+                                            <select class="form-select" asp-for="YearFromId" asp-items="@(new SelectList(Model.Years.Select(y => new { Fullname = y.Name, Id = y.Id}), "Id", "Fullname"))">
                                                 <option value="">All</option>
                                             </select>
                                         </div>

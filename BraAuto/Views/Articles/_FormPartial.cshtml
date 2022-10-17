@@ -11,6 +11,12 @@
     <div class="container">
         <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="Articles" id="article-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly"></div>
+
+            @if (isEdit)
+            {
+                <input asp-for="@(((ArticleEditModel)Model).IsAdminArticleEditPage)" type="hidden" />
+            }
+
             <div class="form-group">
                 <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -30,7 +36,7 @@
             </div>
 
             <div class="mt-3 col-sm-2 photo-up">
-                <div class="image-preview"></div>
+                <div class="photo-preview"></div>
                 <label class="btn btn-primary">
                     Upload
                     @if (isEdit)
@@ -55,7 +61,7 @@
 
 <script>
     $(document).ready(function () {
-        $(".uploadFile").on("change", function () {
+        $(".upload-file").on("change", function () {
             var $uploadFile = $(this);
             var files = !!this.files ? this.files : [];
             if (!files.length || !window.FileReader) { return; }
@@ -65,7 +71,7 @@
                 reader.readAsDataURL(files[0]);
 
                 reader.onloadend = function () {
-                    $('.imagePreview').css("background-image", "url(" + this.result + ")");
+                    $('.photo-preview').css("background-image", "url(" + this.result + ")");
                 }
             }
         });
@@ -76,7 +82,7 @@
 {
     <script>
         $(document).ready(function(){
-            $('.imagePreview').css("background-image", "url(@(cloudinaryUrl + ((ArticleEditModel)Model).PhotoUrl))");
+            $('.photo-preview').css("background-image", "url(@(cloudinaryUrl + ((ArticleEditModel)Model).PhotoUrl))");
         });
     </script>
 }

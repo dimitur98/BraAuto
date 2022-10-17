@@ -186,7 +186,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult Edit(uint id)
+        public IActionResult Edit(uint id, bool isAdminCarEditPage)
         {
             var car = Db.Cars.GetById(id);
 
@@ -258,7 +258,8 @@ namespace BraAuto.Controllers
                 HasTow = car.HasTow,
                 HasMoreSeats = car.HasMoreSeats,
                 HasRefrigerator = car.HasRefrigerator,
-                IsAdvert = car.IsAdvert
+                IsAdvert = car.IsAdvert,
+                IsAdminCarEditPage = isAdminCarEditPage
             };
 
             model.Photos.LoadPhotoUrls(car.Id);
@@ -340,13 +341,14 @@ namespace BraAuto.Controllers
                     car.HasMoreSeats = model.HasMoreSeats;
                     car.HasRefrigerator = model.HasRefrigerator;
                     car.IsAdvert = model.IsAdvert;
+                    car.EditorId = this.LoggedUser.Id;
 
                     Db.Cars.Update(car);
 
                     Db.CarPhotos.DeleteByCarId(car.Id);
                     await this.UploadPhotos(model.Photos, car.Id);
 
-                    return this.RedirectToAction(nameof(My));
+                    return this.RedirectToAction(model.IsAdminCarEditPage ? nameof(Admin) : nameof(My));
                 }
             }
             catch (Exception ex)

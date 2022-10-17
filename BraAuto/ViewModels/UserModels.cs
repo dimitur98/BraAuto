@@ -104,6 +104,8 @@ namespace BraAuto.ViewModels
         public uint? MaxBookingsPerDay { get; set; }
 
         public IEnumerable<UserType>? UserTypes { get; set; }
+
+        public bool IsAdminUserEditPage { get; set; }
     }
 
     public class UserRegisterModel : UserBaseModel
@@ -162,7 +164,7 @@ namespace BraAuto.ViewModels
 
         public Breadcrumb ToBreadcrumb()
         {
-            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("Edit", "Users") };
+            var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), this.IsAdminUserEditPage ? ("Admin", "Users") : ("My", "Cars"), ("Edit", "Users") };
 
             return new Breadcrumb(paths);
         }

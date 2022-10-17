@@ -39,7 +39,7 @@ namespace BraAutoDb.Dal
         public List<(uint CarId, int Count)> GetCount(uint userCarTypeId)
         {
             var sql = @"
-                    SELECT car_id, COUNT(user_id) AS 'Count' FROM user_car
+                    SELECT car_id, COUNT(creator_id) AS 'Count' FROM user_car
                     WHERE user_car_type_id = @userCarTypeId
                     GROUP BY car_id";
 

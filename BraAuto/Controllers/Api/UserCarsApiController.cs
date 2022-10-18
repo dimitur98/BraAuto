@@ -47,7 +47,7 @@ namespace BraAuto.Controllers.Api
 
         public IActionResult Delete(uint carId, uint userCarTypeId)
         {
-            Db.UserCars.Delete(carId, userCarTypeId, this.LoggedUser.Id);
+            Db.UserCars.Delete(carId, this.LoggedUser.Id, new uint[] { userCarTypeId });
 
             return this.Ok(new { });
         }

@@ -66,7 +66,7 @@ namespace BraAuto.Controllers
                     if (service.MaxBookingsPerDay <= serviceTotalBookings)
                     {
                         this.LoadBookAppoitmentModel(model);
-                        this.TempData[Global.AlertKey] = new Alert(Global.MaxBookingAppointmentsReached, AlertTypes.Warning).SerializeAlert();
+                        this.TempData[Global.AlertKey] = new Alert(Global.MaxBookingAppointmentsReached, AlertTypes.Danger).SerializeAlert();
 
                         return this.View(model);
                     }
@@ -76,7 +76,7 @@ namespace BraAuto.Controllers
                     if (!freeHours.Contains(model.Hour))
                     {
                         this.LoadBookAppoitmentModel(model);
-                        this.TempData[Global.AlertKey] = new Alert(Global.SelectedTimeNotFree, AlertTypes.Warning).SerializeAlert();
+                        this.TempData[Global.AlertKey] = new Alert(Global.SelectedTimeNotFree, AlertTypes.Danger).SerializeAlert();
 
                         return this.View(model);
                     }

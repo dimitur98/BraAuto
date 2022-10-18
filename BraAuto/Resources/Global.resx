@@ -136,7 +136,7 @@
     <value>Provided password is incorrect</value>
   </data>
   <data name="InvalidPhoto" xml:space="preserve">
-    <value>Photo is invalid format or too big</value>
+    <value>Photo is invalid format or too big. Valid formats: jpg, jpeg and png.</value>
   </data>
   <data name="ItemDeleted" xml:space="preserve">
     <value>Successfully deleted.</value>

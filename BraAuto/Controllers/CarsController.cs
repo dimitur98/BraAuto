@@ -1,4 +1,5 @@
-﻿using BraAuto.Helpers.Extensions;
+﻿using BraAuto.Helpers.CloudinaryService;
+using BraAuto.Helpers.Extensions;
 using BraAuto.Resources;
 using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
@@ -372,16 +373,18 @@ namespace BraAuto.Controllers
 
                 if (!this.LoggedUser.IsAdmin() || this.LoggedUser.Id != car.CreatorId) { return this.RedirectToHttpForbidden(); }
 
+                var photoUrls = Db.CarPhotos.GetByCarId(car.Id).Select(ci => ci.Url);
+
                 Db.Cars.Delete(car.Id);
 
-                await this.DeletePhotos(Db.CarPhotos.GetByCarId(car.Id).Select(ci => ci.Url));
-
-                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info);
+                await CloudinaryService.DeletePhotos(photoUrls);
+               
+                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info).SerializeAlert();
             }
             catch (Exception ex)
             {
                 ex.SaveToLog();
-                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
+                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
             }
 
             return this.RedirectToAction(nameof(My));
@@ -469,10 +472,8 @@ namespace BraAuto.Controllers
 
             var ip = this.Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
-            if (Db.CarViews.Get(car.Id, ip) == null)
-            {
-                Db.CarViews.Insert(new CarView { CarId = car.Id, UserIp = ip });
-            }
+            Db.CarViews.Delete(car.Id, ip);
+            Db.CarViews.Insert(new CarView { CarId = car.Id, UserIp = ip });
 
             model.ViewsCount = Db.CarViews.GetCountByCarId(car.Id);
 
@@ -643,19 +644,7 @@ namespace BraAuto.Controllers
                 if (photo.IsValidPhoto() && !string.IsNullOrEmpty(oldUrl)) { urlsForDelete.Add(oldUrl); }
             }
 
-            if (!urlsForDelete.IsNullOrEmpty()) { await this.DeletePhotos(urlsForDelete); }
-        }
-
-        protected async Task DeletePhotos(IEnumerable<string> urls)
-        {
-            foreach (var url in urls)
-            {
-                var publicId = System.IO.Path.ChangeExtension(url.Split("/").Last(), null);
-
-                DeletionParams deletionParams = new DeletionParams(publicId);
-
-                await this._cloudinary.DestroyAsync(deletionParams);
-            }
+            if (!urlsForDelete.IsNullOrEmpty()) { await CloudinaryService.DeletePhotos(urlsForDelete); }
         }
     }
 }

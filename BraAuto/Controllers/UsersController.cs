@@ -1,4 +1,5 @@
-﻿using BraAuto.Helpers.Extensions;
+﻿using BraAuto.Helpers.CloudinaryService;
+using BraAuto.Helpers.Extensions;
 using BraAuto.Resources;
 using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
@@ -234,7 +235,7 @@ namespace BraAuto.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginResponse()
+        public IActionResult ExternalLoginResponse()
         {
             if (this.LoggedUser != null)
             {
@@ -411,11 +412,7 @@ namespace BraAuto.Controllers
 
                         if (user.PhotoUrl != null)
                         {
-                            var publicId = System.IO.Path.ChangeExtension(user.PhotoUrl.Split("/").Last(), null);
-
-                            DeletionParams deletionParams = new DeletionParams(publicId);
-
-                            await this._cloudinary.DestroyAsync(deletionParams);
+                            await CloudinaryService.DeletePhoto(user.PhotoUrl);
                         }
 
                         user.PhotoUrl = await model.Photo.UploadPhotoAsync();
@@ -464,7 +461,7 @@ namespace BraAuto.Controllers
             this.LoadUserModel(model);
 
             return this.View(model);
-        }
+        }      
 
         public IActionResult ChangePassword()
         {
@@ -512,13 +509,25 @@ namespace BraAuto.Controllers
         }
 
         [Authorize(Roles = "administrator")]
-        public IActionResult Delete(uint id)
+        public async Task<IActionResult> Delete(uint id)
         {
-            var user = Db.Users.GetById(id);
+            try
+            {
+                var user = Db.Users.GetById(id);
 
-            if (user == null) { return this.NotFound(); }
+                if (user == null) { return this.NotFound(); }
 
-            Db.Users.Delete(id);
+                Db.Users.Delete(id);
+
+                if (!string.IsNullOrEmpty(user.PhotoUrl)) { await CloudinaryService.DeletePhoto(user.PhotoUrl); }
+
+                this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info).SerializeAlert();
+            }
+            catch (Exception ex)
+            {
+                ex.SaveToLog();
+                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
+            }
 
             return this.RedirectToAction(nameof(Admin));
         }

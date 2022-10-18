@@ -29,8 +29,6 @@ namespace BraAuto.Helpers.Extensions
 
             if (!string.Equals(contentType, "image/jpg", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(contentType, "image/jpeg", StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(contentType, "image/pjpeg", StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(contentType, "image/x-png", StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(contentType, "image/png", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
@@ -42,18 +40,6 @@ namespace BraAuto.Helpers.Extensions
             }
 
             return true;
-        }
-
-        public static async Task<List<string>> UploadPhotosAsync(this IEnumerable<IFormFile> photos)
-        {
-            var photoUrls = new List<string>();
-
-            foreach (var photo in photos)
-            {
-                photoUrls.Add(await photo.UploadPhotoAsync());
-            }
-
-            return photoUrls;
         }
 
         public static async Task<string> UploadPhotoAsync(this IFormFile photo)

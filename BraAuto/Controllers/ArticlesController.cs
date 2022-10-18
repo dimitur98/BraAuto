@@ -1,4 +1,5 @@
-﻿using BraAuto.Helpers.Extensions;
+﻿using BraAuto.Helpers.CloudinaryService;
+using BraAuto.Helpers.Extensions;
 using BraAuto.Resources;
 using BraAuto.ViewModels;
 using BraAuto.ViewModels.Helpers;
@@ -102,7 +103,7 @@ namespace BraAuto.Controllers
 
                     Db.Articles.Insert(article);
 
-                    return this.RedirectToAction(nameof(Search));
+                    return this.RedirectToAction(nameof(My));
                 }
             }
             catch (Exception ex)
@@ -120,7 +121,7 @@ namespace BraAuto.Controllers
         {
             var article = Db.Articles.GetById(id);
 
-            if(article == null) { return this.NotFound(); }
+            if (article == null) { return this.NotFound(); }
 
             var model = new ArticleEditModel
             {
@@ -147,13 +148,9 @@ namespace BraAuto.Controllers
 
                     if (article == null) { return this.NotFound(); }
 
-                    if(model.Photo != null)
+                    if (model.Photo != null)
                     {
-                        var publicId = System.IO.Path.ChangeExtension(article.PhotoUrl.Split("/").Last(), null);
-
-                        DeletionParams deletionParams = new DeletionParams(publicId);
-
-                        await this._cloudinary.DestroyAsync(deletionParams);
+                        await CloudinaryService.DeletePhoto(article.PhotoUrl);
 
                         if (!model.Photo.IsValidPhoto())
                         {
@@ -187,7 +184,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult Delete(uint id)
+        public async Task<IActionResult> Delete(uint id)
         {
             try
             {
@@ -199,12 +196,14 @@ namespace BraAuto.Controllers
 
                 Db.Articles.Delete(id);
 
+                await CloudinaryService.DeletePhoto(article.PhotoUrl);
+
                 this.TempData[Global.AlertKey] = new Alert(Global.ItemDeleted, AlertTypes.Info).SerializeAlert();
             }
             catch (Exception ex)
             {
                 ex.SaveToLog();
-                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
+                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
             }
 
             return this.RedirectToAction(nameof(My));
@@ -215,7 +214,7 @@ namespace BraAuto.Controllers
         {
             var article = Db.Articles.GetById(id);
 
-            if(article == null) { return this.NotFound(); }
+            if (article == null) { return this.NotFound(); }
 
             article.LoadCreator();
             article.LoadCategory();
@@ -249,6 +248,6 @@ namespace BraAuto.Controllers
             }
 
             model.Response = response;
-        }   
+        }
     }
 }

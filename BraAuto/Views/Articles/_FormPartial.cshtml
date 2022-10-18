@@ -41,10 +41,11 @@
                     Upload
                     @if (isEdit)
                     {
-                        <input type="file" class="upload-file photo" asp-for="@(((ArticleEditModel)Model).Photo)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                    }else
+                        <input type="file" class="upload-file photo input-photo" asp-for="@(((ArticleEditModel)Model).Photo)" value="Upload Photo" />
+                    }
+                    else
                     {
-                        <input type="file" class="upload-file photo" asp-for="@(((ArticleCreateModel)Model).Photo)" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        <input type="file" class="upload-file photo input-photo" asp-for="@(((ArticleCreateModel)Model).Photo)" value="Upload Photo" />
                     }
                 </label>
                 @if (!isEdit)

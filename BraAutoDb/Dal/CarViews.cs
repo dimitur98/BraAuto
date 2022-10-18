@@ -49,5 +49,14 @@ namespace BraAutoDb.Dal
 
             carView.Id = Db.Mapper.Query<uint>(sql, queryParams).FirstOrDefault();
         }
+    
+        public void Delete(uint carId, string ip)
+        {
+            string sql = $@"
+                DELETE FROM `{_table}` 
+                WHERE car_id = @carId AND user_ip = @ip";
+
+            Db.Mapper.Execute(sql, new { carId, ip });
+        }
     }
 }

@@ -3983,3 +3983,9 @@ td .fa-circle {
 .sticky-content {
     margin-top: 180px;
 }
+
+.input-photo {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}

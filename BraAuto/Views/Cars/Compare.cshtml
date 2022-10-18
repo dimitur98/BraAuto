@@ -39,7 +39,7 @@
                     <div class="tab-content" id="details-car-tab-content">
                         <div class="tab-pane fade show active" id="vehicle-overview-pane-@car.Id" role="tabpanel" aria-labelledby="vehicle-overview-@car.Id" tabindex="0">
                             <div class="list-info-item">
-                                <h5>@Html.Label("Description")</h5>
+                                <h5><label asp-for="@car.Description"></label></h5>
                                 <br />
                                 @car.Description
                             </div>
@@ -52,19 +52,19 @@
                                             <h5>General Information</h5>
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-car"></i>@Html.Label("Body Type"): @car.BodyType
+                                                    <i class="fa fa-car"></i><label asp-for="@car.BodyType"></label>: @car.BodyType
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-warehouse"></i>@Html.Label("Condition"): @car.Condition
+                                                    <i class="fa fa-warehouse"></i><label asp-for="@car.Condition"></label>: @car.Condition
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-calendar"></i>@Html.Label("Production Date"): @car.ProductionDate
+                                                    <i class="fa fa-calendar"></i><label asp-for="@car.ProductionDate"></label>: @car.ProductionDate
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-paint-brush"></i>@Html.Label("Color"): @car.Color
+                                                    <i class="fa fa-paint-brush"></i><label asp-for="@car.Color"></label>: @car.Color
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-gas-pump"></i>@Html.Label("Fuel"): @car.FuelType
+                                                    <i class="fa fa-gas-pump"></i><label asp-for="@car.FuelType"></label>: @car.FuelType
                                                 </li>
                                             </ul>
                                         </div>
@@ -73,21 +73,21 @@
                                         <div class="list-info-item">
                                             <ul>
                                                 <li>
-                                                    <i class="fa fa-gear"></i> @Html.Label("Gearbox"): @car.GearboxType
+                                                    <i class="fa fa-gear"></i> <label asp-for="@car.GearboxType"></label>: @car.GearboxType
                                                 <li>
-                                                    <i class="fa-solid fa-horse-head"></i> @Html.Label("Horse Power"): @car.HorsePower
+                                                    <i class="fa-solid fa-horse-head"></i> <label asp-for="@car.HorsePower"></label>: @car.HorsePower
                                                 </li>
                                                 <li>
-                                                    <i class="fa-solid fa-horse-head"></i> @Html.Label("Cc"): @car.Cc
+                                                    <i class="fa-solid fa-horse-head"></i> <label asp-for="@car.Cc"></label>: @car.Cc
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-leaf"></i> @Html.Label("Euro Standart"): @car.EuroStandart
+                                                    <i class="fa fa-leaf"></i> <label asp-for="@car.EuroStandart"></label>: @car.EuroStandart
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-road"></i> @Html.Label("Mileage"): @car.Mileage km
+                                                    <i class="fa fa-road"></i> <label asp-for="@car.Mileage"></label>: @car.Mileage km
                                                 </li>
                                                 <li>
-                                                    <i class="fa fa-door-closed"></i> @Html.Label("Door Number"): @car.DoorNumber
+                                                    <i class="fa fa-door-closed"></i> <label asp-for="@car.DoorNumber"></label>: @car.DoorNumber
                                                 </li>
                                             </ul>
                                         </div>
@@ -102,12 +102,12 @@
                                         <div class="list-info-item">
                                             <h5>Safety</h5>
                                             <ul>
-                                                <li><i class="@(car.HasAbs ? "fa fa-check-circle" : "")"></i> @Html.Label("Abs")</li>
-                                                <li><i class="@(car.HasEsp ? "fa fa-check-circle" : "")"></i> @Html.Label("Esp")</li>
-                                                <li><i class="@(car.HasAirBag ? "fa fa-check-circle" : "")"></i> @Html.Label("AirBag")</li>
-                                                <li><i class="@(car.HasTractionControl ? "fa fa-check-circle" : "")"></i> @Html.Label("Traction Control")</li>
-                                                <li><i class="@(car.HasParktronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Parktronic")</li>
-                                                <li><i class="@(car.HasCentralLock ? "fa fa-check-circle" : "")"></i> @Html.Label("Central Lock")</li>
+                                                <li><i class="@(car.HasAbs ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAbs"></label></li>
+                                                <li><i class="@(car.HasEsp ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasEsp"></label></li>
+                                                <li><i class="@(car.HasAirBag ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAirBag"></label></li>
+                                                <li><i class="@(car.HasTractionControl ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasTractionControl"></label></li>
+                                                <li><i class="@(car.HasParktronic ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasParktronic"></label></li>
+                                                <li><i class="@(car.HasCentralLock ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasCentralLock"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -115,18 +115,18 @@
                                         <div class="list-info-item">
                                             <h5>Interior</h5>
                                             <ul>
-                                                <li><i class="@(car.HasLetherInterior ? "fa fa-check-circle" : "")"></i> @Html.Label("Lether Interior")</li>
-                                                <li><i class="@(car.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> @Html.Label("Right Hand Drive")</li>
-                                                <li><i class="@(car.HasMoreSeats ? "fa fa-check-circle" : "")"></i> @Html.Label("More Seats")</li>
+                                                <li><i class="@(car.HasLetherInterior ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasLetherInterior"></label></li>
+                                                <li><i class="@(car.IsRightHandDrive ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsRightHandDrive"></label></li>
+                                                <li><i class="@(car.HasMoreSeats ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasMoreSeats"></label></li>
                                             </ul>
                                             <h5 class="mt-3">Exterior</h5>
                                             <ul>
-                                                <li><i class="@(car.HasSunroof ? "fa fa-check-circle" : "")"></i> @Html.Label("Sunroof")</li>
-                                                <li><i class="@(car.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> @Html.Label("Alloy Wheels")</li>
-                                                <li><i class="@(car.HasXenonLights ? "fa fa-check-circle" : "")"></i> @Html.Label("Xenon Lights")</li>
-                                                <li><i class="@(car.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> @Html.Label("Halogen Headlights")</li>
-                                                <li><i class="@(car.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> @Html.Label("Panoramic Roof")</li>
-                                                <li><i class="@(car.HasTow ? "fa fa-check-circle" : "")"></i> @Html.Label("Tow")</li>
+                                                <li><i class="@(car.HasSunroof ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasSunroof"></label></li>
+                                                <li><i class="@(car.HasAlloyWheels ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAlloyWheels"></label></li>
+                                                <li><i class="@(car.HasXenonLights ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasXenonLights"></label></li>
+                                                <li><i class="@(car.HasHalogenHeadlights ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasHalogenHeadlights"></label></li>
+                                                <li><i class="@(car.HasPanoramicRoof ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasPanoramicRoof"></label></li>
+                                                <li><i class="@(car.HasTow ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasTow"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -134,22 +134,22 @@
                                         <div class="list-info-item">
                                             <h5>Comfort</h5>
                                             <ul>
-                                                <li><i class="@(car.HasAirConditioning ? "fa fa-check-circle" : "")"></i> @Html.Label("Air Conditioning")</li>
-                                                <li><i class="@(car.HasClimatronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Climatronic")</li>
-                                                <li><i class="@(car.HasElectricWindows ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Windows")</li>
-                                                <li><i class="@(car.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Mirrors")</li>
-                                                <li><i class="@(car.HasElectricSeats ? "fa fa-check-circle" : "")"></i> @Html.Label("Electric Seats")</li>
-                                                <li><i class="@(car.HasSeatHeating ? "fa fa-check-circle" : "")"></i> @Html.Label("Seat Heating")</li>
-                                                <li><i class="@(car.HasStereo ? "fa fa-check-circle" : "")"></i> @Html.Label("Stereo")</li>
-                                                <li><i class="@(car.HasDvdTv ? "fa fa-check-circle" : "")"></i> @Html.Label("Dvd/Tv")</li>
-                                                <li><i class="@(car.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> @Html.Label("Multi Steering Wheel")</li>
-                                                <li><i class="@(car.IsKeyless ? "fa fa-check-circle" : "")"></i> @Html.Label("Keyless")</li>
-                                                <li><i class="@(car.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> @Html.Label("Tiptronic/Multitronic")</li>
-                                                <li><i class="@(car.HasAutopilot ? "fa fa-check-circle" : "")"></i> @Html.Label("Autopilot")</li>
-                                                <li><i class="@(car.HasPowerSteering ? "fa fa-check-circle" : "")"></i> @Html.Label("Power Steering")</li>
-                                                <li><i class="@(car.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> @Html.Label("Multi Steering Wheel")</li>
-                                                <li><i class="@(car.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> @Html.Label("Navigation System")</li>
-                                                <li><i class="@(car.HasRefrigerator ? "fa fa-check-circle" : "")"></i> @Html.Label("Refrigerator")</li>
+                                                <li><i class="@(car.HasAirConditioning ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAirConditioning"></label></li>
+                                                <li><i class="@(car.HasClimatronic ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasClimatronic"></label></li>
+                                                <li><i class="@(car.HasElectricWindows ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasElectricWindows"></label></li>
+                                                <li><i class="@(car.HasElectricMirrors ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasElectricMirrors"></label></li>
+                                                <li><i class="@(car.HasElectricSeats ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasElectricSeats"></label></li>
+                                                <li><i class="@(car.HasSeatHeating ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasSeatHeating"></label></li>
+                                                <li><i class="@(car.HasStereo ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasStereo"></label></li>
+                                                <li><i class="@(car.HasDvdTv ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasDvdTv"></label></li>
+                                                <li><i class="@(car.HasMultiSteeringWheel ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasMultiSteeringWheel"></label></li>
+                                                <li><i class="@(car.IsKeyless ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsKeyless"></label></li>
+                                                <li><i class="@(car.IsTiptronicMultitronic ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsTiptronicMultitronic"></label></li>
+                                                <li><i class="@(car.HasAutopilot ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAutopilot"></label></li>
+                                                <li><i class="@(car.HasPowerSteering ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasPowerSteering"></label></li>
+                                                <li><i class="@(car.HasOnboardComputer ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasMultiSteeringWheel"></label></li>
+                                                <li><i class="@(car.HasNavigationSystem ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasNavigationSystem"></label></li>
+                                                <li><i class="@(car.HasRefrigerator ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasRefrigerator"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -157,19 +157,19 @@
                                         <div class="list-info-item">
                                             <h5>Protection</h5>
                                             <ul>
-                                                <li><i class="@(car.HasImmobilizer ? "fa fa-check-circle" : "")"></i> @Html.Label("Immobilizer")</li>
-                                                <li><i class="@(car.HasAlarm ? "fa fa-check-circle" : "")"></i> @Html.Label("Alarm")</li>
-                                                <li><i class="@(car.IsArmored ? "fa fa-check-circle" : "")"></i> @Html.Label("Armored")</li>
+                                                <li><i class="@(car.HasImmobilizer ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasImmobilizer"></label></li>
+                                                <li><i class="@(car.HasAlarm ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAlarm"></label></li>
+                                                <li><i class="@(car.IsArmored ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsArmored"></label></li>
                                             </ul>
                                             <h5 class="mt-3">Other</h5>
                                             <ul>
-                                                <li><i class="@(car.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> @Html.Label("4WD")</li>
-                                                <li><i class="@(car.HasInsurance ? "fa fa-check-circle" : "")"></i> @Html.Label("Insurance")</li>
-                                                <li><i class="@(car.HasServiceBook ? "fa fa-check-circle" : "")"></i> @Html.Label("Service Book")</li>
-                                                <li><i class="@(car.HasWarranty ? "fa fa-check-circle" : "")"></i> @Html.Label("Warranty")</li>
-                                                <li><i class="@(car.HasTuning ? "fa fa-check-circle" : "")"></i> @Html.Label("Tuning")</li>
-                                                <li><i class="@(car.IsTaxi ? "fa fa-check-circle" : "")"></i> @Html.Label("Taxi")</li>
-                                                <li><i class="@(car.IsRetro ? "fa fa-check-circle" : "")"></i> @Html.Label("Retro")</li>
+                                                <li><i class="@(car.HasAllWheelDrive ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasAllWheelDrive"></label></li>
+                                                <li><i class="@(car.HasInsurance ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasInsurance"></label></li>
+                                                <li><i class="@(car.HasServiceBook ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasServiceBook"></label></li>
+                                                <li><i class="@(car.HasWarranty ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasWarranty"></label></li>
+                                                <li><i class="@(car.HasTuning ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.HasTuning"></label></li>
+                                                <li><i class="@(car.IsTaxi ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsTaxi"></label></li>
+                                                <li><i class="@(car.IsRetro ? "fa fa-check-circle" : "")"></i> <label asp-for="@car.IsRetro"></label></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -183,8 +183,8 @@
                                         <div class="car-details-tab-info-item">
                                             <h5>Vehicle Location</h5>
                                             <ul>
-                                                <li><i class="fa fa-map-marker"></i>@Html.Label("Location"): @car.Location</li>
-                                                <li><i class="fa fa-location-crosshairs"></i>@Html.Label("Specific Location"): @car.SpecificLocation</li>
+                                                <li><i class="fa fa-map-marker"></i><label asp-for="@car.Location"></label>: @car.Location</li>
+                                                <li><i class="fa fa-location-crosshairs"></i><label asp-for="@car.SpecificLocation"></label>: @car.SpecificLocation</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -192,8 +192,8 @@
                                         <div class="list-info-item">
                                             <h5>Owner Contacts</h5>
                                             <ul>
-                                                <li><i class="fa fa-user"></i> @Html.Label("Owner Name"): @car.OwnerName</li>
-                                                <li><i class="fa fa-mobile"></i> @Html.Label("Mobile"): @car.Mobile)</li>
+                                                <li><i class="fa fa-user"></i> <label asp-for="@car.OwnerName"></label>: @car.OwnerName</li>
+                                                <li><i class="fa fa-mobile"></i> <label asp-for="@car.Mobile"></label>: @car.Mobile</li>
                                             </ul>
                                         </div>
                                     </div>

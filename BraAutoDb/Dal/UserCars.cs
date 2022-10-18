@@ -1,7 +1,6 @@
 ﻿using BraAuto.Helpers.Extensions;
 using BraAutoDb.Models;
 using BraAutoDb.Models.UserCarsSearch;
-using SqlQueryBuilder.MySql;
 
 namespace BraAutoDb.Dal
 {
@@ -94,13 +93,15 @@ namespace BraAutoDb.Dal
             Db.Mapper.Execute(sql, queryParams);
         }
 
-        public void Delete(uint carId, uint userCarTypeId, uint creatorId)
+        public void Delete(uint carId, uint creatorId, IEnumerable<uint> userCarTypeIds)
         {
             string sql = $@"
                 DELETE FROM `{_table}` 
-                WHERE car_id = @carId AND user_car_type_id = @userCarTypeId AND creator_id = @creatorId ";
+                WHERE car_id = @carId AND creator_id = @creatorId ";
 
-            Db.Mapper.Execute(sql, new { carId, userCarTypeId, creatorId });
+            if (!userCarTypeIds.IsNullOrEmpty()) { sql += " AND user_car_type_id IN @userCarTypeIds"; }
+
+            Db.Mapper.Execute(sql, new { carId, userCarTypeIds, creatorId });
         }
 
         public void LoadCars(IEnumerable<UserCar> userCar)

@@ -143,7 +143,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="BodyTypeIds" class="form-label"></label>
-                                <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })?vehicleTypeId='+($('#VehicleTypeId').val() == '' ? 1 : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
+                                <lazymultiselect asp-for="BodyTypeIds" lms-request-url="@Url.Action("GetAll", "BodyTypesApi", new { area = "" })?vehicleTypeId='+($('#VehicleTypeId').val() == '' ? @Db.VehicleTypes.CarId : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(bt){ return { value: bt.id, label: ' '+bt.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
                             </div>
                             <div class="form-group">
                                 <label asp-for="MakeId" class="form-label"></label>
@@ -153,7 +153,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="ModelIds" class="form-label"></label>
-                                <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'&vehicleTypeId='+($('#VehicleTypeId').val() == '' ? 1 : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
+                                <lazymultiselect asp-for="ModelIds" lms-request-url="@Url.Action("GetByMakeId", "ModelsApi", new { area = "" })?makeId='+$('#MakeId').val()+'&vehicleTypeId='+($('#VehicleTypeId').val() == '' ? @Db.VehicleTypes.CarId : $('#VehicleTypeId').val())+'" lms-map-func="response.map(function(m){ return { value: m.id, label: ' '+m.name }; })" lms-config="buttonText: 'Selected', noneSelectedText: '-- All --', buttonClass: 'form-select', selectClass: 'filter', reloadOnOpen: true"></lazymultiselect>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ConditionIds" class="form-label"></label>

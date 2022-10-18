@@ -56,14 +56,6 @@ namespace DapperMySqlMapper
             return conn;
         }
 
-        public IEnumerable<dynamic> Query(string sql, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            using (var connection = this.GetConnection())
-            {
-                return this.Query(connection, sql, param, transaction, buffered, commandTimeout, commandType);
-            }
-        }
-
         public IEnumerable<dynamic> Query(IDbConnection connection, string sql, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
             return SqlMapper.Query(connection, sql, param, transaction, buffered, commandTimeout, commandType);
@@ -93,39 +85,6 @@ namespace DapperMySqlMapper
             return SqlMapper.Query<T>(connection, sql, param, transaction, buffered, commandTimeout, commandType);
         }
 
-        public IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
-        {
-            using (var connection = this.GetConnection())
-            {
-                return this.Query<TFirst, TSecond, TReturn>(connection, sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
-            }
-        }
-
-        public IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(IDbConnection connection, string sql, Func<TFirst, TSecond, TReturn> map, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
-        {
-            this.SetTypeMap<TFirst>();
-            this.SetTypeMap<TSecond>();
-
-            return SqlMapper.Query<TFirst, TSecond, TReturn>(connection, sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
-        }
-
-        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
-        {
-            using (var connection = this.GetConnection())
-            {
-                return this.Query<TFirst, TSecond, TThird, TReturn>(connection, sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
-            }
-        }
-
-        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(IDbConnection connection, string sql, Func<TFirst, TSecond, TThird, TReturn> map, dynamic param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
-        {
-            this.SetTypeMap<TFirst>();
-            this.SetTypeMap<TSecond>();
-            this.SetTypeMap<TThird>();
-
-            return SqlMapper.Query<TFirst, TSecond, TThird, TReturn>(connection, sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
-        }
-
         public int Execute(string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             using (var connection = this.GetConnection())
@@ -137,74 +96,6 @@ namespace DapperMySqlMapper
         public int Execute(IDbConnection connection, string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             return SqlMapper.Execute(connection, sql, param, transaction, commandTimeout, commandType);
-        }
-
-        public object ExecuteScalar(string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            using (var connection = this.GetConnection())
-            {
-                return this.ExecuteScalar(connection, sql, param, transaction, commandTimeout, commandType);
-            }
-        }
-
-        public object ExecuteScalar(IDbConnection connection, string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            return SqlMapper.ExecuteScalar(connection, sql, param, transaction, commandTimeout, commandType);
-        }
-
-        public DataTable ExecuteDataTable(string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool dataHasPrimaryKey = true)
-        {
-            using (var connection = this.GetConnection())
-            {
-                return this.ExecuteDataTable(connection, sql, param, transaction, commandTimeout, commandType, dataHasPrimaryKey);
-            }
-        }
-
-        public DataTable ExecuteDataTable(IDbConnection connection, string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool dataHasPrimaryKey = true)
-        {
-            DataTable dt = new DataTable();
-            IDataReader dataReader = SqlMapper.ExecuteReader(connection, sql, param, transaction, commandTimeout, commandType);
-
-
-            if (dataHasPrimaryKey)
-            {
-                dt.Load(dataReader);
-            }
-            else
-            {
-                bool columnsAdded = false;
-
-                while (dataReader.Read())
-                {
-                    // add the data table columns
-                    if (columnsAdded == false)
-                    {
-                        DataTable schemaTable = dataReader.GetSchemaTable();
-
-                        foreach (DataRow row in schemaTable.Rows)
-                        {
-                            string colName = row.Field<string>("ColumnName");
-                            Type t = row.Field<Type>("DataType");
-
-                            dt.Columns.Add(colName, t);
-                        }
-
-                        columnsAdded = true;
-                    }
-
-                    // add the data table rows
-                    var newRow = dt.Rows.Add();
-
-                    foreach (DataColumn col in dt.Columns)
-                    {
-                        newRow[col.ColumnName] = dataReader[col.ColumnName];
-                    }
-                }
-
-                dataReader.Close();
-            }
-
-            return dt;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace BraAuto.ViewModels
 
         public TSearchResponse Response { get; set; }
 
-        public List<int> RowCounts { get; set; } = new List<int>() { 1,15, 50, 100, 200, 300, 500 };
+        public List<int> RowCounts { get; set; } = new List<int>() { 15, 30, 60, 90 };
 
         protected virtual void SetSearchRequest(BaseRequest request)
         {

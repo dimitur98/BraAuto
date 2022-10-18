@@ -79,7 +79,6 @@ namespace SqlQueryBuilder.MySql
                 sql.Append(String.Join("\n    ", this.Having));
             }
 
-            //sanitize this.OrderBys
             if (this.OrderBys != null)
             {
                 this.OrderBys = this.OrderBys.Where(o => o.IsValid || o.Column.ToCharArray().All(c => Char.IsLetter(c) || Char.IsNumber(c) || c == '.' || c == '_' || c == ' ' || c == '(' || c == ')' || c == '`')).ToList();

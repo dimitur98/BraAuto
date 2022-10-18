@@ -60,7 +60,6 @@ braAuto.submitJson = function (options) {
                 var values = !jQuery.isArray(value) ? [value] : value;
 
                 for (var i = 0; i < values.length; i++) {
-                    // results.push({ name: name, value: values[i] });
                     var val = values[i];
 
                     if (jQuery.isPlainObject(val)) {
@@ -290,6 +289,7 @@ $(document).ready(function () {
             $("#amount").val("$" + ui.values[0] + " lv - " + ui.values[1] + (ui.values[1] == max ? '+' : '') + " lv");
             $("#PriceFrom").val(ui.values[0]);
             $("#PriceTo").val(ui.values[1]);
+            if (ui.values[1] == max) { $("#PriceTo").val(""); }
         }
     });
     $("#amount").val($(".price-range").slider("values", 0) + " lv - " + $(".price-range").slider("values", 1) + " lv");

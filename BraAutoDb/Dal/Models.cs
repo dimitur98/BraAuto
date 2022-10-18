@@ -6,12 +6,14 @@ namespace BraAutoDb.Dal
     {
         public Models() : base("model", "id", "sort_order") { }
 
-        public List<Model> GetByMakeId(uint makeId, uint vehicleTypeId)
+        public List<Model> Get(uint? makeId, uint vehicleTypeId)
         {
             var sql = @"
                 SELECT *
                 FROM model
-                WHERE make_id = @makeId AND vehicle_type_id = @vehicleTypeId";
+                WHERE vehicle_type_id = @vehicleTypeId";
+
+            if (makeId != null) { sql += " AND make_id = @makeId"; }
 
             return Db.Mapper.Query<Model>(sql, new { makeId, vehicleTypeId }).ToList();
         }

@@ -29,9 +29,9 @@ namespace BraAuto.Controllers
             {
                 Makes = Db.Makes.GetAll(Db.VehicleTypes.CarId),
                 Years = Db.Years.GetAll(),
-                NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "created_at", SortDesc = true, RowCount = 10 }).Records,
+                NewestCars = Db.Cars.Search(new BraAutoDb.Models.CarsSearch.Request { IsActive = true, IsAdvert = true, SortColumn = "c.created_at", SortDesc = true, RowCount = 10 }).Records,
                 MostViewedCars = Db.Cars.GetMostViewed(10, true),
-                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsApproved = true, SortColumn = "created_at", RowCount = 6 }).Records
+                NewestArticles = Db.Articles.Search(new BraAutoDb.Models.ArticlesSearch.Request { IsApproved = true, SortColumn = "a.created_at", SortDesc = true, RowCount = 6 }).Records
             };
 
             this.LoadCarProperties(model.NewestCars);

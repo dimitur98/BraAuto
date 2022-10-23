@@ -24,8 +24,7 @@
 
                         <table class="table table-hover">
                             <thead>
-                                <tr class="my-car-settings-thead">
-                                    <th scope="col"></th>
+                                <tr>
                                     <th scope="col">Useranme</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
@@ -41,7 +40,6 @@
                                 @foreach (var user in Model.Response.Records)
                                 {
                                     <tr>
-                                        <td>img</td>
                                         <td>@user.Username</td>
                                         <td>@user.Name</td>
                                         <td>@user.Email</td>

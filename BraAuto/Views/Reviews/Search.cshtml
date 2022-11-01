@@ -1,0 +1,56 @@
+﻿@model BraAuto.ViewModels.ReviewSearchModel
+
+@{
+    ViewBag.Title = "Reviews";
+    ViewBag.RegisterJqueryStarRating = true;
+
+    var loggedUser = (User)ViewBag.LoggedUser;
+}
+
+<style>
+    .card-inner {
+        margin-left: 4rem;
+    }
+</style>
+
+<partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
+
+<div class="container">
+    @if (Model.Response.Records.IsNullOrEmpty())
+    {
+        <span>There are no reviews</span>
+    }
+    else
+    {
+        <div class="mt-3"></div>
+        <partial name="_AlertPartial" />
+        <partial name="_OrderListPartial" model="Model.ToPager()" />
+        @foreach (var review in Model.Response.Records)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>
+                        <strong>@review.FirstName @review.LastName</strong>
+                        @for (int i = 0; i < review.StarRating; i++)
+                        {
+                            <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                        }
+                        @for (int i = 0; i < 5 - review.StarRating; i++)
+                        {
+                            <span class="float-right"><i class="text-warning fa-regular fa-star"></i></span>
+                        }
+                        (@review.CreatedAt.ToWebDateFormat(showTime: true))
+
+                        @if(loggedUser.IsAdmin())
+                        {
+                            <a asp-action="Delete" asp-route-id="@review.Id" title="Delete" data-bs-toggle="tooltip" data-placement="bottom" class="confirm-dialog-trigger" data-dialog-title="Delete" data-dialog-message="Are you sure you want to delete review by @review.FirstName @review.LastName?">(<i class="far fa-trash-alt"></i>)</a>
+                        }
+                    </p>
+                    <p>@review.Description</p>
+                </div>
+            </div>
+        }
+        <partial name="_PagedListPartial" model="Model.ToPager()" />
+        <partial name="_CreateReviewPartial" model="new BraAuto.ViewModels.ReviewCreateModel()" />
+    }
+</div>

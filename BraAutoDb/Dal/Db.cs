@@ -29,6 +29,7 @@ namespace BraAutoDb.Dal
         public static Locations Locations = new Locations();
         public static Makes Makes = new Makes();
         public static Models Models = new Models();
+        public static Reviews Reviews = new Reviews();
         public static Stages Stages = new Stages();
         public static UserInRoles UserInRoles = new UserInRoles();
         public static UserRoles UserRoles = new UserRoles();

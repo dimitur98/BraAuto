@@ -132,7 +132,7 @@ ol {
 .primary-btn {
     display: inline-block;
     font-size: 15px;
-    padding: 12px 24px;
+    padding: 12px 13px;
     color: #ffffff;
     font-weight: 700;
     background: #db2d2e;
@@ -2951,30 +2951,30 @@ ol {
             color: #ffffff;
         }
 
-.blog-details-comment-form h4 {
+.review-form h4 {
     color: #353535;
     font-weight: 700;
     margin-bottom: 25px;
 }
 
-.blog-details-comment-form form .input-list {
+.review-form form .input-list {
     margin-right: -20px;
     overflow: hidden;
 }
 
-.blog-details-comment-form form .input-list-item {
+.review-form form .input-list-item {
     width: calc(33.33% - 20px);
     float: left;
     margin-right: 20px;
     margin-bottom: 20px;
 }
 
-    .blog-details-comment-form form .input-list-item p {
+    .review-form form .input-list-item p {
         color: #353535;
         margin-bottom: 5px;
     }
 
-    .blog-details-comment-form form .input-list-item input {
+    .review-form form .input-list-item input {
         width: 100%;
         height: 46px;
         font-size: 15px;
@@ -2984,17 +2984,17 @@ ol {
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-.blog-details-comment-form form .input-desc {
+.review-form form .input-desc {
     width: 100%;
     margin-bottom: 24px;
 }
 
-    .blog-details-comment-form form .input-desc p {
+    .review-form form .input-desc p {
         color: #353535;
         margin-bottom: 5px;
     }
 
-    .blog-details-comment-form form .input-desc textarea {
+    .review-form form .input-desc textarea {
         width: 100%;
         height: 140px;
         font-size: 15px;
@@ -3480,12 +3480,12 @@ ol {
         width: calc(50% - 34px);
     }
 
-    .blog-details-comment-form form .input-list {
+    .review-form form .input-list {
         margin-right: 0;
         overflow: hidden;
     }
 
-    .blog-details-comment-form form .input-list-item {
+    .review-form form .input-list-item {
         width: 100%;
         float: none;
         margin-right: 0;

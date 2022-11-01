@@ -120,6 +120,9 @@
   <data name="AlertKey" xml:space="preserve">
     <value>ShowAlert</value>
   </data>
+  <data name="AllFieldsRequired" xml:space="preserve">
+    <value>All fields are required.</value>
+  </data>
   <data name="ArticleTitleExists" xml:space="preserve">
     <value>Article with same title already exists</value>
   </data>

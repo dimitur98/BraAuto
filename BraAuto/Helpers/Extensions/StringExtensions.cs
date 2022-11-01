@@ -24,6 +24,9 @@ namespace BraAuto.Helpers.Extensions
                 case "price":
                     text = sortDesc ? "Price High-Low" : "Price Low-High";
                     break;
+                case "star_rating":
+                    text = sortDesc ? "Rating High-Low" : "Rating Low-High";
+                    break;
             }
 
             return text;

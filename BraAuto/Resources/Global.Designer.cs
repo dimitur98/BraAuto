@@ -92,6 +92,17 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to All fields are required..
+        /// </summary>
+        internal static string AllFieldsRequired
+        {
+            get
+            {
+                return ResourceManager.GetString("AllFieldsRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Email already exists.
         /// </summary>
         internal static string EmailAlreadyExists

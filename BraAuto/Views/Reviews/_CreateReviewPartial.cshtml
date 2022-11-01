@@ -1,0 +1,45 @@
+﻿@model BraAuto.ViewModels.ReviewCreateModel
+
+<div class="review-form mt-4">
+    <h4>Leave A Review</h4>
+    <form asp-action="Create" method="post" class="mb-3">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="input-list">
+            <div class="input-list-item">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+            <div class="input-list-item">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+            <div class="input-list-item">
+                <label asp-for="StarRating" class="form-label"></label>
+                <div class="star-rating mt-1"></div>
+                <input type="hidden" asp-for="StarRating"/>
+            </div>
+        </div>
+        <div class="input-desc">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description"></span>
+        </div>
+        <button type="submit" class="site-btn">Submit Now</button>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.star-rating').starRating({
+            showInfo: false,
+            inputName: 'StarRating',
+            starsSize: 1.5,// em
+            stars: 5,
+            wrapperClasses: ""
+        });
+    });
+</script>

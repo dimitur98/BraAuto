@@ -142,6 +142,12 @@
         <link href="~/lib/flatpickr-4.6.13/plugins/monthSelect/style.css" rel="stylesheet" />
         <script src="~/lib/flatpickr-4.6.13/plugins/monthSelect/index.js"></script>
     }
+
+    @if (ViewBag.RegisterJqueryStarRating == true)
+    {
+        <script src="~/lib/jquery-star-rating/jquery.star-rating.js"></script>
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

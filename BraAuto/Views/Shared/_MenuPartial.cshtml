@@ -1,6 +1,4 @@
-﻿@using BraAutoDb.Models
-
-@{
+﻿@{
     var loggedUser = (User)ViewBag.LoggedUser;
     var actionName = ViewContext.RouteData.Values["action"].ToString();
     var controllerName = ViewContext.RouteData.Values["controller"].ToString();
@@ -41,6 +39,7 @@
                             <li class="@(actionName == "Search" && controllerName == "Cars" ? "active" : "")"><a asp-action="Search" asp-controller="Cars">Cars</a></li>
                             <li class="@(actionName == "Search" && controllerName == "Articles" ? "active" : "")"><a asp-action="Search" asp-controller="Articles">Blog</a></li>
                             <li class="@(actionName == "ServiceSearch" && controllerName == "Users" ? "active" : "")"><a asp-action="ServiceSearch" asp-controller="Users">Services</a></li>
+                            <li class="@(actionName == "Search" && controllerName == "Reviews" ? "active" : "")"><a asp-action="Search" asp-controller="Reviews">Reviews</a></li>
 
                             @if (loggedUser == null)
                             {

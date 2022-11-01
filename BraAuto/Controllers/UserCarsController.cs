@@ -128,11 +128,7 @@ namespace BraAuto.Controllers
         {
             model.SetDefaultSort("uc.id", sortDesc: true);
 
-            var request = model.ToSearchRequest();            
-
-            request.ReturnTotalRecords = true;
-
-            var response = Db.UserCars.Search(request);
+            var response = Db.UserCars.Search(model.ToSearchRequest());
 
             Db.UserCars.LoadCars(response.Records);
             Db.Cars.LoadModels(response.Records.Select(r => r.Car));

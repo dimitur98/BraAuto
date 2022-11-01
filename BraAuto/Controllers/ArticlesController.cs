@@ -203,7 +203,7 @@ namespace BraAuto.Controllers
             catch (Exception ex)
             {
                 ex.SaveToLog();
-                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
             return this.RedirectToAction(nameof(My));
@@ -236,11 +236,7 @@ namespace BraAuto.Controllers
         {
             model.SetDefaultSort("a.created_at", sortDesc: true);
 
-            var request = model.ToSearchRequest();
-
-            request.ReturnTotalRecords = true;
-
-            var response = Db.Articles.Search(request);
+            var response = Db.Articles.Search(model.ToSearchRequest());
 
             if (!response.Records.IsNullOrEmpty())
             {

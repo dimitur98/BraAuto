@@ -384,7 +384,7 @@ namespace BraAuto.Controllers
             catch (Exception ex)
             {
                 ex.SaveToLog();
-                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
             return this.RedirectToAction(nameof(My));
@@ -586,8 +586,6 @@ namespace BraAuto.Controllers
             {
                 request.IsAdvert = true;
             }
-
-            request.ReturnTotalRecords = true;
 
             var response = Db.Cars.Search(request);
 

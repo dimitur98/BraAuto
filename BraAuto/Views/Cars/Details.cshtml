@@ -1,9 +1,8 @@
 ﻿@model BraAuto.ViewModels.CarDetailsModel
-@using BraAutoDb.Models
-@using BraAutoDb.Dal
-@inject IConfiguration Configuration
 
 @{
+    ViewBag.Title = "Details";
+
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
     var loggedUser = (User)ViewBag.LoggedUser;
 }

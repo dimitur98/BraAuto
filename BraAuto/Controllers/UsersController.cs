@@ -526,7 +526,7 @@ namespace BraAuto.Controllers
             catch (Exception ex)
             {
                 ex.SaveToLog();
-                this.TempData[Global.AlertKey] = new Alert(Global.GeneralError, AlertTypes.Danger).SerializeAlert();
+                this.ModelState.AddModelError(string.Empty, Global.GeneralError);
             }
 
             return this.RedirectToAction(nameof(Admin));
@@ -558,11 +558,7 @@ namespace BraAuto.Controllers
         {
             model.SetDefaultSort("u.created_at", sortDesc: true);
 
-            var request = model.ToSearchRequest();
-
-            request.ReturnTotalRecords = true;
-
-            var response = Db.Users.Search(request);
+            var response = Db.Users.Search(model.ToSearchRequest());
 
             model.Response = response;
         }

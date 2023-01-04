@@ -549,8 +549,6 @@ namespace BraAuto.ViewModels
 
         public bool IsAdminCarEditPage { get; set; }
 
-        public IEnumerable<string> PhotoUrls { get; set; }
-
         public Breadcrumb ToBreadcrumb()
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), this.IsAdminCarEditPage ? ("Admin", "Cars") : ("My", "Cars"), ("Edit", "Cars") };
@@ -786,7 +784,7 @@ namespace BraAuto.ViewModels
 
     public class Photos
     {
-        [DisplayName("Images")]
+        [DisplayName("Photos")]
         public IFormFile Photo1 { get; set; }
         public string Photo1Url { get; set; }
 
@@ -832,6 +830,27 @@ namespace BraAuto.ViewModels
             {
                 props[i].SetValue(this, carPhotos[i].Url);
             }
+        }
+
+        public bool IsEmpty()
+        {
+            if (this.Photo1 == null && string.IsNullOrEmpty(this.Photo1Url) &&
+                this.Photo2 == null && string.IsNullOrEmpty(this.Photo2Url) &&
+                this.Photo3 == null && string.IsNullOrEmpty(this.Photo3Url) &&
+                this.Photo4 == null && string.IsNullOrEmpty(this.Photo4Url) &&
+                this.Photo5 == null && string.IsNullOrEmpty(this.Photo5Url) &&
+                this.Photo6 == null && string.IsNullOrEmpty(this.Photo6Url) &&
+                this.Photo7 == null && string.IsNullOrEmpty(this.Photo7Url) &&
+                this.Photo8 == null && string.IsNullOrEmpty(this.Photo8Url) &&
+                this.Photo9 == null && string.IsNullOrEmpty(this.Photo9Url) &&
+                this.Photo10 == null && string.IsNullOrEmpty(this.Photo10Url) &&
+                this.Photo11 == null && string.IsNullOrEmpty(this.Photo11Url) &&
+                this.Photo12 == null && string.IsNullOrEmpty(this.Photo12Url))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

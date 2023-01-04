@@ -101,9 +101,11 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
-                    if (model.Photos == null)
+                    if (model.Photos == null || model.Photos.IsEmpty())
                     {
                         this.TempData[Global.AlertKey] = new Alert(Global.OnePhotoRequired, AlertTypes.Danger).SerializeAlert();
+
+                        this.LoadCarModel(model);
 
                         return this.View(model);
                     }
@@ -284,6 +286,15 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
+                    if (model.Photos == null || model.Photos.IsEmpty())
+                    {
+                        this.TempData[Global.AlertKey] = new Alert(Global.OnePhotoRequired, AlertTypes.Danger).SerializeAlert();
+
+                        this.LoadCarModel(model);
+
+                        return this.View(model);
+                    }
+
                     var car = Db.Cars.GetById(model.Id);
 
                     if (car == null) { return this.NotFound(); }

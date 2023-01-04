@@ -16,7 +16,7 @@ namespace BraAuto.ViewModels
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("Search", "Reviews") };
 
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
 
         public Request ToSearchRequest()

@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Service";
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
+    var loggedUser = (User)ViewBag.LoggedUser;
 }
 
 <partial name="_BreadcrumbPartial" model="Model.ToBreadcrumb()" />
@@ -57,7 +58,11 @@
                             }
                         </ul>
                     </div>
-                    <a asp-action="BookAppointment" asp-controller="UserCars" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+
+                    @if (loggedUser != null && !loggedUser.IsService())
+                    {
+                        <a asp-action="BookAppointment" asp-controller="UserCars" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                    }
                 </div>
             </div>
         </div>

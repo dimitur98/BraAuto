@@ -238,7 +238,11 @@
 
                         @if(loggedUser != null)
                         {
-                            <a asp-action="BookAppointment" asp-controller="UserCars" asp-route-carId="@Model.Id" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                            @if (!loggedUser.IsService())
+                            {
+                                <a asp-action="BookAppointment" asp-controller="UserCars" asp-route-carId="@Model.Id" class="primary-btn sidebar-btn"><i class="fa fa-sliders"></i> Service Check</a>
+                            }
+
                             <a class="primary-btn c-white fav-icon @(Model.IsFavourite ? "selected" : "")"><i class="fa fa-heart"></i>@(Model.IsFavourite ? "Remove From Favourite" : "Add To Favourite")</a>
                         }
                     </div>

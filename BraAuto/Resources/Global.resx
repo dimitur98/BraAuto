@@ -147,6 +147,9 @@
   <data name="MaxBookingAppointmentsReached" xml:space="preserve">
     <value>Service is full for the selected day.</value>
   </data>
+  <data name="OnePhotoRequired" xml:space="preserve">
+    <value>At least one photo should be uploaded.</value>
+  </data>
   <data name="RequiredField" xml:space="preserve">
     <value>This field is required!</value>
   </data>

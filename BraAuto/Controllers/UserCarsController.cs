@@ -24,6 +24,7 @@ namespace BraAuto.Controllers
             }
 
             model.UserCarTypeIds = Config.GetSection("UserCar.Service.Ids").Get<uint[]>();
+            model.SetDefaultSort("uc.date", sortDesc: true);
 
             this.ExecuteSearch(model);
 
@@ -34,6 +35,7 @@ namespace BraAuto.Controllers
         {
             model.CreatorId = this.LoggedUser.Id;
             model.UserCarTypeIds = new uint[] { Db.UserCarTypes.FavouriteId };
+            model.SetDefaultSort("c.created_at", sortDesc: true);
 
             this.ExecuteSearch(model);
 
@@ -42,6 +44,8 @@ namespace BraAuto.Controllers
 
         public IActionResult BookAppointment(uint? carId)
         {
+            if(this.LoggedUser.IsService()) { return this.RedirectToHttpForbidden(); }
+
             var model = new UserServiceBookAppointmentModel();
 
             this.LoadBookAppoitmentModel(model);
@@ -60,6 +64,8 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
+                    if (this.LoggedUser.IsService()) { return this.RedirectToHttpForbidden(); }
+
                     var service = Db.Users.GetById(model.ServiceId);
                     var serviceTotalBookings = Db.UserCars.Search(new Request { CarIds = new uint[] { model.CarId }, UserCarTypeIds = new uint[] { Db.UserCarTypes.ServiceAppointmentId, Db.UserCarTypes.ServiceAppointmentApprovedId }, Date = model.Date }).Records.Count();
 
@@ -126,8 +132,6 @@ namespace BraAuto.Controllers
 
         protected void ExecuteSearch(UserCarSearchBaseModel model)
         {
-            model.SetDefaultSort("uc.id", sortDesc: true);
-
             var response = Db.UserCars.Search(model.ToSearchRequest());
 
             Db.UserCars.LoadCars(response.Records);

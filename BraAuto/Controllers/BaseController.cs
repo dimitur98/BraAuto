@@ -2,12 +2,14 @@
 using BraAuto.Helpers.Log;
 using BraAutoDb.Dal;
 using BraAutoDb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace BraAuto.Controllers
 {
+    [Authorize]
     public abstract class BaseController : Controller
     {
         private ILogHelper _log;

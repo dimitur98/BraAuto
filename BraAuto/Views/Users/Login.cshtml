@@ -23,6 +23,9 @@
     <div class="container login">
         <form asp-action="Login" asp-controller="Users" method="post">
             <div asp-validation-summary="ModelOnly"></div>
+
+            <input asp-for="ReturnUrl" type="hidden" />
+
             <div class="form-group">
                 <label asp-for="Username" class="form-label"></label>
                 <input asp-for="Username" class="form-control" />

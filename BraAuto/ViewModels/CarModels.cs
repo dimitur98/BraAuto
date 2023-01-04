@@ -605,7 +605,7 @@ namespace BraAuto.ViewModels
         [DisplayName("CC")]
         public string Cc { get; set; }
 
-        [DisplayName("Euro Standart")]
+        [DisplayName("Euro Standard")]
         public string EuroStandart { get; set; }
 
         [DisplayName("Price")]

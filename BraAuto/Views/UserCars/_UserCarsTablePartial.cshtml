@@ -49,11 +49,11 @@
                                         <td class="align-middle"><a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id">@car.Model.Make.Name @car.Model.Name @car.Variant</a></td>
                                         @if (isFavouritePage)
                                         {
-                                            <td class="align-middle">@car.CreatedAt.ToWebDateFormat()</td>
+                                            <td class="align-middle">@car.CreatedAt.ToWebDateFormat(showTime: true)</td>
                                         }
                                         else
                                         {
-                                            <td class="align-middle">@userCar.Date.Value.ToWebDateFormat()</td>
+                                            <td class="align-middle">@userCar.Date.Value.ToWebDateFormat(showTime: true)</td>
                                             <td data-user-car-id="@userCar.Id" data-user-car-type-id="@userCar.UserCarTypeId" class="align-middle status">
                                                 <i title="Not Approved" data-user-car-type-id="@Db.UserCarTypes.ServiceAppointmentId" class="fa-regular fa-circle status-icon me-1 opacity-50"></i>
                                                 <i title="Approved" data-user-car-type-id="@Db.UserCarTypes.ServiceAppointmentApprovedId" class="fa fa-check-circle status-icon me-1 opacity-50"></i>

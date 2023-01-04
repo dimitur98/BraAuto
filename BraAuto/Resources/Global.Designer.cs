@@ -183,6 +183,18 @@ namespace BraAuto.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to At least one photo should be uploaded.
+        /// </summary>
+        internal static string OnePhotoRequired
+        {
+            get
+            {
+                return ResourceManager.GetString("OnePhotoRequired", resourceCulture);
+
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to This field is required!.
         /// </summary>
         internal static string RequiredField

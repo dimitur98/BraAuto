@@ -101,6 +101,13 @@ namespace BraAuto.Controllers
             {
                 if (this.ModelState.IsValid)
                 {
+                    if (model.Photos == null)
+                    {
+                        this.TempData[Global.AlertKey] = new Alert(Global.OnePhotoRequired, AlertTypes.Danger).SerializeAlert();
+
+                        return this.View(model);
+                    }
+
                     var car = new Car
                     {
                         Description = model.Description,

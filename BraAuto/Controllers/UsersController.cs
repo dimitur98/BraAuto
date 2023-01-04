@@ -95,6 +95,7 @@ namespace BraAuto.Controllers
 
                         return this.View(model);
                     }
+
                     user = new User();
 
                     if (model.UserTypeId == Db.UserTypes.ServiceId)
@@ -157,19 +158,24 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
-        public IActionResult Login()
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
         {
             if (this.LoggedUser != null)
             {
                 return this.RedirectToAction(string.Empty, string.Empty);
             }
 
-            var model = new LoginUserModel();
+            var model = new LoginUserModel
+            {
+                ReturnUrl = returnUrl,
+            };
 
             return this.View(model);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginUserModel model)
         {
             if (this.LoggedUser != null)
@@ -201,7 +207,7 @@ namespace BraAuto.Controllers
 
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return this.RedirectToAction(actionName: "Home", controllerName: "Cars");
+                return this.RedirectToLocal(model.ReturnUrl, string.Empty, string.Empty);
             }
 
             return this.View(model);

@@ -1,5 +1,4 @@
-﻿using BraAuto.Helpers.Extensions;
-using BraAutoDb.Dal;
+﻿using BraAutoDb.Dal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +16,7 @@ namespace BraAuto.Controllers.Api
             if (user == null) { return this.NotFound(); }
 
             user.IsActive = status;
+            user.EditorId = this.LoggedUser.Id;
 
             Db.Users.Update(user);
 

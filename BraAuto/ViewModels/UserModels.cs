@@ -29,7 +29,7 @@ namespace BraAuto.ViewModels
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("My", "Cars"), ("Admin", "Users") };
 
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
     }
 
@@ -41,6 +41,11 @@ namespace BraAuto.ViewModels
 
         public uint? LocationId { get; set; }
         public IEnumerable<Location> Locations { get; set; }
+
+        public UserServiceSearchModel()
+        {
+            this.SortFields = new List<(string Name, string SortColumn, bool SortDesc, bool Specific)> { ("Name A-Z", "u.name", false, false), ("Name Z-A", "u.name", true, false) };
+        }
 
         public override Request ToSearchRequest()
         {
@@ -60,7 +65,7 @@ namespace BraAuto.ViewModels
         {
             var paths = new List<(string Action, string Controller)>() { ("Home", "Cars"), ("ServiceSearch", "Users") };
 
-            return new Breadcrumb(paths);
+            return new Breadcrumb(paths, totalRecords: this.Response.TotalRecords);
         }
     }
 
@@ -182,6 +187,8 @@ namespace BraAuto.ViewModels
 
         [DisplayName("Remember Me")]
         public bool RememberMe { get; set; }
+
+        public string ReturnUrl { get; set; }
 
         public Breadcrumb ToBreadcrumb()
         {

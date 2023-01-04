@@ -18,6 +18,7 @@ namespace BraAuto.Helpers.Extensions
                 case "is_approved": 
                     text = $"Approved {(sortDesc ? "First" : "Last")}";
                     break;
+                case "date":
                 case "created_at":
                     text = sortDesc ? "Newest First" : "Oldest First";
                     break;
@@ -26,6 +27,9 @@ namespace BraAuto.Helpers.Extensions
                     break;
                 case "star_rating":
                     text = sortDesc ? "Rating High-Low" : "Rating Low-High";
+                    break;
+                case "name":
+                    text = sortDesc ? "Name Z-A" : "Name A-Z";
                     break;
             }
 

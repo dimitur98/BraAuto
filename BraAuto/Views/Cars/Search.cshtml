@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Search";
-    ViewBag.ShowHeader = true;
     ViewBag.RegisterLazyMultiselect = true;
+
     var cloudinaryUrl = Configuration["Cloudinary:Url"] + Configuration["Cloudinary:AppName"] + "/";
     var loggedUser = (User)ViewBag.LoggedUser;
 }

@@ -39,6 +39,7 @@ namespace BraAuto.Controllers
             return this.View(model);
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             if (this.LoggedUser != null)
@@ -54,6 +55,7 @@ namespace BraAuto.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
             if (this.LoggedUser != null)
@@ -251,6 +253,7 @@ namespace BraAuto.Controllers
             return this.RedirectToAction(nameof(SetUsername));
         }
 
+        [AllowAnonymous]
         public IActionResult SetUsername()
         {
             if (this.LoggedUser != null)
@@ -264,6 +267,7 @@ namespace BraAuto.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SetUsername(UserSetUsernameModel model)
         {
             if (this.LoggedUser != null)

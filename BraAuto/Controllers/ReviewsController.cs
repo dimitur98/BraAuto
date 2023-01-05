@@ -19,6 +19,8 @@ namespace BraAuto.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create(ReviewCreateModel model)
         {
             try

@@ -6,21 +6,22 @@
 
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
-    <div class="offcanvas-widget row">
-        <div class="col-6">
-            <a asp-action="Create" asp-controller="Cars" class="primary-btn">Add Car</a>
-        </div>
-        @if (loggedUser.IsAdmin() || loggedUser.IsBlogger())
-        {
-            <div class="col-6">
-                <a asp-action="Create" asp-controller="Articles" class="primary-btn">Add Article</a>
-            </div>
-        }
-    </div>
+
     <div class="offcanvas-logo">
         <a asp-action="Home" asp-controller="Cars"><img src="~/img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas-widget row">
+        <div class="col-6">
+            <a asp-action="Create" asp-controller="Cars" class="primary-btn text-center">Add Car</a>
+        </div>
+        @if (loggedUser.IsAdmin() || loggedUser.IsBlogger())
+        {
+            <div class="col-6">
+                <a asp-action="Create" asp-controller="Articles" class="primary-btn text-center">Add Article</a>
+            </div>
+        }
+    </div>
 </div>
 
 <header class="header">

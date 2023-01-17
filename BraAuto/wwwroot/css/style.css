@@ -248,7 +248,18 @@ ol {
     border-style: groove;
     border-radius: 50px;
 }
+.extras-inputs {
+    height: 67%;
+    overflow: auto;
+}
 
+@media(max-width: 992px) {
+    .extras-model {
+        width: 90%;
+        left: 5%;
+        height: 75%;
+    }
+}
 .extras-model-form {
     padding: 0 15px;
 }
@@ -3895,12 +3906,13 @@ a:hover {
     left: 9%;
 }
 
-.c-white{
+.c-white {
     cursor: pointer;
 }
-.c-white:hover {
-    color: white;
-}
+
+    .c-white:hover {
+        color: white;
+    }
 
 td .fa-check-circle {
     color: green;
@@ -3989,3 +4001,52 @@ td .fa-circle {
     height: 0px;
     overflow: hidden;
 }
+
+.fav-selected {
+    color: #db2d2e;
+}
+
+.compare-selected {
+    color: #4971FF;
+}
+
+.compare-box {
+    border-style: outset;
+    height: 180px;
+    margin-bottom: 20px;
+}
+
+.compare-btn {
+    float: right;
+    transform: rotate(90deg) translateY(-29px) translateX(53px);
+}
+
+.compared-car-preview {
+    width: 150px;
+    height: 110px;
+    background-size: 100% 100%;
+}
+
+.compare-list {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+    .compare-list .compared-car {
+        display: inline-block;
+    }
+
+    .compare-list::-webkit-scrollbar {
+        width: 2px;
+        height: 7px;
+    }
+
+    .compare-list::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    .compare-list::-webkit-scrollbar-thumb {
+        width: 10px;
+        border-radius: 5px;
+        background-color: #c1c1c1;
+    }

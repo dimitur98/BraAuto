@@ -12,12 +12,10 @@ namespace BraAuto.Controllers.Api
     {
         private ILogHelper _log;
         private IConfiguration _config;
-        private IWebHostEnvironment _webHostEnvironment;
         private User _loggedUser;
 
         protected ILogHelper Log => _log ??= HttpContext.RequestServices.GetService<ILogHelper>();
         protected IConfiguration Config => _config ??= HttpContext.RequestServices.GetService<IConfiguration>();
-        protected IWebHostEnvironment WebHostEnvironment => _webHostEnvironment ??= HttpContext.RequestServices.GetService<IWebHostEnvironment>();
 
         public User LoggedUser
         {
